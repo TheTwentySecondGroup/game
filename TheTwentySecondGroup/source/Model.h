@@ -9,6 +9,7 @@
 #include <fbxsdk.h>
 #include "3dModelStruct.h"
 #include <iostream>
+#include <vector>
 #include <GL/glut.h>
 using namespace std;
 
@@ -20,30 +21,24 @@ class Model
         Model();
         ~Model();
 
-        void ShowDetails();
+       // void ShowDetails();
 
-        char* GetModelName();
-        void  SetModelName( char* );
-        void  GetFbxInfo( FbxNode* );
+       // void  GetFbxInfo( FbxNode* );
         int  getMesh(FbxNode* node);
-        void getPos(FbxMesh* mesh);
         void  Draw();
-        void  InitializeVertexBuffer( vertex* );
-    //private:
+        //void  InitializeVertexBuffer( vertex* );
 
         char Name[256];
+        vector <material> mat;
 
-        vec3f *vertices;
-        //vertex vertices[MAX_VERTICES];
-        poligon poligons[MAX_POLIGONS];
 
         int numPoligons;
-        int *poligonsSize;
+        //int *poligonsSize;
         int *indexes;
         int numIndices;
 
         int numVertices;
-        int numIndexes;  
+        int numIndexes;
 
 
 };

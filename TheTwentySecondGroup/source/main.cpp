@@ -34,7 +34,7 @@ void Init(){
 
 
     model = new Model;
-    model->ShowDetails();
+   // model->ShowDetails();
     cout<<"Init() executed\n";
     cout<<"-----------------------\n\n\n";
 }

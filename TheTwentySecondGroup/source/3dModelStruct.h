@@ -56,19 +56,16 @@ public:
 
 
 class tri{
-    vec3f vec;
-    vec3f normal;
+    vec3f ver;
+    vec3f nor;
     UV uv;
 };
 
 
 class material{
-
-   // std::string MaterialName;//マテリアル名
-    Ref MaterialColor;//反射
-    float Shininess;//shininess
-   // string TextureName;//テクスチャ名
-    int TexNo;//テクスチャNO.
+public:
+    reflect color;//反射
+    vector <vec3f> ver;
 
 };
 #endif

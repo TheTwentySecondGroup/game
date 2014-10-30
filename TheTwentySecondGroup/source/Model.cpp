@@ -4,7 +4,8 @@
 
 Model::Model()
 {
-    char filename[256] = "UnityChan/Models/unitychan.fbx";
+	strcpy(Name,"UnityChan/Models/unitychan.fbx");
+
     cout<<"A model has been built!\n";
 
     numVertices=0;
@@ -16,18 +17,24 @@ Model::Model()
     manager->SetIOSettings(ioSettings);
 
     FbxImporter *importer=FbxImporter::Create(manager,"");
-    importer->Initialize(filename,-1,manager->GetIOSettings());
+    importer->Initialize(Name,-1,manager->GetIOSettings());
 
     FbxScene *scene = FbxScene::Create(manager,"tempName");
 
     importer->Import(scene);
+
+    //三角化
+    FbxGeometryConverter geometryConverter(manager);
+    geometryConverter.Triangulate(scene, true);
+
     importer->Destroy();
 
+
     FbxNode* rootNode = scene->GetRootNode();
-    this->SetModelName(filename);
-    if(rootNode) { 
-        //this->GetFbxInfo(rootNode); 
-        this->getMesh(rootNode); 
+
+    if(rootNode) {
+        //this->GetFbxInfo(rootNode);
+        this->getMesh(rootNode);
 
     }
 
@@ -39,24 +46,10 @@ Model::~Model()
 }
 
 
-void Model::ShowDetails()
-{
-    cout<<"Name:"<<Name<<"\n";
-    cout<<"Vertices Number:"<<numVertices<<"\n";
-    //cout<<"Indices which i never get:"<<indices<<"\n";
 
-}
 
-char* Model::GetModelName()
-{
-    return Name;
-}
 
-void Model::SetModelName(char *x)
-{
-    strcpy(Name,x);
-}
-
+/*
 void Model::GetFbxInfo( FbxNode* Node )
 {
 
@@ -89,9 +82,9 @@ void Model::GetFbxInfo( FbxNode* Node )
         this->GetFbxInfo(childNode);
     }
 }
-
+*/
 void Model::Draw()
-{ 
+{
 
     GLfloat WhiteMaterial[] = {0.8,0.8,0.8,1};
     glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
@@ -100,19 +93,23 @@ void Model::Draw()
     glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
 
+    //int i,j;
+    //cout<<"numIndices="<< numIndices<<"\n";
+    for(int i=0;i<mat.size();i++){
+    	for(int j=0;j<mat[i].ver.size();j++){
+    		//glBegin(GL_TRIANGLES);
+            //glVertex3f(vertices[indexes[j]].x,vertices[indexes[j]].y,vertices[indexes[j]].z);
+            //glEnd();
+    		glEnableClientState(GL_VERTEX_ARRAY);
+    		glEnableClientState(GL_NORMAL_ARRAY);
+    		//material
 
-    int i,j;
-    cout<<"numIndices="<< numIndices<<"\n";
-    for(i=0;i<numIndices-3;i++){
-        glBegin(GL_TRIANGLES);
-        //glNormal3f(normals[i*3+0],normals[i*3+1],normals[i*3+2]); 
-        for(j=i;j<=i+2;j++) {
-            //cout<<"ver  x ";cout<<vertices[indexes[j]].x <<"\n";
-            //cout<<"     y ";cout<<vertices[indexes[j]].y<< "\n" ;
-            //cout<<"     Z ";cout<<vertices[indexes[j]].z<<"\n";
-            glVertex3f(vertices[indexes[j]].x,vertices[indexes[j]].y,vertices[indexes[j]].z);
-        }   
-        glEnd();
+    		//texture
+
+    		glVertexPointer(3,GL_FLOAT,sizeof(vec3f),&mat[i].ver[j].x);
+
+    	}
+
     }
     cout<<"----------------------------------------------------------------------------------------\n";
 
@@ -181,12 +178,13 @@ void Model::Draw()
 
     // glDrawElements(GL_TRIANGLES,36,GL_INT,indices);
 }
+/*
 void Model::InitializeVertexBuffer(vertex *vertices)
 {
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3,GL_FLOAT,0,vertices);
     //glDrawArrays(GL_TRIANGLES,0,36);
-}
+}*/
 
 int Model::getMesh(FbxNode* node){
     FbxNodeAttribute* attr = node->GetNodeAttribute();
@@ -195,24 +193,38 @@ int Model::getMesh(FbxNode* node){
             //syori
             FbxMesh *mesh = node->GetMesh();
 
+
+            /*
             numPoligons=mesh->GetPolygonCount();
             cout<<"numPoligons="<< numPoligons<<"\n";
-            numVertices= mesh->GetControlPointsCount();
+
             cout<<"numVertices="<< numVertices<<"\n";
-            numIndexes=mesh->GetPolygonVertexCount();
+
             cout<<"numIndexes="<< numIndexes<<"\n";
             numIndices+=mesh->GetPolygonVertexCount();
+            */
 
 
-            //
+
+           material mattemp;
+
+
             FbxVector4* vec = mesh->GetControlPoints();
+            int VerticesCount= mesh->GetControlPointsCount();
+            for(int i=0; i<VerticesCount;i++){
+            	//位置情報格納
+            	vec3f temp;
+
+            	temp.x=(float)vec[i][0];
+            	temp.y=(float)vec[i][1];
+            	temp.z=(float)vec[i][2];
+				mattemp.ver.push_back(temp);
+            }
+
+            mat.push_back(mattemp);
+            /*
+            numIndexes=mesh->GetPolygonVertexCount();
             int* index = mesh->GetPolygonVertices();
-            vertices = new vertex[numVertices] ;
-            for(int i=0; i<numVertices;i++){
-                vertices[i].x=(float)vec[i][0];
-                vertices[i].y=(float)vec[i][1];
-                vertices[i].z=(float)vec[i][2];
-            } 
             indexes = new int[numIndexes] ;
             for(int i=0; i<numIndexes;i++){
                 indexes[i]=index[i];
@@ -220,7 +232,7 @@ int Model::getMesh(FbxNode* node){
             poligonsSize = new int[numPoligons];
             for (int i=0;i<numPoligons;i++){
                 poligonsSize[i]=mesh->GetPolygonSize(i);
-            }
+            }*/
 
             // this->getPos(FbxMesh *mesh);
             return 1;
@@ -232,14 +244,4 @@ int Model::getMesh(FbxNode* node){
         if(this->getMesh(node->GetChild(i))==1)return 1;
     }
 }
-
-void Model::getPos(FbxMesh* mesh){
-    numPoligons=mesh->GetPolygonCount();
-
-    numVertices= mesh->GetControlPointsCount();
-
-
-}
-
-
 
