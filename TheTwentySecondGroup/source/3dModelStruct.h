@@ -55,17 +55,13 @@ public:
 };
 
 
-class tri{
-    vec3f ver;
-    vec3f nor;
-    UV uv;
-};
 
 
 class material{
 public:
     reflect color;//反射
     vector <vec3f> ver;
-
+    vector <vec3f> nor;
+    vector <UV> uv;
 };
 #endif

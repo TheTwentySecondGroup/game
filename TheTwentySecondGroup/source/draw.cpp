@@ -18,7 +18,7 @@ void Normal3f(GLfloat fVert1[],GLfloat fVert2[],GLfloat fVert3[]);
 
 void init2D(){
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
+    //glDisable(GL_CULL_FACE);
     glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
     glViewport(0,0,WINDOW_X,WINDOW_Y);
@@ -53,7 +53,7 @@ void init3D(){
     glEnable(GL_DEPTH_TEST);
 
     //CULLING
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     //to smooth
     glShadeModel(GL_SMOOTH);
@@ -71,18 +71,19 @@ void draw()
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         double xd= sin(myPos.dir);
-        double yd=   cos(myPos.dir) ;
-        gluLookAt(myPos.x - xd/20 ,myPos.y - yd/20,myPos.z, // position of camera
+        double zd=   cos(myPos.dir) ;
+        gluLookAt(myPos.x - xd/20 ,myPos.y,myPos.z- zd/20, // position of camera
                 myPos.x  , myPos.y ,myPos.z, //look-at point
-                0.0,0.0,1.0);
+                0.0f,1.0f,0.0f);
 
         //Light
         lightpos[0]=myPos.x-5*xd;
-        lightpos[1]=myPos.y-5*yd;
-        lightpos[2]=myPos.z;
+        lightpos[1]=myPos.y;
+        lightpos[2]=myPos.z-5*zd;
         lightpos[3]=1;
+
         glLightfv(GL_LIGHT0,GL_POSITION,lightpos); // position of light0
-        GLfloat Light0Dir[]={xd,yd,0};
+        GLfloat Light0Dir[]={xd,0,zd};
         glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,Light0Dir);
         glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f );
         glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 2.0f );
@@ -94,13 +95,7 @@ void draw()
 
         glEnable(GL_LIGHT0);
 
-
-
-        //drawMap();//
-        //drawEnemy();
-        //drawItem();
-        //drawGoal();
-        drawCube(1,1);
+        //drawCube(1,1);
         model->Draw();
         
 

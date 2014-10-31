@@ -4,12 +4,12 @@
 
 Model::Model()
 {
+	bzero(Name,'\0');
 	strcpy(Name,"UnityChan/Models/unitychan.fbx");
 
+	//Name="UnityChan/Models/unitychan.fbx";
     cout<<"A model has been built!\n";
 
-    numVertices=0;
-    numIndices=0;
 
     FbxManager *manager = FbxManager::Create();
 
@@ -33,7 +33,6 @@ Model::Model()
     FbxNode* rootNode = scene->GetRootNode();
 
     if(rootNode) {
-        //this->GetFbxInfo(rootNode);
         this->getMesh(rootNode);
 
     }
@@ -48,69 +47,44 @@ Model::~Model()
 
 
 
-
-/*
-void Model::GetFbxInfo( FbxNode* Node )
-{
-
-    int numKids = Node->GetChildCount();
-    FbxNode *childNode = 0;
-
-    for ( int i=0 ; i<numKids ; i++)
-    {
-        childNode = Node->GetChild(i);
-        FbxMesh *mesh = childNode->GetMesh();
-
-        if ( mesh != NULL)
-        {
-            //Get Vertices
-            int numVerts = mesh->GetControlPointsCount();
-
-            for ( int j=0; j<numVerts; j++)
-            {
-                FbxVector4 vert = mesh->GetControlPointAt(j);
-                vertices[numVertices].x = (float)vert.mData[0];
-                vertices[numVertices].y = (float)vert.mData[1];
-                vertices[numVertices++].z=(float)vert.mData[2];
-                cout<<vertices[numVertices-1].x<<" "<<vertices[numVertices-    1].y<<" "<<vertices[numVertices-1].z<<"\n";
-                this->InitializeVertexBuffer(vertices);
-            }
-            //Get Indices
-            int *indices = mesh->GetPolygonVertices();
-            numIndices+=mesh->GetPolygonVertexCount();
-        }
-        this->GetFbxInfo(childNode);
-    }
-}
-*/
 void Model::Draw()
 {
-
-    GLfloat WhiteMaterial[] = {0.8,0.8,0.8,1};
-    glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
-    glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,WhiteMaterial);
-    glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,WhiteMaterial);
-    glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
 
     //int i,j;
     //cout<<"numIndices="<< numIndices<<"\n";
-    for(int i=0;i<mat.size();i++){
-    	for(int j=0;j<mat[i].ver.size();j++){
-    		//glBegin(GL_TRIANGLES);
-            //glVertex3f(vertices[indexes[j]].x,vertices[indexes[j]].y,vertices[indexes[j]].z);
-            //glEnd();
-    		glEnableClientState(GL_VERTEX_ARRAY);
-    		glEnableClientState(GL_NORMAL_ARRAY);
+    //cout<<mat.size()<<"\n";
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	for(int i=0;i<mat.size();i++){
+    	//cout<<mat[i].ver.size()<<"\n";
+    	//for(int j=0;j<mat[i].ver.size();j++){
+       		glPushMatrix();
+
     		//material
+    		GLfloat WhiteMaterial[] = {0.8,0.8,0.8,1};
+    		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
+    		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,WhiteMaterial);
+    		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,WhiteMaterial);
+    		glMaterialf(GL_FRONT,GL_SHININESS,60.0);
+
 
     		//texture
 
-    		glVertexPointer(3,GL_FLOAT,sizeof(vec3f),&mat[i].ver[j].x);
+    		glVertexPointer(3,GL_FLOAT,sizeof(vec3f),&mat[i].ver[0].x);
+    		glScalef(0.01f,0.01f,0.01f);
+    		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
 
-    	}
+    		glPopMatrix();
+
+    	//}
 
     }
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+
     cout<<"----------------------------------------------------------------------------------------\n";
 
 
@@ -135,32 +109,32 @@ void Model::Draw()
        glEnableClientState(GL_VERTEX_ARRAY);
        glEnableClientState(GL_NORMAL_ARRAY);
        for(int i=0;i<(signed)Material.size();i++){
-       glPushMatrix();
-       glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(const GLfloat *)&Material[i].MaterialColor.ambient);
-       glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(const GLfloat *)&Material[i].MaterialColor.diffuse);
-       glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(const GLfloat *)&Material[i].MaterialColor.specular);
-       glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material[i].Shininess);
-       if(Material[i].TexNo>0){
-       glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-       glEnable(GL_TEXTURE_2D);
-       glBindTexture(GL_TEXTURE_2D, TexID[Material[i].TexNo-1]);
-       }else{
-       glDisable(GL_TEXTURE_2D);
-       glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-       }
-       if(Material[i].Tridata.size()>1){
-       glVertexPointer(3, GL_FLOAT,sizeof(Tri) , &Material[i].Tridata[0].TriVer.x);
-       glNormalPointer(GL_FLOAT,sizeof(Tri),&Material[i].Tridata[0].TriNor.x);
-       if(Material[i].TexNo>0)glTexCoordPointer(2, GL_FLOAT, sizeof(Tri), &Material[i].Tridata[0].TriUV.u);
-       glDrawArrays(GL_TRIANGLES,0,Material[i].Tridata.size());
-       }
-       if(Material[i].Quaddata.size()>1){
-       glVertexPointer(3, GL_FLOAT,sizeof(Quad) , &Material[i].Quaddata[0].QuadVer.x);
-       glNormalPointer(GL_FLOAT,sizeof(Quad),&Material[i].Quaddata[0].QuadNor.x);
-       if(Material[i].TexNo>0)glTexCoordPointer(2, GL_FLOAT, sizeof(Quad), &Material[i].Quaddata[0].QuadUV.u);
-       glDrawArrays(GL_QUADS,0,Material[i].Quaddata.size());
-       }
-       glPopMatrix();
+       	   glPushMatrix();
+       	   glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(const GLfloat *)&Material[i].MaterialColor.ambient);
+       	   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(const GLfloat *)&Material[i].MaterialColor.diffuse);
+       	   glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(const GLfloat *)&Material[i].MaterialColor.specular);
+       	   glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material[i].Shininess);
+       	   if(Material[i].TexNo>0){
+       	   	   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+       	   	   glEnable(GL_TEXTURE_2D);
+       	   	   glBindTexture(GL_TEXTURE_2D, TexID[Material[i].TexNo-1]);
+       	   }else{
+       	   	   glDisable(GL_TEXTURE_2D);
+       	   	   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+       	   }
+       	   if(Material[i].Tridata.size()>1){
+       	   	   glVertexPointer(3, GL_FLOAT,sizeof(Tri) , &Material[i].Tridata[0].TriVer.x);
+       	   	   glNormalPointer(GL_FLOAT,sizeof(Tri),&Material[i].Tridata[0].TriNor.x);
+       	   	   if(Material[i].TexNo>0)glTexCoordPointer(2, GL_FLOAT, sizeof(Tri), &Material[i].Tridata[0].TriUV.u);
+       	   	   glDrawArrays(GL_TRIANGLES,0,Material[i].Tridata.size());
+       	   }
+       	   if(Material[i].Quaddata.size()>1){
+       	   	   glVertexPointer(3, GL_FLOAT,sizeof(Quad) , &Material[i].Quaddata[0].QuadVer.x);
+       	   	   glNormalPointer(GL_FLOAT,sizeof(Quad),&Material[i].Quaddata[0].QuadNor.x);
+       	   	   if(Material[i].TexNo>0)glTexCoordPointer(2, GL_FLOAT, sizeof(Quad), &Material[i].Quaddata[0].QuadUV.u);
+       	   	   glDrawArrays(GL_QUADS,0,Material[i].Quaddata.size());
+       	   }
+       	   glPopMatrix();
        }
        glDisableClientState(GL_VERTEX_ARRAY);
        glDisableClientState(GL_NORMAL_ARRAY);
@@ -209,15 +183,19 @@ int Model::getMesh(FbxNode* node){
            material mattemp;
 
 
-            FbxVector4* vec = mesh->GetControlPoints();
+
             int VerticesCount= mesh->GetControlPointsCount();
+            cout<<VerticesCount<<"\n";
             for(int i=0; i<VerticesCount;i++){
             	//位置情報格納
+            	FbxVector4 vec = mesh->GetControlPointAt(i);
             	vec3f temp;
 
-            	temp.x=(float)vec[i][0];
-            	temp.y=(float)vec[i][1];
-            	temp.z=(float)vec[i][2];
+            	temp.x=(float)vec.mData[0];
+            	temp.y=(float)vec.mData[1];
+            	temp.z=(float)vec.mData[2];
+            	cout <<"temp.x="<<(float)vec.mData[0]<< " 	temp.y="<<(float)vec.mData[1]<< "	temp.z="<<(float)vec.mData[2]<<"\n";
+
 				mattemp.ver.push_back(temp);
             }
 
@@ -240,8 +218,10 @@ int Model::getMesh(FbxNode* node){
     }
 
     int childCount = node->GetChildCount();
+    cout<<"childCOunt"<<childCount;
     for(int i = 0; childCount > i; i++) {
-        if(this->getMesh(node->GetChild(i))==1)return 1;
+        if(this->getMesh(node->GetChild(i))==1);//return 1;
     }
+    return 1;
 }
 

@@ -28,13 +28,13 @@ void Init(){
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHTING);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+   // glEnable(GL_CULL_FACE);
+   // glCullFace(GL_BACK);
 
 
 
     model = new Model;
-   // model->ShowDetails();
+
     cout<<"Init() executed\n";
     cout<<"-----------------------\n\n\n";
 }
@@ -62,11 +62,10 @@ int main(int argc, char *argv[])
     SDL_WM_SetCaption("testProgram",NULL);
 
     //initialize my position
-    /*
-       int myPos.x=0;
-       int myPos.y=0;
-       int myPos.z=0.5;
-     */
+     myPos.x=0;
+     myPos.y=0.5;
+     myPos.z=0;
+
     /*
     if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
         wiimote.led.one  = 1;
@@ -82,12 +81,8 @@ int main(int argc, char *argv[])
 
 */
     glutInit(&argc, argv);
-    /*
-       glutInitWindowPosition(500, 100);
-       glutInitWindowSize(WIDTH, HEIGHT);
-       glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-       glutCreateWindow("FBXローダ");  
-     */
+
+
     //initialize GLUT
     glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
 
@@ -206,17 +201,17 @@ void GameMain(){
         //keyboad
         Uint8 *key = SDL_GetKeyState(NULL);
         if(key[SDLK_RIGHT] == SDL_PRESSED){
-            myPos.dir+=0.03;
+            myPos.dir-=0.03;
         }
         if(key[SDLK_LEFT] == SDL_PRESSED){
-            myPos.dir-=0.03;
+            myPos.dir+=0.03;
         }
         if(key[SDLK_UP] == SDL_PRESSED){
             struct Obj myOld = myPos;
             myPos.x+=sin(myPos.dir)/5;
            // myPos=CDtoMap(myPos,myOld);
             myOld = myPos;
-            myPos.y+=cos(myPos.dir)/5;
+            myPos.z+=cos(myPos.dir)/5;
             //myPos=CDtoMap(myPos,myOld);
         }
         if(key[SDLK_DOWN] == SDL_PRESSED){
@@ -224,7 +219,7 @@ void GameMain(){
             myPos.x-=sin(myPos.dir)/5;
             //myPos=CDtoMap(myPos,myOld);
             myOld = myPos;
-            myPos.y-=cos(myPos.dir)/5;
+            myPos.z-=cos(myPos.dir)/5;
             //myPos=CDtoMap(myPos,myOld);
         }
 

@@ -31,7 +31,7 @@ class Model
         char Name[256];
         vector <material> mat;
 
-
+/*
         int numPoligons;
         //int *poligonsSize;
         int *indexes;
@@ -39,7 +39,7 @@ class Model
 
         int numVertices;
         int numIndexes;
-
+*/
 
 };
 
