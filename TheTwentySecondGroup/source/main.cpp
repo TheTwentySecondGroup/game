@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
         switch(Stage){
             case 0:
                 //Title(window);
-                break;
+                //break;
             case 1:
                 GameMain();
                 break;
@@ -222,7 +222,12 @@ void GameMain(){
             myPos.z-=cos(myPos.dir)/5;
             //myPos=CDtoMap(myPos,myOld);
         }
-
+        if(key[SDLK_w] == SDL_PRESSED){
+            myPos.y+=0.05;
+        }
+        if(key[SDLK_s] == SDL_PRESSED){
+        	myPos.y-=0.05;
+        }
 
     draw();
 }

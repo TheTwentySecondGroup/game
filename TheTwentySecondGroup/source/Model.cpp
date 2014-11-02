@@ -6,6 +6,7 @@ Model::Model()
 {
 	bzero(Name,'\0');
 	strcpy(Name,"UnityChan/Models/unitychan.fbx");
+	//strcpy(Name,"UnityChan/Models/BoxUnityChan.fbx");
 
 	//Name="UnityChan/Models/unitychan.fbx";
     cout<<"A model has been built!\n";
@@ -26,7 +27,7 @@ Model::Model()
     //三角化
     FbxGeometryConverter geometryConverter(manager);
     geometryConverter.Triangulate(scene, true);
-
+    geometryConverter.SplitMeshesPerMaterial(scene,true);
     importer->Destroy();
 
 
@@ -54,15 +55,16 @@ void Model::Draw()
     //int i,j;
     //cout<<"numIndices="<< numIndices<<"\n";
     //cout<<mat.size()<<"\n";
+
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glEnableClientState(GL_NORMAL_ARRAY);
+	//glEnableClientState(GL_NORMAL_ARRAY);
 
 	for(int i=0;i<mat.size();i++){
     	//cout<<mat[i].ver.size()<<"\n";
     	//for(int j=0;j<mat[i].ver.size();j++){
-       		glPushMatrix();
-
+		glPushMatrix();
     		//material
     		GLfloat WhiteMaterial[] = {0.8,0.8,0.8,1};
     		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
@@ -76,6 +78,7 @@ void Model::Draw()
     		glVertexPointer(3,GL_FLOAT,sizeof(vec3f),&mat[i].ver[0].x);
     		glScalef(0.01f,0.01f,0.01f);
     		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
+    		cout<< mat[i].ver.size()<<"\n";
 
     		glPopMatrix();
 
@@ -83,9 +86,11 @@ void Model::Draw()
 
     }
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
 
-    cout<<"----------------------------------------------------------------------------------------\n";
+
+	//glDisableClientState(GL_NORMAL_ARRAY);
+
+
 
 
     /*
@@ -182,24 +187,45 @@ int Model::getMesh(FbxNode* node){
 
            material mattemp;
 
+           int* indexes = mesh->GetPolygonVertices();
+           int indexcounttmp = mesh->GetPolygonVertexCount();
+           //for(int i=0;i<indexcounttmp;i++){
+        	   //cout<<indexcounttmp<<"\n";
+              // mattemp.index.push_back(indexes[i]);
+           //}
 
 
             int VerticesCount= mesh->GetControlPointsCount();
             cout<<VerticesCount<<"\n";
-            for(int i=0; i<VerticesCount;i++){
+            FbxVector4* vec = mesh->GetControlPoints();
+            for(int i=0; i<indexcounttmp;i++){
+            	//cout<<VerticesCount<<"\n";
             	//位置情報格納
-            	FbxVector4 vec = mesh->GetControlPointAt(i);
+
+           //FbxVector4* vec = mesh->GetControlPoints();
+           //
             	vec3f temp;
 
-            	temp.x=(float)vec.mData[0];
-            	temp.y=(float)vec.mData[1];
-            	temp.z=(float)vec.mData[2];
-            	cout <<"temp.x="<<(float)vec.mData[0]<< " 	temp.y="<<(float)vec.mData[1]<< "	temp.z="<<(float)vec.mData[2]<<"\n";
+            	temp.x=(float)vec[indexes[i]].mData[0];
+            	temp.y=(float)vec[indexes[i]].mData[1];
+            	temp.z=(float)vec[indexes[i]].mData[2];
 
-				mattemp.ver.push_back(temp);
+            	mattemp.ver.push_back(temp);
+            	//mattemp.ver.push_back(temp.y);
+            	//mattemp.ver.push_back(temp.z);
+
+            	cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
+
+				//mattemp.ver.push_back(temp);
+
             }
 
-            mat.push_back(mattemp);
+
+
+
+			mat.push_back(mattemp);
+
+			cout<<"mat.push_back complated\n";
             /*
             numIndexes=mesh->GetPolygonVertexCount();
             int* index = mesh->GetPolygonVertices();
@@ -213,12 +239,12 @@ int Model::getMesh(FbxNode* node){
             }*/
 
             // this->getPos(FbxMesh *mesh);
-            return 1;
+            //return 1;
         }
     }
 
     int childCount = node->GetChildCount();
-    cout<<"childCOunt"<<childCount;
+    //cout<<"childCOunt"<<childCount;
     for(int i = 0; childCount > i; i++) {
         if(this->getMesh(node->GetChild(i))==1);//return 1;
     }

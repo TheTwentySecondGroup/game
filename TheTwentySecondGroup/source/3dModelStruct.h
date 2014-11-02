@@ -63,5 +63,7 @@ public:
     vector <vec3f> ver;
     vector <vec3f> nor;
     vector <UV> uv;
+    //vector <GLfloat> vertexes;
+    vector <int> index;
 };
 #endif
