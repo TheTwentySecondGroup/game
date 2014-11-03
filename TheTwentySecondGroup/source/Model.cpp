@@ -59,7 +59,8 @@ void Model::Draw()
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	//glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
 
 	for(int i=0;i<mat.size();i++){
     	//cout<<mat[i].ver.size()<<"\n";
@@ -86,9 +87,7 @@ void Model::Draw()
 
     }
 	glDisableClientState(GL_VERTEX_ARRAY);
-
-
-	//glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 
 
 
