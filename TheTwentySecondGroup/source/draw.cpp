@@ -1,7 +1,7 @@
 #include "global.h"
 
 
- GLfloat lightpos[4];
+GLfloat lightpos[4];
 GLfloat DifLight[] = {0.5,0.5,0.5,1.0};
 GLfloat GrayMaterial[] = {0.3,0.3,0.3,1};
 GLfloat WhiteMaterial[] = {0.8,0.8,0.8,1};
@@ -41,8 +41,8 @@ void init3D(){
 
 
     //fog
-   // glFogi(GL_FOG_MODE,GL_LINEAR);
-   // glFogfv(GL_FOG_COLOR,FogColor);
+    // glFogi(GL_FOG_MODE,GL_LINEAR);
+    // glFogfv(GL_FOG_COLOR,FogColor);
     //glFogf(GL_FOG_DENSITY,0.5);
     //glHint(GL_FOG_HINT,GL_DONT_CARE);
     //glFogf(GL_FOG_START,2);
@@ -65,8 +65,8 @@ void init3D(){
 void draw()
 {
 
- glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   init3D();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    init3D();
     {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -77,9 +77,9 @@ void draw()
                 0.0f,1.0f,0.0f);
 
         //Light
-        lightpos[0]=myPos.x-5*xd;
+        lightpos[0]=myPos.x;
         lightpos[1]=myPos.y;
-        lightpos[2]=myPos.z-5*zd;
+        lightpos[2]=myPos.z;
         lightpos[3]=1;
 
         glLightfv(GL_LIGHT0,GL_POSITION,lightpos); // position of light0
@@ -96,8 +96,8 @@ void draw()
         glEnable(GL_LIGHT0);
 
         //drawCube(1,1);
-        model->Draw();
-        
+        model[0].Draw();
+
 
 
     }

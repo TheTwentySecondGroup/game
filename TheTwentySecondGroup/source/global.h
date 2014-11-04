@@ -64,22 +64,14 @@ extern int goalX,goalY;
 //for wiimote
 extern wiimote_t wiimote;
 
- 
+
 //main.c
 void GameMain();
 void restart();
 void timeReset();
 void timeProc();
 void timeEnd();
-/*
-//CD.c
-//for collision detection
-struct Obj CDtoMap(struct Obj,struct Obj);
-struct Obj CDEnemytoMap(struct Obj,struct Obj);
-int CDtoEnemy(struct Obj);
-void CDtoItem(struct Obj);
-*/
 
 
 
-extern Model* model;
+extern vector <Model> model;

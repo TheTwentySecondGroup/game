@@ -13,34 +13,17 @@
 #include <GL/glut.h>
 using namespace std;
 
+//3Dモデル管理用クラス
 class Model
 {
-
     public:
-
-        Model();
+        Model(const char* filename);
         ~Model();
-
-       // void ShowDetails();
-
-       // void  GetFbxInfo( FbxNode* );
-        int  getMesh(FbxNode* node);
-        void  Draw();
-        //void  InitializeVertexBuffer( vertex* );
-
-        char Name[256];
-        vector <material> mat;
-
-/*
-        int numPoligons;
-        //int *poligonsSize;
-        int *indexes;
-        int numIndices;
-
-        int numVertices;
-        int numIndexes;
-*/
-
+        int  getMesh(FbxNode* node);//情報所得
+        void  Draw();//描写
+        char Name[256];//モデル名
+        vector <material> mat;//モデルの情報
+        vector <TEXTURE> texture;//テクスチャデータ
 };
 
 #endif
