@@ -1,6 +1,6 @@
-SRC = main.cpp draw.cpp Title.cpp GLMetaseq.cpp  Effect.cpp Tutorial.cpp mode.cpp Map.cpp system.cpp
-HEADERS = global.h draw.h Title.h GLMetaseq.h  Effect.h Tutorial.h mode.h Map.h system.h
-OBJS = main.o draw.o Title.o GLMetaseq.o Effect.o Tutorial.o mode.o Map.o system.o
+SRC = main.cpp draw.cpp Title.cpp Effect.cpp Tutorial.cpp mode.cpp Map.cpp system.cpp
+HEADERS = global.h draw.h Title.h Effect.h Tutorial.h mode.h Map.h system.h
+OBJS = main.o draw.o Title.o Effect.o Tutorial.o mode.o Map.o system.o
 
 .SUFFIXES: .c .o
 

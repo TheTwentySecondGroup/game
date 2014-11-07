@@ -1,5 +1,4 @@
 #include "global.h"
-#include "GLMetaseq.h"
 #include "draw.h"
 #include "Title.h"
 #include "Tutorial.h"

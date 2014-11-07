@@ -1,6 +1,5 @@
 #include "Map.h"
 #include "global.h"
-#include "GLMetaseq.h"
 #include "draw.h"
 #include "Effect.h"
 #include "Title.h"

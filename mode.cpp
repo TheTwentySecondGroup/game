@@ -1,6 +1,5 @@
 #include"global.h"
 #include"mode.h"
-#include "GLMetaseq.h"
 #include "draw.h"
 #include "Title.h"
 #include "Tutorial.h"

@@ -7,7 +7,7 @@
 
 int selectChara(){
 	SDL_Color white = {255, 255, 255,100};
-    SDL_Surface* TextImage ;
+    SDL_Surface* TextImage;
 	SDL_Event event;
 	int i, sel=1;
 	char buf[30];
@@ -194,6 +194,10 @@ void gameMain(){
     		player[0].z += 0.03;
     	}
     	
+    	if(key[SDLK_RETURN] == SDL_PRESSED){
+    		player[0].z -= 0.03;
+    	}
+    	
     	if(key[SDLK_UP] == SDL_PRESSED){
     	    struct Obj myOld = player[0];
     	    player[0].x+=sin(player[0].dir)/5;
@@ -207,7 +211,6 @@ void gameMain(){
     	    	player[0] = myOld;
     	    }
     	    //player[0]=CDtoMap(player[0],myOld);
-    	    printf("%f\n",player[0].x);
     	}
     	
     	if(key[SDLK_DOWN] == SDL_PRESSED){

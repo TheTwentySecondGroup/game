@@ -1,12 +1,10 @@
 #include "global.h"
-#include "GLMetaseq.h"
 #include "draw.h"
 #include "Effect.h"
 #include "mode.h"
 #include "Map.h"
 
 GLfloat lightpos[4];
-GLfloat ambient[] = { 0.1f, 0.1f, 0.1f, 1.0f};
 GLfloat DifLight[] = {0.5,0.5,0.5,1.0};
 GLfloat GrayMaterial[] = {0.3,0.3,0.3,1};
 GLfloat WhiteMaterial[] = {0.8,0.8,0.8,1};
@@ -240,10 +238,10 @@ void drawSky(int x, int y){
 	glBindTexture(GL_TEXTURE_2D,*texHandle[1]);
 	glNormal3f(player[0].xd, player[0].yd, 0);
 	GLfloat vertices[4][3]={
-		{1+x, 1+y, 2.0},
-		{0+x, 1+y, 2.0},
-		{0+x, 0+y, 2.0},
-		{1+x, 0+y, 2.0},
+		{1+x, 1+y, 1.5},
+		{0+x, 1+y, 1.5},
+		{0+x, 0+y, 1.5},
+		{1+x, 0+y, 1.5},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(player[0].xd, player[0].yd, 0);
