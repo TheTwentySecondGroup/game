@@ -22,6 +22,7 @@ void init2D();
 
 void draw();
 
+//draw sky
 void drawSky(int x, int y);
 
 //draw floor x,y
