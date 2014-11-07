@@ -19,8 +19,6 @@ GLuint *texHandle[10];
 
 TTF_Font* font;
 
-MQO_MODEL MetaModel[10];
-
 void init2D(){
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -77,22 +75,12 @@ void initDraw(){
     texHandle[1] = initTexture("data/image/sky.bmp");
     //texHandle[2] = initTexture("data/image/celling.bmp");
 
-	//mqo
-    mqoInit();
-    MetaModel[0] = mqoCreateModel("data/mqo/goal.mqo",0.01);
-    MetaModel[1] = mqoCreateModel("data/mqo/enemy.mqo",0.007);
-    MetaModel[2] = mqoCreateModel("data/mqo/ax.mqo",0.007);
-
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
 }
 
 void delDraw(){
-	mqoDeleteModel(MetaModel[0]);
-	mqoDeleteModel(MetaModel[1]);
-	mqoDeleteModel(MetaModel[2]);
-	mqoDeleteModel(MetaModel[3]);
     TTF_CloseFont(font);
     TTF_Quit();
 }
