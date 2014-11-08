@@ -287,6 +287,7 @@ int i;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 	
+	glDisable(GL_CULL_FACE);
 	//前
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices1[4][3]={
