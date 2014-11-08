@@ -287,29 +287,85 @@ int i;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 	
+	//前
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
-	
-	GLfloat vertices[8][3]={
+	GLfloat vertices1[4][3]={
 		{1+x, y, 1},
 		{0+x, y, 1},
-		{0+x, 0+y, 0},
-		{1+x, 0+y, 0},
+		{0+x, y, 0},
+		{1+x, y, 0},
 	};
-	
-	//前
 	glBegin(GL_POLYGON);
 	glNormal3f(player[0].xd, player[0].yd, 0);
 	glTexCoord2i(0,0);
-	glVertex3fv(vertices[0]);
+	glVertex3fv(vertices1[0]);
 	glTexCoord2i(0,1);
-	glVertex3fv(vertices[1]);
+	glVertex3fv(vertices1[1]);
 	glTexCoord2i(1,1);
-	glVertex3fv(vertices[2]);
+	glVertex3fv(vertices1[2]);
 	glTexCoord2i(1,0);
-	glVertex3fv(vertices[3]);
+	glVertex3fv(vertices1[3]);
 	glEnd();
 	
+	//後ろ
+	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
+	GLfloat vertices2[4][3]={
+		{1+x, y+1, 1},
+		{0+x, y+1, 1},
+		{0+x, y+1, 0},
+		{1+x, y+1, 0},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices2[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices2[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices2[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices2[3]);
+	glEnd();
 	
+	//左
+	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
+	GLfloat vertices3[4][3]={
+		{x, 1+y, 1},
+		{x, 0+y, 1},
+		{x, 0+y, 0},
+		{x, 1+y, 0},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices3[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices3[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices3[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices3[3]);
+	glEnd();
+	
+	//右
+	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
+	GLfloat vertices4[4][3]={
+		{1+x, 1+y, 1},
+		{1+x, 0+y, 1},
+		{1+x, 0+y, 0},
+		{1+x, 1+y, 0},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices4[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices4[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices4[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices4[3]);
+	glEnd();
 }
 
 void Normal3f(GLfloat fVert1[],GLfloat fVert2[],GLfloat fVert3[]){

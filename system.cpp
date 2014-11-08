@@ -231,6 +231,6 @@ void gameMain(){
  	   draw();
  	   glFlush();
  	   SDL_GL_SwapBuffers();
- 	   SDL_Delay(50);
+ 	   SDL_Delay(20);
 	//}
 }
