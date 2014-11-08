@@ -73,7 +73,6 @@ void initDraw(){
     texHandle[1] = initTexture("data/image/sky.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
     texHandle[3] = initTexture("data/image/lake.bmp");
-
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
@@ -226,6 +225,33 @@ void draw(){
     init2D();
 }
 
+void drawFloor(int x, int y){
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
+	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glBindTexture(GL_TEXTURE_2D,*texHandle[0]);
+	
+	GLfloat vertices[4][3]={
+		{1+x, 1+y, 0.0},
+		{0+x, 1+y, 0.0},
+		{0+x, 0+y, 0.0},
+		{1+x, 0+y, 0.0},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices[3]);
+	glEnd();
+	glDisable(GL_CULL_FACE);
+}
 
 void drawSky(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
@@ -254,33 +280,11 @@ void drawSky(int x, int y){
 	glVertex3fv(vertices[3]);
 	glEnd();
 	glDisable(GL_CULL_FACE);
+	//glDeleteTextures(1,texHandle[1]);
+
 }
 
-void drawFloor(int x, int y){
-	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
-	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
-	
-	glBindTexture(GL_TEXTURE_2D,*texHandle[0]);
-	
-	GLfloat vertices[4][3]={
-		{1+x, 1+y, 0.0},
-		{0+x, 1+y, 0.0},
-		{0+x, 0+y, 0.0},
-		{1+x, 0+y, 0.0},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(player[0].xd, player[0].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices[3]);
-	glEnd();
-}
+
 
 void drawLake(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);

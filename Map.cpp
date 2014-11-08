@@ -59,10 +59,12 @@ void drawMap(){
             //road and start position
             if(Map[i][c]==0){
             	drawFloor(i,c);
+            	drawSky(i,c);
             }
             
             if(Map[i][c]==2){
             	drawLake(i,c);
+            	drawSky(i,c);
             }
             //falling
             /*if(Map[i][c]==3){
@@ -74,7 +76,6 @@ void drawMap(){
                 drawCelling(i,c);
             }
 			*/
-			drawSky(i,c);
         }
     }
 }

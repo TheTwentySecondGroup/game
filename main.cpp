@@ -79,6 +79,7 @@ int main(int argc, char* argv[]) {
             	charatype=selectChara();
             	delTitle();
             	printf("%d\n", charatype);
+            	player[0].y = 2;
             	AAA++;
             }
             	gameMain();
