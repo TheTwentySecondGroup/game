@@ -127,7 +127,7 @@ void drawTitle(){
         glEnable(GL_NORMALIZE); 
 
 
-
+/*
         //draw wall
         glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
         glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,WhiteMaterial);
@@ -151,7 +151,7 @@ void drawTitle(){
         glTexCoord2i(1,0);
         glVertex3fv(vertices[3]);
 		glEnd();
-		
+		*/
 		//draw menu
 		int c;
 		for(c=1;c<=KEY_MAX;c++){
