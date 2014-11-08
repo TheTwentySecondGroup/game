@@ -394,7 +394,6 @@ int i;
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices4[3]);
 	glEnd();
-	glEnable(GL_CULL_FACE);
 }
 
 void Normal3f(GLfloat fVert1[],GLfloat fVert2[],GLfloat fVert3[]){

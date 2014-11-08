@@ -31,24 +31,6 @@ int initMap(int stage){
                     break;
                 }
                 Map[i][c]=data;
-                if (data==2){
-                    player[0].x=i+0.5;
-                    player[0].y=c+0.5;
-                    player[0].dir=0;
-                    //player[0].Item[0]=0;
-					/*
-                    int k;
-                    for(k=0;k<10;k++){
-                        player[0].Item[k]=0;
-                    }
-                    */
-                }
-                /*
-                if (data==4){
-                    goalX=i;
-                    goalY=c;
-                }
-                */
             }
         }
     }
@@ -96,5 +78,3 @@ void drawMap(){
         }
     }
 }
-
-
