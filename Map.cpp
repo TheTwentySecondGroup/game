@@ -70,10 +70,10 @@ void drawMap(){
     for(i=min_x;i<max_x;i++){
         for(c=min_y;c<max_y;c++){
             //block
-            /*if(Map[i][c]==1){
-                drawCube(i,c);
+            if(Map[i][c]==1){
+                drawWall(i,c);
             }
-            */
+            
             //road and start position
             if(Map[i][c]==0 || Map[i][c] == 2){
                 drawFloor(i,c);

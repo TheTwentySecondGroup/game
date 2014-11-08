@@ -25,9 +25,9 @@
 #include <libcwiimote/wiimote_api.h>
 
 //width of window
-#define WINDOW_X 800
+#define WINDOW_X 1000
 //hight of window
-#define WINDOW_Y 600 
+#define WINDOW_Y 800 
 
 //FPS
 #define FPS_RATE 30

@@ -28,6 +28,9 @@ void drawSky(int x, int y);
 //draw floor x,y
 void drawFloor(int, int);
 
+//draw wall
+void drawWall(int x, int y);
+
 //calculate and setting glNormal3f
 GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[],GLfloat fVert3[]);
 

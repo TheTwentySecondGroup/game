@@ -71,7 +71,7 @@ void initDraw(){
     //LoadTexture
     texHandle[0] = initTexture("data/image/glass1.bmp");
     texHandle[1] = initTexture("data/image/sky.bmp");
-    //texHandle[2] = initTexture("data/image/celling.bmp");
+    texHandle[2] = initTexture("data/image/block.bmp");
 
 	//Initialize ttf
     TTF_Init();
@@ -205,6 +205,7 @@ void draw(){
         lightpos[1]=player[0].y-5*yd;
         lightpos[2]=player[0].z;
         lightpos[3]=1;
+        
         glLightfv(GL_LIGHT0,GL_POSITION,lightpos); // position of light0
         GLfloat Light0Dir[]={xd,yd,0};
         glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,Light0Dir);
@@ -213,18 +214,15 @@ void draw(){
         glLightfv(GL_LIGHT0,GL_AMBIENT,GrayLight);
         glLightfv(GL_LIGHT0,GL_DIFFUSE,DifLight);
         glLightfv(GL_LIGHT0,GL_SPECULAR,SpecularLight);
+        
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE); 
 		glEnable(GL_LIGHT0);
 
         drawMap();//
-        //drawSky();
     }
 
     init2D();
-    
-    //glFlush();
-    //SDL_GL_SwapBuffers();//reflect swap
 }
 
 
@@ -281,6 +279,37 @@ void drawFloor(int x, int y){
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices[3]);
 	glEnd();
+}
+
+void drawWall(int x, int y){
+int i;
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
+	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
+	
+	GLfloat vertices[8][3]={
+		{1+x, y, 1},
+		{0+x, y, 1},
+		{0+x, 0+y, 0},
+		{1+x, 0+y, 0},
+	};
+	
+	//前
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices[3]);
+	glEnd();
+	
+	
 }
 
 void Normal3f(GLfloat fVert1[],GLfloat fVert2[],GLfloat fVert3[]){
