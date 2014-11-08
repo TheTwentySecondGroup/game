@@ -8,6 +8,7 @@
 
 GLuint *image[3];
 
+
 void mode1(){
 	image[0] = initTexture("data/image/1.bmp");
 	//glClearColor(0.0, 0.0, 1.0, 0);
