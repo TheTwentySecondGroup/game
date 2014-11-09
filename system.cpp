@@ -172,16 +172,10 @@ void initChara(){
 }
 
 void moveChara(){
-	
-}
-
-int judgeHit(){
-	
-}
-
-void gameMain(){
 	Uint8 *key = SDL_GetKeyState(NULL);
-	//while(1){
+	Sint16 x_move, y_move;
+	x_move = SDL_JoystickGetAxis(joystick, 0);
+	y_move = SDL_JoystickGetAxis(joystick, 1);
     	if(key[SDLK_RIGHT] == SDL_PRESSED){
         	player[0].dir+=0.03;
     	}
@@ -191,23 +185,25 @@ void gameMain(){
     	}
     	
     	if(key[SDLK_SPACE] == SDL_PRESSED){
+    		if(player[0].z<1.4)
     		player[0].z += 0.03;
     	}
     	
     	if(key[SDLK_RETURN] == SDL_PRESSED){
+    		if(player[0].z>0.5)
     		player[0].z -= 0.03;
     	}
     	
     	if(key[SDLK_UP] == SDL_PRESSED){
     	    struct Obj myOld = player[0];
     	    player[0].x+=sin(player[0].dir)/5;
-    	    if(player[0].x>MAP_X_MAX||player[0].x<0||player[0].y>MAP_Y_MAX||player[0].y<0){
+    	    if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
     	    	player[0] = myOld;
     	    }
     	   // player[0]=CDtoMap(player[0],myOld);
     	    myOld = player[0];
     	    player[0].y+=cos(player[0].dir)/5;
-    	     if(player[0].x>MAP_X_MAX||player[0].x<0||player[0].y>MAP_Y_MAX||player[0].y<0){
+    	     if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
     	    	player[0] = myOld;
     	    }
     	    //player[0]=CDtoMap(player[0],myOld);
@@ -216,21 +212,75 @@ void gameMain(){
     	if(key[SDLK_DOWN] == SDL_PRESSED){
     	    struct Obj myOld = player[0];
     	    player[0].x-=sin(player[0].dir)/5;
-    	    if(player[0].x>MAP_X_MAX||player[0].x<0||player[0].y>MAP_Y_MAX||player[0].y<0){
+    	    if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
     	    	player[0] = myOld;
     	    }
     	    //player[0]=CDtoMap(player[0],myOld);
     	    myOld = player[0];
     	    player[0].y-=cos(player[0].dir)/5;
-    	    if(player[0].x>MAP_X_MAX||player[0].x<0||player[0].y>MAP_Y_MAX||player[0].y<0){
+    	    if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
     	    	player[0] = myOld;
     	    }
     	    //player[0]=CDtoMap(player[0],myOld);
  	   }
- 	   //moveChara();
- 	   draw();
- 	   glFlush();
- 	   SDL_GL_SwapBuffers();
- 	   SDL_Delay(20);
-	//}
+ 	   
+ 	   //ゲームパッド
+		if(x_move < 0){
+			player[0].dir-=0.03;
+			/*if(player[0].x > 1.5){
+				player[0].x-=sin(player[0].dir)/5;
+			}*/
+		}
+		else if(x_move > 0){
+			player[0].dir+=0.03;
+			/*if(player[0].x < 30){
+				player[0].x+=sin(player[0].dir)/5;
+			}*/
+		}
+		if(y_move > 0){
+			//x方向
+			player[0].x-=sin(player[0].dir)/5;
+			if(player[0].x < 1.5)
+			player[0].x = 1.5;
+			if(player[0].x > 24)
+			player[0].x = 24;
+			
+			//y方向
+			player[0].y-=cos(player[0].dir)/5;
+			if(player[0].y < 1.5)
+			player[0].y = 1.5;
+			if(player[0].y > 56)
+			player[0].y = 56;
+			
+			printf("%f  %f\n", player[0].x, player[0].y);
+		}
+		else if(y_move < 0){
+			//x方向
+			player[0].x+=sin(player[0].dir)/5;
+			if(player[0].x > 24)
+			player[0].x = 24;
+			if(player[0].x < 1.5)
+			player[0].x = 1.5;
+			
+			//y方向
+			player[0].y+=cos(player[0].dir)/5;
+			if(player[0].y < 1.5)
+			player[0].y = 1.5;
+			if(player[0].y > 56)
+			player[0].y = 56;
+			
+			printf("%f  %f\n", player[0].x, player[0].y);
+		}
+}
+
+int judgeHit(){
+	
+}
+
+void gameMain(){
+	moveChara();
+	draw();
+	glFlush();
+	SDL_GL_SwapBuffers();
+	SDL_Delay(30);
 }

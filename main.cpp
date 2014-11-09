@@ -14,6 +14,7 @@ int charatype;
 //for wiimote
 //wiimote_t wiimote = WIIMOTE_INIT;
 int fallingFlag =0;
+SDL_Joystick *joystick;
 
 void* wiimoteUpdate();
 int main(int argc, char* argv[]) {
@@ -22,7 +23,7 @@ int main(int argc, char* argv[]) {
     int AAA = 0;
 
     // SDL Initialize
-    if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+    if(SDL_Init(SDL_INIT_EVERYTHING | SDL_INIT_JOYSTICK) < 0) {
         printf("failed to initialize SDL.\n");
         exit(-1);
     }
@@ -38,6 +39,9 @@ int main(int argc, char* argv[]) {
     }
     SDL_WM_SetCaption("Maze of Minos",NULL);
 
+	joystick=SDL_JoystickOpen(0);	// ジョイスティックを開いて構造体に割り当てる（有効にする）．ここではジョイスティックは1つとして引数に0を指定
+	SDL_JoystickEventState(SDL_ENABLE);	// ジョイスティック関連のイベントを取得可能にする
+	
     //initialize my position
     player[0].x=0;
     player[0].y=0;
@@ -66,6 +70,7 @@ int main(int argc, char* argv[]) {
 
 
     while(1){
+    
         //timeProc();
         switch(Stage){
             case 0:

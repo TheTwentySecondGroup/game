@@ -66,5 +66,5 @@ extern wiimote_t wiimote;
 
 
 //main.c
-
+extern SDL_Joystick *joystick;
 

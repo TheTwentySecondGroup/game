@@ -72,7 +72,7 @@ void initDraw(){
     texHandle[0] = initTexture("data/image/glass1.bmp");
     texHandle[1] = initTexture("data/image/sky.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
-    texHandle[3] = initTexture("data/image/lake.bmp");
+    texHandle[3] = initTexture("data/image/glass2.bmp");
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
@@ -322,8 +322,8 @@ int i;
 	//前
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices1[4][3]={
-		{1+x, y, 1},
-		{0+x, y, 1},
+		{1+x, y, 1.5},
+		{0+x, y, 1.5},
 		{0+x, y, 0},
 		{1+x, y, 0},
 	};
@@ -342,8 +342,8 @@ int i;
 	//後ろ
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices2[4][3]={
-		{1+x, y+1, 1},
-		{0+x, y+1, 1},
+		{1+x, y+1, 1.5},
+		{0+x, y+1, 1.5},
 		{0+x, y+1, 0},
 		{1+x, y+1, 0},
 	};
@@ -362,8 +362,8 @@ int i;
 	//左
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices3[4][3]={
-		{x, 1+y, 1},
-		{x, 0+y, 1},
+		{x, 1+y, 1.5},
+		{x, 0+y, 1.5},
 		{x, 0+y, 0},
 		{x, 1+y, 0},
 	};
@@ -382,8 +382,8 @@ int i;
 	//右
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices4[4][3]={
-		{1+x, 1+y, 1},
-		{1+x, 0+y, 1},
+		{1+x, 1+y, 1.5},
+		{1+x, 0+y, 1.5},
 		{1+x, 0+y, 0},
 		{1+x, 1+y, 0},
 	};

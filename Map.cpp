@@ -67,10 +67,11 @@ void drawMap(){
             	drawSky(i,c);
             }
             //falling
-            /*if(Map[i][c]==3){
-                drawCelling(i,c);
+            if(Map[i][c]==3){
+                drawLake(i,c);
+                drawSky(i,c);
             }
-            */
+            
             /*if(Map[i][c]==4){//goal
                 drawFloor(i,c);
                 drawCelling(i,c);
