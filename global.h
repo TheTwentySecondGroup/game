@@ -18,7 +18,8 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-
+#define STAGE_X 24
+#define STAGE_Y 56
 
 //for wiimote
 #include <libcwiimote/wiimote.h>

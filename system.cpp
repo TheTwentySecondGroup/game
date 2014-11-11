@@ -195,34 +195,32 @@ void moveChara(){
     	}
     	
     	if(key[SDLK_UP] == SDL_PRESSED){
-    	    struct Obj myOld = player[0];
     	    player[0].x+=sin(player[0].dir)/5;
-    	    if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
-    	    	player[0] = myOld;
-    	    }
-    	   // player[0]=CDtoMap(player[0],myOld);
-    	    myOld = player[0];
+    	    if(player[0].x > STAGE_X)
+			player[0].x = STAGE_X;
+			if(player[0].x < 1.5)
+			player[0].x = 1.5;
+    	    
     	    player[0].y+=cos(player[0].dir)/5;
-    	     if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
-    	    	player[0] = myOld;
-    	    }
-    	    //player[0]=CDtoMap(player[0],myOld);
-    	}
+    	    if(player[0].y < 1.5)
+			player[0].y = 1.5;
+			if(player[0].y > STAGE_Y)
+			player[0].y = STAGE_Y;
+		}
     	
     	if(key[SDLK_DOWN] == SDL_PRESSED){
-    	    struct Obj myOld = player[0];
     	    player[0].x-=sin(player[0].dir)/5;
-    	    if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
-    	    	player[0] = myOld;
-    	    }
-    	    //player[0]=CDtoMap(player[0],myOld);
-    	    myOld = player[0];
+    	    if(player[0].x < 1.5)
+			player[0].x = 1.5;
+			if(player[0].x > STAGE_X)
+			player[0].x = STAGE_X;
+    	    
     	    player[0].y-=cos(player[0].dir)/5;
-    	    if(player[0].x>MAP_X_MAX||player[0].x<1.5||player[0].y>MAP_Y_MAX||player[0].y<2){
-    	    	player[0] = myOld;
-    	    }
-    	    //player[0]=CDtoMap(player[0],myOld);
- 	   }
+    	    if(player[0].y < 1.5)
+			player[0].y = 1.5;
+			if(player[0].y > STAGE_Y)
+			player[0].y = STAGE_Y;
+		}
  	   
  	   //ゲームパッド
 		if(x_move < 0){
@@ -242,23 +240,23 @@ void moveChara(){
 			player[0].x-=sin(player[0].dir)/5;
 			if(player[0].x < 1.5)
 			player[0].x = 1.5;
-			if(player[0].x > 24)
-			player[0].x = 24;
+			if(player[0].x > STAGE_X)
+			player[0].x = STAGE_X;
 			
 			//y方向
 			player[0].y-=cos(player[0].dir)/5;
 			if(player[0].y < 1.5)
 			player[0].y = 1.5;
-			if(player[0].y > 56)
-			player[0].y = 56;
+			if(player[0].y > STAGE_Y)
+			player[0].y = STAGE_Y;
 			
 			printf("%f  %f\n", player[0].x, player[0].y);
 		}
 		else if(y_move < 0){
 			//x方向
 			player[0].x+=sin(player[0].dir)/5;
-			if(player[0].x > 24)
-			player[0].x = 24;
+			if(player[0].x > STAGE_X)
+			player[0].x = STAGE_X;
 			if(player[0].x < 1.5)
 			player[0].x = 1.5;
 			
@@ -266,8 +264,8 @@ void moveChara(){
 			player[0].y+=cos(player[0].dir)/5;
 			if(player[0].y < 1.5)
 			player[0].y = 1.5;
-			if(player[0].y > 56)
-			player[0].y = 56;
+			if(player[0].y > STAGE_Y)
+			player[0].y = STAGE_Y;
 			
 			printf("%f  %f\n", player[0].x, player[0].y);
 		}
