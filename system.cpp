@@ -172,6 +172,7 @@ void initChara(){
 }
 
 void moveChara(){
+	Obj old;
 	Uint8 *key = SDL_GetKeyState(NULL);
 	Sint16 x_move, y_move;
 	x_move = SDL_JoystickGetAxis(joystick, 0);
@@ -194,6 +195,8 @@ void moveChara(){
     		player[0].z -= 0.03;
     	}
     	
+    	old = player[0];
+    	
     	if(key[SDLK_UP] == SDL_PRESSED){
     	    player[0].x+=sin(player[0].dir)/5;
     	    if(player[0].x > STAGE_X)
@@ -206,6 +209,10 @@ void moveChara(){
 			player[0].y = 1.5;
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
+			
+			if(Map[(int)player[0].x][(int)player[0].y] == 1){
+    	    	player[0] = old;
+    	    }	
 		}
     	
     	if(key[SDLK_DOWN] == SDL_PRESSED){
@@ -220,6 +227,10 @@ void moveChara(){
 			player[0].y = 1.5;
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
+			
+			if(Map[(int)player[0].x][(int)player[0].y-1] == 1){
+    	    	player[0] = old;
+    	    }
 		}
  	   
  	   //ゲームパッド
