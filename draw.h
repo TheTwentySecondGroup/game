@@ -29,7 +29,7 @@ void drawFloor(int, int);
 void drawSky(int x, int y);
 
 //drawLake
-void drawLake(int x, int y);
+void drawFloor2(int x, int y);
 
 //draw wall
 void drawWall(int x, int y);

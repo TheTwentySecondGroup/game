@@ -237,7 +237,7 @@ void moveChara(){
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
 			
-			if(Map[(int)player[0].x][(int)player[0].y] == 1){
+			if(Map[(int)player[0].x][(int)player[0].y]== 2){
     	    	player[0] = old;
     	    }	
 		}
@@ -255,7 +255,7 @@ void moveChara(){
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
 			
-			if(Map[(int)player[0].x][(int)player[0].y-1] == 1){
+			if(Map[(int)player[0].x][(int)player[0].y] == 2){
     	    	player[0] = old;
     	    }
 		}
@@ -263,15 +263,9 @@ void moveChara(){
  	   //ゲームパッド
 		if(x_move < 0){
 			player[0].dir-=0.03;
-			/*if(player[0].x > 1.5){
-				player[0].x-=sin(player[0].dir)/5;
-			}*/
 		}
 		else if(x_move > 0){
 			player[0].dir+=0.03;
-			/*if(player[0].x < 30){
-				player[0].x+=sin(player[0].dir)/5;
-			}*/
 		}
 		if(y_move > 0){
 			//x方向
@@ -288,7 +282,7 @@ void moveChara(){
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
 			
-			if(Map[(int)player[0].x][(int)player[0].y] == 1){
+			if(Map[(int)player[0].x][(int)player[0].y] == 2){
     	    	player[0] = old;
     	    }	
 		}
@@ -307,7 +301,7 @@ void moveChara(){
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
 			
-			if(Map[(int)player[0].x][(int)player[0].y] == 1){
+			if(Map[(int)player[0].x][(int)player[0].y] == 2){
     	    	player[0] = old;
     	    }	
 		}

@@ -286,7 +286,7 @@ void drawSky(int x, int y){
 
 
 
-void drawLake(int x, int y){
+void drawFloor2(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);

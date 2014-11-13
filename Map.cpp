@@ -63,12 +63,12 @@ void drawMap(){
             }
             
             if(Map[i][c]==2){
-            	drawLake(i,c);
+            	drawFloor(i,c);
             	drawSky(i,c);
             }
             //falling
             if(Map[i][c]==3){
-                drawLake(i,c);
+                drawFloor2(i,c);
                 drawSky(i,c);
             }
             
