@@ -6,6 +6,9 @@
 #include "Map.h"
 
 int selectChara(){
+	int KeyFlag = 0;
+	Uint8 jbutton = SDL_JoystickGetButton(joystick, 3);
+    
 	SDL_Color white = {255, 255, 255,100};
     SDL_Surface* TextImage;
 	SDL_Event event;
@@ -22,6 +25,7 @@ int selectChara(){
 	charaImage[7] = initTexture("data/image/chara4g.bmp");
 	
 	while(1){
+	Sint16 axis = SDL_JoystickGetAxis(joystick,0);
 	if(SDL_PollEvent(&event)){
 		switch(event.type){
 		case SDL_KEYDOWN:
@@ -37,8 +41,31 @@ int selectChara(){
 			case SDLK_RETURN:
 				return sel;
 			}
+		case SDL_JOYBUTTONDOWN:
+			 if(event.jbutton.button==3)
+			 return sel;
 		}
 	}
+	if(axis == 0){
+		KeyFlag = 0;
+	}
+	if(axis >= 256 && KeyFlag == 0){
+		KeyFlag = 1;
+		if(sel<4)
+		sel += 1;
+		else if(sel == 4)
+		sel = 1;
+		axis = 0;
+	}
+	if(axis <= -256 && KeyFlag == 0){
+		KeyFlag = 1;
+		if(sel>1)
+		sel -= 1;
+		else if(sel == 1)
+		sel = 4;
+		axis = 0;
+	}
+	
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	init3D();
 	{
@@ -261,7 +288,9 @@ void moveChara(){
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
 			
-			printf("%f  %f\n", player[0].x, player[0].y);
+			if(Map[(int)player[0].x][(int)player[0].y] == 1){
+    	    	player[0] = old;
+    	    }	
 		}
 		else if(y_move < 0){
 			//x方向
@@ -278,7 +307,9 @@ void moveChara(){
 			if(player[0].y > STAGE_Y)
 			player[0].y = STAGE_Y;
 			
-			printf("%f  %f\n", player[0].x, player[0].y);
+			if(Map[(int)player[0].x][(int)player[0].y] == 1){
+    	    	player[0] = old;
+    	    }	
 		}
 }
 

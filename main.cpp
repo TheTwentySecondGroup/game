@@ -68,7 +68,6 @@ int main(int argc, char* argv[]) {
     //Init Map
     initMap(1);
 
-
     while(1){
     
         //timeProc();
@@ -109,6 +108,11 @@ int main(int argc, char* argv[]) {
                             Stage = -1;
                             break;
                     }
+                case SDL_JOYBUTTONDOWN:
+					if(event.jbutton.button == 10){
+						Stage = -1;
+						break;
+					}
             }
         }
     }

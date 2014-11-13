@@ -68,14 +68,8 @@ void initTitle(){
 void Title(){
     //keyboad
     Uint8 *key = SDL_GetKeyState(NULL);
-    /*if(key[SDLK_RIGHT] == SDL_PRESSED){
-        player[0].dir +=0.03;
-        if(player[0].dir>0.00)player[0].dir=0.00;
-    }else if(key[SDLK_LEFT] == SDL_PRESSED){
-        player[0].dir -=0.03;   
-        if(player[0].dir<-0.45)player[0].dir = -0.45;
-    }*/
-
+    Uint8 jbutton = SDL_JoystickGetButton(joystick, 3);
+    Sint16 axis = SDL_JoystickGetAxis(joystick,1);
 
     if((KeyFlag ==0 )&&(key[SDLK_UP] == SDL_PRESSED)){
         KeyFlag =1 ;
@@ -83,12 +77,28 @@ void Title(){
     }else if((KeyFlag ==0)&&(key[SDLK_DOWN] == SDL_PRESSED)){
         KeyFlag = 1;
         if(sel<KEY_MAX)sel +=1;
-    }else if(key[SDLK_DOWN] != SDL_PRESSED && key[SDLK_UP]!= SDL_PRESSED){
+    }else if(key[SDLK_DOWN] != SDL_PRESSED && key[SDLK_UP]!= SDL_PRESSED && axis == 0){
         KeyFlag=0;
     }
     if(key[SDLK_RETURN] == SDL_PRESSED){
     	initTutorial();
 		Stage = -2;
+	}
+	if(jbutton == 1){
+		initTutorial();
+		Stage = -2;
+	}
+	if(axis >= 256 && KeyFlag == 0){
+		KeyFlag = 1;
+		if(sel < KEY_MAX)
+		sel += 1;
+		axis = 0;
+	}
+	if(axis <= -256 && KeyFlag == 0){
+		KeyFlag = 1;
+		if(sel > KEY_MIN)
+		sel -= 1;
+		axis = 0;
 	}
 
     drawTitle();
