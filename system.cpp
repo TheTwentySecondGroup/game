@@ -202,6 +202,7 @@ void moveChara(){
 	Obj old;
 	Uint8 *key = SDL_GetKeyState(NULL);
 	Sint16 x_move, y_move;
+	//Sint axis1 = SDL_JoystickGetAxis(joystick,3);
 	x_move = SDL_JoystickGetAxis(joystick, 0);
 	y_move = SDL_JoystickGetAxis(joystick, 1);
     	if(key[SDLK_RIGHT] == SDL_PRESSED){
@@ -310,6 +311,9 @@ void moveChara(){
 int judgeHit(){
 	
 }
+
+void attack(){
+	
 
 void gameMain(){
 	moveChara();

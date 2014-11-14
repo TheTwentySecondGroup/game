@@ -280,8 +280,6 @@ void drawSky(int x, int y){
 	glVertex3fv(vertices[3]);
 	glEnd();
 	glDisable(GL_CULL_FACE);
-	//glDeleteTextures(1,texHandle[1]);
-
 }
 
 
