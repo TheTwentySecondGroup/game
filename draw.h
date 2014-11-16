@@ -48,10 +48,11 @@ extern TTF_Font* font;
 [3]=1.0  never change*/
 extern GLfloat lightpos[4];
 extern GLfloat DifLight[];
-extern GLfloat GrayMaterial[] ;
-extern GLfloat WhiteMaterial[] ;
-extern GLfloat SpecularLight[] ;
-extern GLfloat GrayLight[] ;
+extern GLfloat GrayMaterial[];
+extern GLfloat WhiteMaterial[];
+extern GLfloat SpecularLight[];
+extern GLfloat GrayLight[];
 extern GLfloat WhiteLight[];
-extern GLfloat FogColor[] ;
+extern GLfloat FogColor[];
+extern GLuint *texHandle[10];
 #endif            

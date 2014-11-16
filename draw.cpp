@@ -3,6 +3,7 @@
 #include "Effect.h"
 #include "mode.h"
 #include "Map.h"
+#include "system.h""
 
 GLfloat lightpos[4];
 GLfloat DifLight[] = {0.5,0.5,0.5,1.0};
@@ -46,8 +47,8 @@ void init3D(){
     glFogfv(GL_FOG_COLOR, FogColor);
     //glFogf(GL_FOG_DENSITY,0.5);
     glHint(GL_FOG_HINT, GL_DONT_CARE);
-    glFogf(GL_FOG_START, 2);
-    glFogf(GL_FOG_END, 8);
+    glFogf(GL_FOG_START, 8);
+    glFogf(GL_FOG_END,14);
     glEnable(GL_FOG);
 
     //z buffer
@@ -73,6 +74,7 @@ void initDraw(){
     texHandle[1] = initTexture("data/image/sky.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
     texHandle[3] = initTexture("data/image/glass2.bmp");
+    //texHandle[4] = initTexture("data/image/");
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);

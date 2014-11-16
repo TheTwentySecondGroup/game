@@ -40,13 +40,13 @@ int initMap(int stage){
 }
 void drawMap(){
     int i,c;
-    int min_x=(int)player[0].x-8;
+    int min_x=(int)player[0].x-15;
     if(min_x<0)min_x=0;
-    int max_x=(int)player[0].x+8;
+    int max_x=(int)player[0].x+15;
     if(max_x>MAP_X_MAX)max_x=MAP_X_MAX;
-    int min_y=(int)player[0].y-8;
+    int min_y=(int)player[0].y-15;
     if(min_y<0)min_y=0;
-    int max_y=(int)player[0].y+8;
+    int max_y=(int)player[0].y+15;
     if(max_y>MAP_Y_MAX)max_y=MAP_Y_MAX;
 
     for(i=min_x;i<max_x;i++){
