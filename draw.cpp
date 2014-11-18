@@ -74,7 +74,8 @@ void initDraw(){
     texHandle[1] = initTexture("data/image/sky.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
     texHandle[3] = initTexture("data/image/glass2.bmp");
-    //texHandle[4] = initTexture("data/image/");
+    texHandle[4] = initTexture("data/image/star.bmp");
+    texHandle[5] = initTexture("data/image/mist.bmp");
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
@@ -222,9 +223,9 @@ void draw(){
 		glEnable(GL_LIGHT0);
 
         drawMap();//
+        if(player[0].attflag == 1)
+        drawA(player[0].x,player[0].y+5);
     }
-
-    init2D();
 }
 
 void drawFloor(int x, int y){
@@ -397,6 +398,108 @@ int i;
 	glVertex3fv(vertices4[2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices4[3]);
+	glEnd();
+}
+
+void drawA(int x, int y){
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
+	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[4]);
+	
+	GLfloat vertices[4][3]={
+		{2+x, 2+y, 0.1},
+		{0+x, 2+y, 0.1},
+		{0+x, 0+y, 0.1},
+		{2+x, 0+y, 0.1},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices2[4][3]={
+		{2+x, 0+y, 1.5},
+		{0+x, 0+y, 1.5},
+		{0+x, 0+y, 0.1},
+		{2+x, 0+y, 0.1},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices2[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices2[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices2[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices2[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices3[4][3]={
+		{2+x, 2+y, 1.5},
+		{0+x, 2+y, 1.5},
+		{0+x, 2+y, 0.1},
+		{2+x, 2+y, 0.1},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices3[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices3[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices3[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices3[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices4[4][3]={
+		{x, 2+y, 1.5},
+		{x, 0+y, 1.5},
+		{x, 0+y, 0.1},
+		{x, 2+y, 0.1},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices4[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices4[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices4[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices4[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices5[4][3]={
+		{2+x, 2+y, 1.5},
+		{2+x, 0+y, 1.5},
+		{2+x, 0+y, 0.1},
+		{2+x, 2+y, 0.1},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(player[0].xd, player[0].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices5[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices5[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices5[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices5[3]);
 	glEnd();
 }
 

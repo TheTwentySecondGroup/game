@@ -70,6 +70,7 @@ void drawMap(){
             if(Map[i][c]==3){
                 drawFloor2(i,c);
                 drawSky(i,c);
+                //drawA(i,c);
             }
             
             /*if(Map[i][c]==4){//goal

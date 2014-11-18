@@ -47,6 +47,7 @@ struct Obj{
 	int hp;		//キャラのHP
 	int mp;		//キャラのMP
 	int mp_heal;//MP回復量
+	int attflag;	//攻撃フラグ
 	std::string skill[4];	//キャラごとの魔法を格納
 };
 //for time 

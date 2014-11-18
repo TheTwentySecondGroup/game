@@ -5,6 +5,7 @@
 #include "Tutorial.h"
 #include "Map.h"
 static float dx=0, dy=0;
+static int count = 0;
 
 int selectChara(){
 	int KeyFlag = 0;
@@ -213,7 +214,7 @@ void moveChara(){
     	if(key[SDLK_LEFT] == SDL_PRESSED){
     	    player[0].dir-=0.03;
     	}
-    	
+    	/*
     	if(key[SDLK_SPACE] == SDL_PRESSED){
     		if(player[0].z<1.4)
     		player[0].z += 0.03;
@@ -223,7 +224,7 @@ void moveChara(){
     		if(player[0].z>0.5)
     		player[0].z -= 0.03;
     	}
-    	
+    	*/
     	old = player[0];
     	
     	if(key[SDLK_UP] == SDL_PRESSED){
@@ -242,7 +243,6 @@ void moveChara(){
 			if(Map[(int)player[0].x][(int)player[0].y]== 2){
     	    	player[0] = old;
     	    }	
-printf("%f  %f\n",player[0].x, player[0].y);
 		}
     	
     	if(key[SDLK_DOWN] == SDL_PRESSED){
@@ -261,6 +261,10 @@ printf("%f  %f\n",player[0].x, player[0].y);
 			if(Map[(int)player[0].x][(int)player[0].y] == 2){
     	    	player[0] = old;
     	    }
+		}
+		
+		if(key[SDLK_SPACE] == SDL_PRESSED && player[0].attflag == 0){
+			player[0].attflag = 1;
 		}
  	   
  	   //ゲームパッド
@@ -314,40 +318,17 @@ int judgeHit(){
 	
 }
 
-void attack(float x, float y, float dx, float dy){
-init2D();
-	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
-	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
-	GLfloat vertices1[4][3]={
-		{x+10, y+dy, 0.1},
-		{x, y+dy, 0.1},
-		{x, y, 0.1},
-		{x+10, y, 0.1},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(player[0].xd, player[0].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices1[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices1[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices1[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices1[3]);
-	glEnd();
-	//glFlush();
-	//SDL_GL_SwapBuffers();
-	
-	//glEnable(GL_CULL_FACE);
-}
 void gameMain(){
+	if(player[0].attflag == 1){
+		count++;
+		if(count == 50){
+			count = 0;
+			player[0].attflag = 0;
+		}
+	}
 	moveChara();
 	draw();
-	attack(10.0, 10.0, 10.0, 10.0);
+	//attack(10.0, 10.0, 10.0, 10.0);
 	glFlush();
 	SDL_GL_SwapBuffers();
 	SDL_Delay(30);
