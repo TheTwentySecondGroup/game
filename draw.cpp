@@ -47,8 +47,8 @@ void init3D(){
     glFogfv(GL_FOG_COLOR, FogColor);
     //glFogf(GL_FOG_DENSITY,0.5);
     glHint(GL_FOG_HINT, GL_DONT_CARE);
-    glFogf(GL_FOG_START, 8);
-    glFogf(GL_FOG_END,14);
+    glFogf(GL_FOG_START, 10);
+    glFogf(GL_FOG_END,15);
     glEnable(GL_FOG);
 
     //z buffer
@@ -71,11 +71,13 @@ void initDraw(){
     
     //LoadTexture
     texHandle[0] = initTexture("data/image/glass1.bmp");
-    texHandle[1] = initTexture("data/image/sky.bmp");
+    texHandle[1] = initTexture("data/image/bluesky.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
     texHandle[3] = initTexture("data/image/glass2.bmp");
     texHandle[4] = initTexture("data/image/star.bmp");
     texHandle[5] = initTexture("data/image/mist.bmp");
+    texHandle[6] = initTexture("data/image/HP.bmp");
+    texHandle[7] = initTexture("data/image/MP.bmp");
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
@@ -225,6 +227,7 @@ void draw(){
         drawMap();//
         if(player[0].attflag == 1)
         drawA(player[0].x,player[0].y+5);
+        hp(player[0].x, player[0].y);
     }
 }
 
@@ -266,10 +269,10 @@ void drawSky(int x, int y){
 	glBindTexture(GL_TEXTURE_2D,*texHandle[1]);
 	glNormal3f(player[0].xd, player[0].yd, 0);
 	GLfloat vertices[4][3]={
-		{1+x, 1+y, 1.5},
-		{0+x, 1+y, 1.5},
-		{0+x, 0+y, 1.5},
-		{1+x, 0+y, 1.5},
+		{26, 80, 2.0},
+		{-5 , 80, 2.0},
+		{-5 , 0, 2.0},
+		{26, 0, 2.0},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(player[0].xd, player[0].yd, 0);
@@ -400,7 +403,7 @@ int i;
 	glVertex3fv(vertices4[3]);
 	glEnd();
 }
-
+/*
 void drawA(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
@@ -502,7 +505,7 @@ void drawA(int x, int y){
 	glVertex3fv(vertices5[3]);
 	glEnd();
 }
-
+*/
 void Normal3f(GLfloat fVert1[],GLfloat fVert2[],GLfloat fVert3[]){
     GLfloat Qx, Qy, Qz, Px, Py, Pz;
 

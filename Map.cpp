@@ -40,15 +40,15 @@ int initMap(int stage){
 }
 void drawMap(){
     int i,c;
-    int min_x=(int)player[0].x-15;
+    int min_x=(int)player[0].x-30;
     if(min_x<0)min_x=0;
-    int max_x=(int)player[0].x+15;
+    int max_x=(int)player[0].x+30;
     if(max_x>MAP_X_MAX)max_x=MAP_X_MAX;
-    int min_y=(int)player[0].y-15;
+    int min_y=(int)player[0].y-30;
     if(min_y<0)min_y=0;
-    int max_y=(int)player[0].y+15;
+    int max_y=(int)player[0].y+30;
     if(max_y>MAP_Y_MAX)max_y=MAP_Y_MAX;
-
+drawSky(1,1);
     for(i=min_x;i<max_x;i++){
         for(c=min_y;c<max_y;c++){
             //block
@@ -59,17 +59,17 @@ void drawMap(){
             //road and start position
             if(Map[i][c]==0){
             	drawFloor(i,c);
-            	drawSky(i,c);
+            	//drawSky(i,c);
             }
             
             if(Map[i][c]==2){
             	drawFloor(i,c);
-            	drawSky(i,c);
+            	//drawSky(i,c);
             }
             //falling
             if(Map[i][c]==3){
                 drawFloor2(i,c);
-                drawSky(i,c);
+                //drawSky(i,c);
                 //drawA(i,c);
             }
             

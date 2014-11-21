@@ -34,7 +34,7 @@ void drawFloor2(int x, int y);
 //draw wall
 void drawWall(int x, int y);
 
-void drawA(int x, int y);
+//void drawA(int x, int y);
 
 //calculate and setting glNormal3f
 GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[],GLfloat fVert3[]);

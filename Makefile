@@ -6,7 +6,7 @@ OBJS = main.o draw.o Title.o Effect.o Tutorial.o mode.o Map.o system.o
 
 
 main: $(OBJS)  $(HEADERS)
-	$(CC) -o $@ $(OBJS) -g  -D_ENABLE_TILT -D_ENABLE_FORCE  -lm  -lglut -lGLU -lGL -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote  -lpthread -luuid -L/usr/lib
+	$(CC) -o $@ $(OBJS) -g  -D_ENABLE_TILT -D_ENABLE_FORCE  -lm  -lglut -lGLU -lGL -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote  -lpthread -L/usr/lib
 	rm -rf $(OBJS) *~
 
 
