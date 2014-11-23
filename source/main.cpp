@@ -10,7 +10,6 @@
 //clock_t start,now,end;
 using namespace std;
 System *sys;
-//System *sys;
 
 //int endFlag=0;
 //for wiimote
@@ -18,6 +17,47 @@ System *sys;
 int fallingFlag = 0;
 
 //void* wiimoteUpdate();
+
+
+
+wiimote_t wiimote;
+int Stage = 1;
+time_t start, now, end;
+int MaxTime;
+int BeforeTime;
+
+float angle = 0.0f;
+
+void Init() {
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHTING);
+	// glEnable(GL_CULL_FACE);
+	// glCullFace(GL_BACK);
+
+	Model modeltmp("UnityChan/Models/unitychan.fbx");
+
+	sys->model.push_back(modeltmp);
+
+	cout << "Init() executed\n";
+	cout << "-----------------------\n\n\n";
+}
+
+void timeEnd() {
+	end = time(NULL);
+}
+void timeProc() {
+	now = time(NULL);
+}
+void timeReset() {
+	MaxTime = 100;
+	start = time(NULL);
+}
+
+
 
 int main(int argc, char* argv[]) {
 	SDL_Surface *window;
@@ -41,9 +81,26 @@ int main(int argc, char* argv[]) {
 	}
 	SDL_WM_SetCaption("test program", NULL);
 
+
+	sys = new System();
+
+	sys->draw = new Draw();
+
+
+	sys->player = new Player[4];
+
+	sys->title = new Title();
+	cout<<"asdfasdfasdfasdfasdf"<<endl;
+
+	sys->tutorial = new Tutorial();
+	cout<<"asdfasdfasdfasdfasdf"<<endl;
+
+
+
+	Init();
+
 	//Initialize System
-	System *sys;
-	sys = new System;
+
 
 
 	//initialize my position
@@ -73,26 +130,30 @@ int main(int argc, char* argv[]) {
 	//sys->title = new Title(sys);
 	//Initialize tutorial
 	//Init Map
+	//cout<<"Stage1 =  "<<sys->Stage<<endl;
+
 	initMap(1);
+
+	cout<<"Stage =  "<<sys->Stage<<endl;
 
 	while (1) {
 
 		//timeProc();
-		switch (Stage) {
+		switch (sys->Stage) {
 		case 0:
-			Title();
+			sys->title->routine();
 			break;
 		case 1:
 		case 2:
 		case 3:
 		case 4:
-			//if (AAA == 0) {
+			if (AAA == 0) {
 			sys->charatype = sys->selectChara();
 				//delTitle();
 				printf("%d\n", sys->charatype);
 				sys->player[0].y = 2;
-				//AAA++;
-			//}
+				AAA++;
+			}
 				sys->gameMain();
 			break;
 		case -2:
@@ -135,45 +196,6 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-//void draw();
-vector<Model> model;
-//Obj myPos;
-wiimote_t wiimote;
-int Stage = 1;
-time_t start, now, end;
-int MaxTime;
-int BeforeTime;
-
-float angle = 0.0f;
-
-void Init() {
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHTING);
-	// glEnable(GL_CULL_FACE);
-	// glCullFace(GL_BACK);
-
-	Model modeltmp("UnityChan/Models/unitychan.fbx");
-
-	model.push_back(modeltmp);
-
-	cout << "Init() executed\n";
-	cout << "-----------------------\n\n\n";
-}
-
-void timeEnd() {
-	end = time(NULL);
-}
-void timeProc() {
-	now = time(NULL);
-}
-void timeReset() {
-	MaxTime = 100;
-	start = time(NULL);
-}
 /*
  void* wiimoteUpdate(void* pParam){
  while(1){

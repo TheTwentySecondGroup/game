@@ -6,11 +6,14 @@
 using namespace std;
 
 Title::Title(){
+
 	sel = 1;
 	KeyFlag=0;
-    sys->player[0].x=2.5;
-    sys->player[0].y=0;
-    sys->player[0].dir=0;
+
+	sys->player[sys->myID].x=2.5;
+    sys->player[sys->myID].y=0;
+    sys->player[sys->myID].dir=0;
+
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
@@ -22,13 +25,12 @@ Title::Title(){
 
     SDL_Color color1 = {255, 255, 0};
     SDL_Color color2 = {255, 255, 255};
-
 	titleImage[0] = sys->draw->initTexture("data/image/sam.bmp");
 	SDL_Surface *tmp1,*tmp2,*tmp3,*tmp4,*tmp5,*tmp6,*tmp7;
-    tmp1 = TTF_RenderUTF8_Blended(sys->font,"1 VS 1",color1);
-    titleImage[1] = sys->draw->timeTexture(tmp1);
-    tmp2 = TTF_RenderUTF8_Blended(sys->font,"2 VS 2",color1);
-    titleImage[2] = sys->draw->timeTexture(tmp2);
+	tmp1 = TTF_RenderUTF8_Blended(sys->font,"1 VS 1",color1);
+	titleImage[1] = sys->draw->timeTexture(tmp1);
+	tmp2 = TTF_RenderUTF8_Blended(sys->font,"2 VS 2",color1);
+	titleImage[2] = sys->draw->timeTexture(tmp2);
     tmp3 = TTF_RenderUTF8_Blended(sys->font,"BATTLE ROYAL",color1);
     titleImage[3] = sys->draw->timeTexture(tmp3);
     tmp4 = TTF_RenderUTF8_Blended(sys->font,"1 VS 1",color2);
@@ -39,6 +41,7 @@ Title::Title(){
 	titleImage[6] = sys->draw->timeTexture(tmp6);
 
 
+	cout<<"5asgasdbdhfndsfhng"<<endl;
 
 }
 

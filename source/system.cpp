@@ -6,23 +6,21 @@
 #include "Map.h"
 #include "system.h"
 #include "Player.h"
-
 using namespace std;
-//System *sys;
-System::System(){
 
-	font = TTF_OpenFont("fonts-japanese-mincho.ttf",200);
+System::System(){
+	TTF_Init();
+	font = TTF_OpenFont("data/Koruri-20140904/Koruri-Bold.ttf",20);
+	//if(!font)cout<<TTF_GetError()<<endl;
 	dx=0;
 	dy=0;
 	count=0;
 	Stage=0;
 	charatype=0;
 	myID=0;
+	Stage=0;
 
-	title = new Title;
-	draw = new Draw;
-	tutorial = new Tutorial;
-	player = new Player[4];
+
 
 
 
@@ -57,7 +55,7 @@ int System::selectChara() {
 	charaImage[6] = draw->initTexture("data/image/chara3g.bmp");
 	charaImage[7] = draw->initTexture("data/image/chara4g.bmp");
 
-	while (1) {
+	//while (1) {
 		Sint16 axis = SDL_JoystickGetAxis(joystick, 0);
 		if (SDL_PollEvent(&event)) {
 			switch (event.type) {
@@ -230,7 +228,7 @@ int System::selectChara() {
 		}
 		glFlush();
 		SDL_GL_SwapBuffers();
-	}
+	//}
 	return -1;
 }
 

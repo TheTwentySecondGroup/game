@@ -83,13 +83,13 @@ Draw::Draw(){
 
     //LoadTexture
     texHandle[0] = initTexture("data/image/glass1.bmp");
-    texHandle[1] = initTexture("data/image/bluesky.bmp");
+    texHandle[1] = initTexture("data/image/sky.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
     texHandle[3] = initTexture("data/image/glass2.bmp");
     texHandle[4] = initTexture("data/image/star.bmp");
     texHandle[5] = initTexture("data/image/mist.bmp");
-    texHandle[6] = initTexture("data/image/HP.bmp");
-    texHandle[7] = initTexture("data/image/MP.bmp");
+    //texHandle[6] = initTexture("data/image/HP.bmp");
+    //texHandle[7] = initTexture("data/image/MP.bmp");
 	//Initialize ttf
     //TTF_Init();
     //font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
