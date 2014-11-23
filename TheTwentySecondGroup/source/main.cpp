@@ -1,233 +1,190 @@
 #include "global.h"
 #include "Model.h"
+#include "draw.h"
+#include "Title.h"
+#include "Effect.h"
+#include "Tutorial.h"
+#include "Map.h"
+#include "system.h"
+#include <time.h>
+//clock_t start,now,end;
+using namespace std;
+System *sys;
+//System *sys;
+
+//int endFlag=0;
+//for wiimote
+//wiimote_t wiimote = WIIMOTE_INIT;
+int fallingFlag = 0;
+
+//void* wiimoteUpdate();
+
+int main(int argc, char* argv[]) {
+	SDL_Surface *window;
+	SDL_Event event; //for SDL event
+	int AAA = 0;
+
+	// SDL Initialize
+	if (SDL_Init(SDL_INIT_EVERYTHING | SDL_INIT_JOYSTICK) < 0) {
+		printf("failed to initialize SDL.\n");
+		exit(-1);
+	}
+
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	//make window
+	if ((window = SDL_SetVideoMode(WINDOW_X, WINDOW_Y, 32, SDL_OPENGL)) == NULL) {
+		printf("failed to initialize videomode.\n");
+		exit(-1);
+	}
+	SDL_WM_SetCaption("test program", NULL);
+
+	//Initialize System
+	System *sys;
+	sys = new System;
 
 
-void draw();
-vector <Model> model;
-Obj myPos;
+	//initialize my position
+	sys->player[0].x = 0;
+	sys->player[0].y=0.5;
+	sys->player[0].z = 0;
+
+
+	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
+	 wiimote.led.one  = 1;
+	 wiimote.mode.ir = 1;
+
+	 //make thread for wiimote
+	 pthread_t wu;
+	 pthread_create(&wu,NULL,wiimoteUpdate ,NULL);
+	 printf("wiiremote  connected\n");
+	 }else{
+	 printf("wiiremote can't connect\n");
+	 }
+	 */
+
+	//Initialize openGL  etc
+	//sys->draw = new Draw();
+
+	//Initialize title
+	//sys->title =
+	//sys->title = new Title(sys);
+	//Initialize tutorial
+	//Init Map
+	initMap(1);
+
+	while (1) {
+
+		//timeProc();
+		switch (Stage) {
+		case 0:
+			Title();
+			break;
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+			//if (AAA == 0) {
+			sys->charatype = sys->selectChara();
+				//delTitle();
+				printf("%d\n", sys->charatype);
+				sys->player[0].y = 2;
+				//AAA++;
+			//}
+				sys->gameMain();
+			break;
+		case -2:
+			//sys->tutorial->routine();
+			break;
+		default:
+			//delTitle();
+			//delete draw;
+			SDL_Quit();
+			exit(0);
+			break;
+		}
+
+		if (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_QUIT:
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					Stage = -1;
+					break;
+				}
+				break;
+			case SDL_JOYBUTTONDOWN:
+				if (event.jbutton.button == 10) {
+					Stage = -1;
+					break;
+				}
+				break;
+			}
+		}
+
+		int curTime = SDL_GetTicks();
+		int difTime = curTime - BeforeTime;
+		if (difTime < 1000 / FPS_RATE)
+			SDL_Delay(1000 / FPS_RATE - difTime);
+		BeforeTime = curTime;
+
+	}
+	return 0;
+}
+
+//void draw();
+vector<Model> model;
+//Obj myPos;
 wiimote_t wiimote;
 int Stage = 1;
-time_t start,now,end;
-int MaxTime;    
+time_t start, now, end;
+int MaxTime;
 int BeforeTime;
 
+float angle = 0.0f;
 
+void Init() {
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHTING);
+	// glEnable(GL_CULL_FACE);
+	// glCullFace(GL_BACK);
 
-float angle=0.0f;
+	Model modeltmp("UnityChan/Models/unitychan.fbx");
 
+	model.push_back(modeltmp);
 
-
-void Init(){
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHTING);
-    // glEnable(GL_CULL_FACE);
-    // glCullFace(GL_BACK);
-
-
-
-
-
-    Model modeltmp("UnityChan/Models/unitychan.fbx");
-
-    model.push_back(modeltmp);
-
-    cout<<"Init() executed\n";
-    cout<<"-----------------------\n\n\n";
+	cout << "Init() executed\n";
+	cout << "-----------------------\n\n\n";
 }
 
-int main(int argc, char *argv[])
-{
-    SDL_Surface *window;
-    SDL_Event event; //for SDL event
-
-    // SDL Initialize
-    if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        printf("failed to initialize SDL.\n");
-        exit(-1);
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
-    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
-    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    //make window
-    if((window = SDL_SetVideoMode(WINDOW_X, WINDOW_Y, 32, SDL_OPENGL)) == NULL) {
-        printf("failed to initialize videomode.\n");
-        exit(-1);
-    }
-    SDL_WM_SetCaption("testProgram",NULL);
-
-    //initialize my position
-    myPos.x=0;
-    myPos.y=0.5;
-    myPos.z=0;
-
-    /*
-       if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
-       wiimote.led.one  = 1;
-       wiimote.mode.ir = 1;
-
-    //make thread for wiimote
-    pthread_t wu;
-    //pthread_create(&wu,NULL,wiimoteUpdate ,NULL);
-    printf("wiiremote  connected\n");
-    }else{
-    printf("wiiremote can't connect\n");
-    }
-
-     */
-    glutInit(&argc, argv);
-
-
-    //initialize GLUT
-    glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
-
-    //format to black
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    //glutDisplayFunc(display);
-    //glutIdleFunc(idle);    
-
-
-
-    Init();
-    //glutMainLoop();
-
-
-
-
-
-    //mainloop
-    while(1){
-        timeProc();
-        //printf("%f sec\n",difftime(now,start));
-
-        switch(Stage){
-            case 0:
-                //Title(window);
-                //break;
-            case 1:
-                GameMain();
-                break;
-            case 2:
-                //Tutorial();
-                break;
-            default:
-                //delTitle();
-                //delDraw();
-                SDL_Quit();
-                exit(0);
-                break;
-        }
-
-        //if end
-        if(SDL_PollEvent(&event)){
-            switch (event.type) {
-                case SDL_QUIT:
-                case SDL_KEYDOWN:
-                    switch(event.key.keysym.sym){
-                        case SDLK_ESCAPE:
-                            Stage = -1;
-                            break;
-                    }
-            }
-        }
-        int curTime =SDL_GetTicks();
-        int difTime = curTime-BeforeTime;
-        if(difTime < 1000/FPS_RATE)SDL_Delay(1000/FPS_RATE - difTime);
-        BeforeTime=curTime;
-
-    }
-    return 0;
+void timeEnd() {
+	end = time(NULL);
 }
-
-void timeEnd(){
-    end=time(NULL);
+void timeProc() {
+	now = time(NULL);
 }
-void timeProc(){                                         
-    now=time(NULL);
-}
-void timeReset(){
-    MaxTime=100;
-    start=time(NULL);
+void timeReset() {
+	MaxTime = 100;
+	start = time(NULL);
 }
 /*
-   void* wiimoteUpdate(void* pParam){
-   while(1){
-   if(wiimote_is_open(&wiimote)){  
-   if(wiimote_update(&wiimote) >= 0){
-//printf("TILT x=%.3f y=%.3f z=%.3f\n", wiimote.tilt.x,wiimote.tilt.y, wiimote.tilt.z);
-}else {
-wiimote_disconnect(&wiimote);
-}
+ void* wiimoteUpdate(void* pParam){
+ while(1){
+ if(wiimote_is_open(&wiimote)){
+ if(wiimote_update(&wiimote) >= 0){
+ //printf("TILT x=%.3f y=%.3f z=%.3f\n", wiimote.tilt.x,wiimote.tilt.y, wiimote.tilt.z);
+ }else {
+ wiimote_disconnect(&wiimote);
+ }
 
-}
-SDL_Delay(10);
-}
-} */
-
-void GameMain(){
-    /*
-    //wiiremote
-    if(wiimote_is_open(&wiimote)){  
-    if(wiimote.keys.bits & WIIMOTE_KEY_UP){
-    struct Obj myOld = myPos;
-    myPos.x+=sin(myPos.dir)/15;
-//myPos=CDtoMap(myPos,myOld);
-myOld = myPos;
-myPos.y+=cos(myPos.dir)/15;
-//myPos=CDtoMap(myPos,myOld);
-}
-if(wiimote.keys.bits & WIIMOTE_KEY_DOWN){
-struct Obj myOld = myPos;
-myPos.x-=sin(myPos.dir)/15;
-//myPos=CDtoMap(myPos,myOld);
-myOld = myPos;
-myPos.y-=cos(myPos.dir)/15;
-myPos=CDtoMap(myPos,myOld);
-}
-if(wiimote.keys.bits & WIIMOTE_KEY_RIGHT){
-myPos.dir+=0.03;
-}
-if(wiimote.keys.bits & WIIMOTE_KEY_LEFT){
-myPos.dir-=0.03;
-}
-
-} else{
-     */
-    //keyboad
-    Uint8 *key = SDL_GetKeyState(NULL);
-    if(key[SDLK_RIGHT] == SDL_PRESSED){
-        myPos.dir-=0.03;
-    }
-    if(key[SDLK_LEFT] == SDL_PRESSED){
-        myPos.dir+=0.03;
-    }
-    if(key[SDLK_UP] == SDL_PRESSED){
-        struct Obj myOld = myPos;
-        myPos.x+=sin(myPos.dir)/5;
-        // myPos=CDtoMap(myPos,myOld);
-        myOld = myPos;
-        myPos.z+=cos(myPos.dir)/5;
-        //myPos=CDtoMap(myPos,myOld);
-    }
-    if(key[SDLK_DOWN] == SDL_PRESSED){
-        struct Obj myOld = myPos;
-        myPos.x-=sin(myPos.dir)/5;
-        //myPos=CDtoMap(myPos,myOld);
-        myOld = myPos;
-        myPos.z-=cos(myPos.dir)/5;
-        //myPos=CDtoMap(myPos,myOld);
-    }
-    if(key[SDLK_w] == SDL_PRESSED){
-        myPos.y+=0.05;
-    }
-    if(key[SDLK_s] == SDL_PRESSED){
-        myPos.y-=0.05;
-    }
-
-    draw();
-}
+ }
+ SDL_Delay(10);
+ }
+ } */

@@ -32,14 +32,26 @@ TARGET      = $(BINDIR)/$(EXAMPLE)
 OBJS        = \
 	./source/main.o\
 	./source/draw.o\
-    ./source/Model.o 
+    ./source/Model.o\
+    ./source/Map.o\
+    ./source/Effect.o\
+    ./source/system.o\
+    ./source/Title.o\
+    ./source/Tutorial.o\
+    ./source//Player.o
 OBJSFINAL   = \
 	$(OBJDIR)/main.o\
 	$(OBJDIR)/draw.o\
-    $(OBJDIR)/Model.o
+    $(OBJDIR)/Model.o\
+    $(OBJDIR)/Map.o\
+    $(OBJDIR)/Effect.o\
+    $(OBJDIR)/system.o\
+    $(OBJDIR)/Title.o\
+    $(OBJDIR)/Tutorial.o\
+    $(OBJDIR)/Player.o
 
-CC          = gcc
-LD          = gcc 
+CC          = g++
+LD          = g++
 RM          = /bin/rm -f
 
 CXXFLAGS    = $(M64) $(GCC_DEBUG_FLAGS)  

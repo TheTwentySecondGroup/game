@@ -18,7 +18,7 @@
 					<folderInfo id="0.901913619." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.base.1732159496" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.486716344" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
-							<builder arguments="-f makefile" buildPath="${workspace_loc:/TheTwentySecondGroup}" command="make" enableAutoBuild="false" enableCleanBuild="false" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1639646158" incrementalBuildTarget="" keepEnvironmentInBuildfile="true" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base">
+							<builder arguments="-f makefile" autoBuildTarget="all" buildPath="${workspace_loc:/TheTwentySecondGroup}" cleanBuildTarget="clean" command="make" enableAutoBuild="false" enableCleanBuild="false" enabledIncrementalBuild="true" id="cdt.managedbuild.target.gnu.builder.base.1639646158" incrementalBuildTarget="" keepEnvironmentInBuildfile="true" managedBuildOn="false" name="Gnu Make Builder" parallelBuildOn="false" superClass="cdt.managedbuild.target.gnu.builder.base">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name=""/>
 								</outputEntries>
