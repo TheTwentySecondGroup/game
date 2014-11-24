@@ -10,16 +10,16 @@ GLuint *image[3];
 
 
 void mode1(){
-	image[0] = initTexture("data/image/1.bmp");
+	image[0] = sys->draw->initTexture("data/image/1.bmp");
 	//glClearColor(0.0, 0.0, 1.0, 0);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	//glFlush();
-	 init3D();
+	 sys->draw->init3D();
     {
 		//draw wall
-        glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
-        glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,WhiteMaterial);
-        glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,WhiteMaterial);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,sys->draw->WhiteMaterial);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,sys->draw->WhiteMaterial);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,sys->draw->WhiteMaterial);
         glMaterialf(GL_FRONT,GL_SHININESS,60.0);
         glBindTexture( GL_TEXTURE_2D, *image[0] );
         GLfloat vertices [4][3]={
@@ -29,7 +29,7 @@ void mode1(){
             { 8, 8,  3.0},
         };
         glBegin(GL_POLYGON);
-        glNormal3f(player[0].xd , player[0].yd , 0);
+        glNormal3f(sys->player[sys->myID].xd , sys->player[sys->myID].yd , 0);
         glTexCoord2i(0,0);
         glVertex3f(0, 0, 0);
         glTexCoord2i(0,1);

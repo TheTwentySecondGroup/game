@@ -6,12 +6,21 @@
 #include "Tutorial.h"
 #include "system.h"
 
-int Map[MAP_X_MAX][MAP_Y_MAX];
 
-char *MAP_FILE_NAME[] = { "data/map/stage1.data", "data/map/stage2.data",
-		"data/map/stage3.data", "data/map/stage4.data" };
-int initMap(int stage) {
 
+Map::Map(){
+	MAP_FILE_NAME[0] = "data/map/stage1.data";
+	MAP_FILE_NAME[1] = "data/map/stage2.data";
+	MAP_FILE_NAME[2] = "data/map/stage3.data";
+	MAP_FILE_NAME[3] = "data/map/stage4.data" ;
+
+	initMap(1);
+
+
+}
+
+
+int  Map::initMap(int stage) {
 	int i, c;
 	FILE* fp = fopen(MAP_FILE_NAME[stage - 1], "r");
 	if (fp == NULL) {
@@ -21,18 +30,18 @@ int initMap(int stage) {
 
 	for (i = 0; i < MAP_X_MAX; i++) {
 		for (c = 0; c < MAP_Y_MAX; c++) {
-			Map[i][c] = -1;
+			data[i][c] = -1;
 		}
 	}
 
 	for (i = 0; i < MAP_X_MAX; i++) {
 		for (c = 0; c < MAP_Y_MAX; c++) {
-			int data;
-			if ((data = (fgetc(fp) - 48)) != -49) {
-				if (data == ('\n' - 48)) {
+			int tmpdata;
+			if ((tmpdata = (fgetc(fp) - 48)) != -49) {
+				if (tmpdata == ('\n' - 48)) {
 					break;
 				}
-				Map[i][c] = data;
+				data[i][c] = tmpdata;
 			}
 		}
 	}
@@ -40,7 +49,8 @@ int initMap(int stage) {
 
 	return 0;
 }
-void drawMap() {
+void Map::drawMap() {
+	cout<<"execute map drawMap() "<<endl;
 	int i, c;
 	int min_x = (int) sys->player[sys->myID].x - 30;
 	if (min_x < 0)
@@ -58,22 +68,22 @@ void drawMap() {
 	for (i = min_x; i < max_x; i++) {
 		for (c = min_y; c < max_y; c++) {
 			//block
-			if (Map[i][c] == 1) {
+			if (data[i][c] == 1) {
 				sys->draw->drawWall(i, c);
 			}
 
 			//road and start position
-			if (Map[i][c] == 0) {
+			if (data[i][c] == 0) {
 				sys->draw->drawFloor(i, c);
 				//drawSky(i,c);
 			}
 
-			if (Map[i][c] == 2) {
+			if (data[i][c] == 2) {
 				sys->draw->drawFloor(i, c);
 				//drawSky(i,c);
 			}
 			//falling
-			if (Map[i][c] == 3) {
+			if (data[i][c] == 3) {
 				sys->draw->drawFloor2(i, c);
 				//drawSky(i,c);
 				//drawA(i,c);

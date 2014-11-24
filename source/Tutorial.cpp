@@ -14,33 +14,31 @@ GLuint *TutorialImage[3];
 
 Tutorial::Tutorial() { //(System *system){
 	//sys=system;
-	Slide = -1;
+	Slide = 0;
 	TutorialImage[0] = sys->draw->initTexture("data/image/1.bmp");
 	TutorialImage[1] = sys->draw->initTexture("data/image/2.bmp");
-	TutorialImage[2] = sys->draw->initTexture("data/image/3.bmp");
+	//TutorialImage[2] = sys->draw->initTexture("data/image/3.bmp");
 
 
 }
 
 Tutorial::~Tutorial() {
-	Slide = -1;
 	glDeleteTextures(SLIDE_MAX, *TutorialImage);
 }
 void Tutorial::routine() {
-	//wiiremocon
-	/*if(wiimote_is_open(&wiimote)){
-	 if((wiimote.keys.bits & WIIMOTE_KEY_A)>0){
-	 Button1++;
-	 }else{
-	 Button1=0;
-	 }
-	 if(wiimote.keys.bits & WIIMOTE_KEY_B){
-	 Button2++;
-	 }else{
-	 Button2=0;
-	 }
-	 } else{*/
-	//keyboad
+	cout<<"execute tutorial routine()"<<endl;
+	if(sys->io->key[KEY_A] == 1) {
+		Slide++;
+	}
+
+	cout<<"execute tutorial routine() 1"<<endl;
+	//if(key[SDLK_BACKSPACE] == SDL_PRESSED) {
+		//Button2++;
+	//} else {
+		//Button2=0;
+	//}
+	/*
+
 	Uint8 *key = SDL_GetKeyState(NULL);
 	if(key[SDLK_RETURN] == SDL_PRESSED) {
 		Button1++;
@@ -52,22 +50,30 @@ void Tutorial::routine() {
 	} else {
 		Button2=0;
 	}
+
+	*/
 	//}
-	if(Button1==1)Slide++;
-	else if(Button2==1)Slide--;
+	//if(Button1==1)Slide++;
+	//else if(Button2==1)Slide--;
 	if(Slide>=SLIDE_MAX) {
 		//delTutorial();
 		//initEffect();
 		//makeEffect(1,120,"Start");
-		Stage = 1;
+		sys->Stage = -1;
 		//initMap(1);
 		return;
 	}
+
 	if(Slide<=0)Slide=0;
 
+	cout<<"execute tutorial routine() 2"<<endl;
 	draw(Slide);
+
+	cout<<"execute tutorial routine() 3"<<endl;
 }
 void Tutorial::draw(int n) {
+
+	cout<<"execute tutorial draw()"<<endl;
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	sys->draw->init3D();
 	{
@@ -75,7 +81,9 @@ void Tutorial::draw(int n) {
 	sys->draw->init2D();
 	{
 
-		glBindTexture( GL_TEXTURE_2D, *TutorialImage[0]);
+		cout<<"execute tutorial draw() 1"<<endl;
+
+		glBindTexture( GL_TEXTURE_2D, *TutorialImage[n]);
 		glBegin( GL_QUADS );
 		glTexCoord2i( 0, 0 );
 		glVertex3f( 0, 0, 0 );
@@ -87,21 +95,38 @@ void Tutorial::draw(int n) {
 		glVertex3f( 0, WINDOW_Y, 0 );
 		glEnd();
 
+		cout<<"execute tutorial draw() 2"<<endl;
+
 		drawText();
+
+		cout<<"execute tutorial draw() 3"<<endl;
+
 	}
+
+	cout<<"execute tutorial draw() 4"<<endl;
+
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
 
 void Tutorial::drawText() {
-	char buf[64];
-	strcpy(buf,"    If you use cross-key, you can move.   ");
 
-	SDL_Color white = {255, 255, 255,100};
+	cout<<"execute tutorial drawText()"<<endl;
+
+	char *buf="    If you use cross-key, you can move.   ";
+	cout<<"execute tutorial drawText() 1"<<endl;
+
+	SDL_Color white = {255, 255, 5,100};
 	SDL_Surface* TextImage;
-	TextImage=TTF_RenderUTF8_Blended(sys->draw->font,buf,white);
+
+
+	TextImage=TTF_RenderUTF8_Blended(sys->font,buf,white);
+
 	GLuint *texText;
 	texText = sys->draw->timeTexture(TextImage);
+
+	cout<<"execute tutorial drawText()2"<<endl;
+
 
 	glBindTexture( GL_TEXTURE_2D, *texText);
 	glBegin( GL_QUADS );
@@ -116,6 +141,8 @@ void Tutorial::drawText() {
 	glVertex3f( 0,WINDOW_Y, 0 );
 	glEnd();
 	glDeleteTextures(1,texText);
+	cout<<"execute tutorial drawText() 3"<<endl;
+
 }
 
 

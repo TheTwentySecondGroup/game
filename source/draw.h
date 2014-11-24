@@ -7,6 +7,10 @@ class Draw{
 public:
 	GLuint *texHandle[10];
 
+	GLuint *charaImage[8];
+
+
+
 	GLfloat lightpos[4];
 	GLfloat DifLight[4];
 	GLfloat GrayMaterial[4];
@@ -32,7 +36,9 @@ public:
 //set 2D
 	void init2D();
 
-	void rDraw();
+	void routine();
+
+	void drawCharaSelect();
 
 //draw floor x,y
 	void drawFloor(int, int);

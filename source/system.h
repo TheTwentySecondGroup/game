@@ -7,11 +7,15 @@
 #include "Model.h"
 #include "Title.h"
 #include "Player.h"
+#include "io.h"
+#include "Map.h"
 
 using namespace std;
 
 class System {
 public:
+
+
 	//shortcut
 	Draw *draw;
 
@@ -19,23 +23,29 @@ public:
 
 	Tutorial *tutorial;
 
+	GameIO *io;
+
+	Map *map;
 
 
-	//vector<Player> player;
 	Player *player;
 
+
 	int myID;
+	//int myChara;
+	int selChara;
+	int Stage;
+	int charatype;
+
 
 	float dx, dy;
 	int count;
 
+
 	//Obj player[4];
 
-	int Stage;
-	int charatype;
 
 	TTF_Font *font;
-	SDL_Joystick *joystick;
 	vector<Model> model;
 
 	System();

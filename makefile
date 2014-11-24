@@ -38,7 +38,8 @@ OBJS        = \
     ./source/system.o\
     ./source/Title.o\
     ./source/Tutorial.o\
-    ./source//Player.o
+    ./source/Player.o\
+    ./source/io.o
 OBJSFINAL   = \
 	$(OBJDIR)/main.o\
 	$(OBJDIR)/draw.o\
@@ -48,7 +49,8 @@ OBJSFINAL   = \
     $(OBJDIR)/system.o\
     $(OBJDIR)/Title.o\
     $(OBJDIR)/Tutorial.o\
-    $(OBJDIR)/Player.o
+    $(OBJDIR)/Player.o\
+    $(OBJDIR)/io.o
 
 CC          = g++
 LD          = g++

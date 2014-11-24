@@ -53,7 +53,7 @@ extern int BeforeTime;
 //for my position 
 //extern struct Obj myPos;
 
-extern int Stage;
+//extern int Stage;
 
 //store goal position
 extern int goalX, goalY;

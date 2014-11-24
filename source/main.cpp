@@ -5,7 +5,9 @@
 #include "Effect.h"
 #include "Tutorial.h"
 #include "Map.h"
+#include "io.h"
 #include "system.h"
+
 #include <time.h>
 //clock_t start,now,end;
 using namespace std;
@@ -84,17 +86,18 @@ int main(int argc, char* argv[]) {
 
 	sys = new System();
 
+	sys->io = new GameIO();
+
 	sys->draw = new Draw();
 
 
 	sys->player = new Player[4];
 
 	sys->title = new Title();
-	cout<<"asdfasdfasdfasdfasdf"<<endl;
 
 	sys->tutorial = new Tutorial();
-	cout<<"asdfasdfasdfasdfasdf"<<endl;
 
+	sys->map = new Map();
 
 
 	Init();
@@ -132,12 +135,12 @@ int main(int argc, char* argv[]) {
 	//Init Map
 	//cout<<"Stage1 =  "<<sys->Stage<<endl;
 
-	initMap(1);
 
 	cout<<"Stage =  "<<sys->Stage<<endl;
 
 	while (1) {
-
+		sys->io->routine();
+		cout<<"test"<<endl;
 		//timeProc();
 		switch (sys->Stage) {
 		case 0:
@@ -147,17 +150,13 @@ int main(int argc, char* argv[]) {
 		case 2:
 		case 3:
 		case 4:
-			if (AAA == 0) {
-			sys->charatype = sys->selectChara();
-				//delTitle();
-				printf("%d\n", sys->charatype);
-				sys->player[0].y = 2;
-				AAA++;
-			}
-				sys->gameMain();
+			sys->gameMain();
+			break;
+		case -1:
+			sys->selectChara();
 			break;
 		case -2:
-			//sys->tutorial->routine();
+			sys->tutorial->routine();
 			break;
 		default:
 			//delTitle();

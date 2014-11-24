@@ -13,7 +13,7 @@
 
 
 
-void Draw::rDraw(){
+void Draw::routine(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     init3D();
 
@@ -48,7 +48,7 @@ void Draw::rDraw(){
         //drawCube(1,1);
         //model[0].Draw();
 
-        //drawMap();//
+        sys->map->drawMap();//
         //if(sys->player[sys->myID].attflag == 1)
         //drawA(sys->player[sys->myID].x,sys->player[sys->myID].y+5);
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
@@ -74,6 +74,19 @@ void Draw::rDraw(){
 
 
 Draw::Draw(){
+
+	//system
+
+	charaImage[0] = initTexture("data/image/chara1.bmp");
+	charaImage[1] = initTexture("data/image/chara2.bmp");
+	charaImage[2] = initTexture("data/image/chara3.bmp");
+	charaImage[3] = initTexture("data/image/chara4.bmp");
+	charaImage[4] = initTexture("data/image/chara1g.bmp");
+	charaImage[5] = initTexture("data/image/chara2g.bmp");
+	charaImage[6] = initTexture("data/image/chara3g.bmp");
+	charaImage[7] = initTexture("data/image/chara4g.bmp");
+
+
 
     //initialize GLUT
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB|GLUT_DEPTH);
@@ -244,6 +257,56 @@ GLuint *Draw::initTexture(string name){
     return Handle;
 }
 
+void Draw::drawCharaSelect(){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	init3D();
+	{
+	}
+	init2D();
+	{
+		//character1
+		cout <<"selChara"<<sys->selChara<<endl;
+		for (int i = 0; i < 4; i++) {
+			if (sys->selChara == i+1)
+				glBindTexture( GL_TEXTURE_2D, *charaImage[i]);
+			else
+				glBindTexture( GL_TEXTURE_2D, *charaImage[i + 4]);
+			glBegin( GL_QUADS);
+			glTexCoord2i(0, 0);
+			glVertex3f(200 * (i), 0, 0);
+			glTexCoord2i(1, 0);
+			glVertex3f(200 * (i+1), 0, 0);
+			glTexCoord2i(1, 1);
+			glVertex3f(200 * (i+1), 200, 0);
+			glTexCoord2i(0, 1);
+			glVertex3f(200 * (i), 200, 0);
+			glEnd();
+
+		/*
+		 strcpy(buf, "ニブルヘイム");
+		 TextImage=TTF_RenderUTF8_Blended(font,buf,white);
+		 GLuint *texText;
+		 texText = timeTexture(TextImage);
+		 glBindTexture( GL_TEXTURE_2D, *texText);
+		 glBegin( GL_QUADS );
+		 glTexCoord2i( 0, 0 );
+		 glVertex3f( 0, 300, 0 );
+		 glTexCoord2i( 1, 0 );
+		 glVertex3f( 150, 300, 0 );
+		 glTexCoord2i( 1, 1 );
+		 glVertex3f( 150, 350, 0 );
+		 glTexCoord2i( 0, 1 );
+		 glVertex3f( 0, 350, 0 );
+		 glEnd();
+		 glDeleteTextures(1,texText);
+		 */
+		}
+	}
+	glFlush();
+	SDL_GL_SwapBuffers();
+
+
+}
 
 
 
@@ -273,14 +336,14 @@ void Draw::drawCube(int x,int y){
 
 
     GLfloat vertices [8][3]={
-        {0+x, 0+y,  1.0},
-        { 1+x, 0+y,  1.0},
-        { 1+x,  1+y,  1.0},
-        {0+x,  1+y,  1.0},
-        { 1+x, 0+y, 0.0},
-        {0+x, 0+y, 0.0},
-        {0+x,  1+y, 0.0},
-        { 1+x,  1+y, 0.0}
+        {0+x, 1.0 ,0+y},
+        { 1+x,  1.0, 0+y},
+        { 1+x,  1.0,  1+y},
+        {0+x,  1.0,  1+y},
+        { 1+x, 0.0, 0+y},
+        {0+x, 0.0, 0+y},
+        {0+x, 0.0,  1+y},
+        { 1+x, 0.0,  1+y}
     };
     /*
        glBegin(GL_POLYGON);
@@ -395,8 +458,8 @@ void Draw::init3D(){
     gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01, 15.0);
 
     //fog
-    glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogfv(GL_FOG_COLOR, FogColor);
+   // glFogi(GL_FOG_MODE, GL_LINEAR);
+   // glFogfv(GL_FOG_COLOR, FogColor);
     //glFogf(GL_FOG_DENSITY,0.5);
     glHint(GL_FOG_HINT, GL_DONT_CARE);
     glFogf(GL_FOG_START, 10);
@@ -423,10 +486,10 @@ void Draw::drawFloor(int x, int y){
 	glBindTexture(GL_TEXTURE_2D,*texHandle[0]);
 
 	GLfloat vertices[4][3]={
-		{1+x, 1+y, 0.0},
-		{0+x, 1+y, 0.0},
-		{0+x, 0+y, 0.0},
-		{1+x, 0+y, 0.0},
+		{1+x, 0.0, 1+y},
+		{0+x, 0.0, 1+y},
+		{0+x, 0.0, 0+y},
+		{1+x, 0.0, 0+y},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -452,10 +515,10 @@ void Draw::drawSky(int x, int y){
 	glBindTexture(GL_TEXTURE_2D,*texHandle[1]);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	GLfloat vertices[4][3]={
-		{26, 80, 2.0},
-		{-5 , 80, 2.0},
-		{-5 , 0, 2.0},
-		{26, 0, 2.0},
+		{26, 2.0, 80},
+		{-5, 2.0 , 80},
+		{-5, 2.0 , 0},
+		{26, 2.0, 0},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -481,10 +544,10 @@ void Draw::drawFloor2(int x, int y){
 	glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
 
 	GLfloat vertices[4][3]={
-		{1+x, 1+y, 0.0},
-		{0+x, 1+y, 0.0},
-		{0+x, 0+y, 0.0},
-		{1+x, 0+y, 0.0},
+		{1+x,  0.0,1+y},
+		{0+x, 0.0, 1+y},
+		{0+x, 0.0, 0+y},
+		{1+x, 0.0, 0+y},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);

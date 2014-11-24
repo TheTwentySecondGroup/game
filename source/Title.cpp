@@ -3,6 +3,7 @@
 #include "Title.h"
 #include "Tutorial.h"
 #include "system.h"
+#include "io.h"
 using namespace std;
 
 Title::Title(){
@@ -41,8 +42,6 @@ Title::Title(){
 	titleImage[6] = sys->draw->timeTexture(tmp6);
 
 
-	cout<<"5asgasdbdhfndsfhng"<<endl;
-
 }
 
 Title::~Title(){
@@ -79,46 +78,32 @@ void Title::drawMenuCube(int x,int y,GLuint *texture,double sw){
 
 
 void Title::routine(){
-    //keyboad
-    Uint8 *key = SDL_GetKeyState(NULL);
-    Uint8 jbutton = SDL_JoystickGetButton(sys->joystick, 3);
-    Sint16 axis = SDL_JoystickGetAxis(sys->joystick,1);
 
-    if((KeyFlag ==0 )&&(key[SDLK_UP] == SDL_PRESSED)){
-        KeyFlag =1 ;
-        if(sel>KEY_MIN)sel -=1;
-    }else if((KeyFlag ==0)&&(key[SDLK_DOWN] == SDL_PRESSED)){
-        KeyFlag = 1;
-        if(sel<KEY_MAX)sel +=1;
-    }else if(key[SDLK_DOWN] != SDL_PRESSED && key[SDLK_UP]!= SDL_PRESSED && axis == 0){
-        KeyFlag=0;
+	cout<<"execute title routine()"<<endl;
+	if((sys->io->key[KEY_UP] == 1)){
+        if(sel>CHOICE_MIN)sel -=1;
     }
-    if(key[SDLK_RETURN] == SDL_PRESSED){
-    	Tutorial();
-		Stage = -2;
+	if((sys->io->key[KEY_DOWN] == 1)){
+        if(sel<CHOICE_MAX)sel +=1;
+    }
+	//cout<<sys->io->key[KEY_A]<<"----------------------------------------------------------------------"<<endl;
+    if(sys->io->key[KEY_A] >= 1){
+    	//Tutorial();
+		sys->Stage = -2;
 	}
-	if(jbutton == 1){
-		Tutorial();
-		Stage = -2;
-	}
-	if(axis >= 256 && KeyFlag == 0){
-		KeyFlag = 1;
-		if(sel < KEY_MAX)
-		sel += 1;
-		axis = 0;
-	}
-	if(axis <= -256 && KeyFlag == 0){
-		KeyFlag = 1;
-		if(sel > KEY_MIN)
-		sel -= 1;
-		axis = 0;
-	}
+	cout<<"execute title routine() 1"<<endl;
+
 
     drawTitle();
     SDL_Delay(1000/60);
+
+	cout<<"execute title routine()  2"<<endl;
+
 }
 
 void Title::drawTitle(){
+	cout<<"execute title drawTitle()"<<endl;
+
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     sys->draw->init3D();
     {
@@ -132,6 +117,7 @@ void Title::drawTitle(){
         gluLookAt(sys->player[0].x - xd/20 ,sys->player[0].y - yd/20,sys->player[0].z, // position of camera
         		sys->player[0].x  , sys->player[0].y ,sys->player[0].z, //look-at point
                 0.0,0.0,1.0);
+    	cout<<"execute title drawTitle() 1"<<endl;
 
 
         //Light
@@ -150,6 +136,7 @@ void Title::drawTitle(){
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE); 
 
+    	cout<<"execute title drawTitle() 2"<<endl;
 
         //draw wall
         glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,sys->draw->WhiteMaterial);
@@ -175,9 +162,11 @@ void Title::drawTitle(){
         glVertex3fv(vertices[3]);
 		glEnd();
 		
+		cout<<"execute title drawTitle() 3"<<endl;
+
 		//draw menu
 		int c;
-		for(c=1;c<=KEY_MAX;c++){
+		for(c=1;c<=CHOICE_MAX;c++){
 			//draw on button
 			if(sel == c)drawMenuCube(c, 7,  titleImage[c],0);
 			//draw off button
@@ -185,7 +174,12 @@ void Title::drawTitle(){
 		}
 	}
 	//init2D();
+	cout<<"execute title drawTitle() 4"<<endl;
+
 	glFlush();
 	SDL_GL_SwapBuffers();
+
+	cout<<"execute title drawTitle() 5"<<endl;
+
 }
 

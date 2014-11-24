@@ -1,8 +1,8 @@
 #ifndef __TITLE_H__
 #define __TITLE_H__
 
-#define KEY_MIN 1
-#define KEY_MAX 3
+#define CHOICE_MIN 1
+#define CHOICE_MAX 3
 
 //#include "system.h"
 
