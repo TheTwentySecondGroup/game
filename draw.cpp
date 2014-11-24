@@ -77,7 +77,7 @@ void initDraw(){
     texHandle[4] = initTexture("data/image/star.bmp");
     texHandle[5] = initTexture("data/image/mist.bmp");
     texHandle[6] = initTexture("data/image/HP.bmp");
-    texHandle[7] = initTexture("data/image/MP.bmp");
+    texHandle[7] = initTexture("data/image/hp.bmp");
 	//Initialize ttf
     TTF_Init();
     font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
@@ -227,7 +227,7 @@ void draw(){
         drawMap();//
         if(player[0].attflag == 1)
         drawA(player[0].x,player[0].y+5);
-        hp(player[0].x, player[0].y);
+        hp(player[0].x, player[0].y, player[0].dir);
     }
 }
 

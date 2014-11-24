@@ -18,7 +18,7 @@ extern struct ef Effect[EFFECT_MAX];
 
 void initEffect();
 void procEffect();
-void hp(double x, double y);
+void hp(double x, double y, double dir);
 void mp();
 void drawA(int x, int y);
 

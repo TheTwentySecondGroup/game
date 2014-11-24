@@ -41,14 +41,18 @@ void makeEffect(int type,int time,char* str){
 
 }
 
-void hp(double x, double y){
+void hp(double x, double y, double dir){
 //glDisable(GL_CULL_FACE);
+glViewport(0, 700, WINDOW_X, WINDOW_Y);
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01, 15.0);
 	glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
 	GLfloat vertices[4][3]={
-		{x, y+3, 1.0},
-		{x-2, y+3, 1.0},
-		{x-2, y+3, 1.0},
-		{x, y+3, 1.0},
+		{x, y+4, 1.4},
+		{x-1.4, y+4, 1.4},
+		{x-1.4, y+4, 1.3},
+		{x, y+4, 1.3},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(player[0].xd, player[0].yd, 0);

@@ -242,7 +242,8 @@ void moveChara(){
 			
 			if(Map[(int)player[0].x][(int)player[0].y]== 2){
     	    	player[0] = old;
-    	    }	
+    	    }
+    	    printf("%f  %f\n", player[0].x, player[0].y);
 		}
     	
     	if(key[SDLK_DOWN] == SDL_PRESSED){
@@ -261,6 +262,7 @@ void moveChara(){
 			if(Map[(int)player[0].x][(int)player[0].y] == 2){
     	    	player[0] = old;
     	    }
+    	    printf("%f  %f\n", player[0].x, player[0].y);
 		}
 		
 		if(key[SDLK_SPACE] == SDL_PRESSED && player[0].attflag == 0){
