@@ -573,10 +573,10 @@ int i;
 	//前
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices1[4][3]={
-		{1+x, y, 1.5},
-		{0+x, y, 1.5},
-		{0+x, y, 0},
-		{1+x, y, 0},
+		{1+x, 1.5, y},
+		{0+x, 1.5, y},
+		{0+x, 0, y},
+		{1+x, 0, y},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -593,10 +593,10 @@ int i;
 	//後ろ
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices2[4][3]={
-		{1+x, y+1, 1.5},
-		{0+x, y+1, 1.5},
-		{0+x, y+1, 0},
-		{1+x, y+1, 0},
+		{1+x, 1.5, y+1},
+		{0+x, 1.5, y+1},
+		{0+x, 0, y+1},
+		{1+x, 0, y+1},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -613,10 +613,10 @@ int i;
 	//左
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices3[4][3]={
-		{x, 1+y, 1.5},
-		{x, 0+y, 1.5},
-		{x, 0+y, 0},
-		{x, 1+y, 0},
+		{x, 1.5, y+1},
+		{x, 1.5, 0+y},
+		{x, 0, 0+y},
+		{x, 0, 1+y},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -633,10 +633,10 @@ int i;
 	//右
 	glBindTexture(GL_TEXTURE_2D,*texHandle[2]);
 	GLfloat vertices4[4][3]={
-		{1+x, 1+y, 1.5},
-		{1+x, 0+y, 1.5},
-		{1+x, 0+y, 0},
-		{1+x, 1+y, 0},
+		{1+x, 1.5, 1+y},
+		{1+x, 1.5, 0+y},
+		{1+x, 0, 0+y},
+		{1+x, 0, 1+y},
 	};
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
