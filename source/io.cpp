@@ -34,7 +34,7 @@ void GameIO::routine() {
 		key[KEY_UP] = 0;
 	}
 
-	if (SdlKey[SDLK_DOWN] == SDL_PRESSED || axis1 < 0) {
+	if (SdlKey[SDLK_DOWN] == SDL_PRESSED) {
 		if (key[KEY_DOWN] < KEY_MAX_COUNT)
 			key[KEY_DOWN]++;
 	} else {
@@ -70,6 +70,7 @@ void GameIO::routine() {
 		key[KEY_A] = 0;
 
 	}
+
 
 }
 

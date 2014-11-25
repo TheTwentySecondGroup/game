@@ -27,7 +27,7 @@ void Draw::routine(){
                 0.0f,1.0f,0.0f);
 
         //Light
-        sys->draw->lightpos[0]=sys->player[sys->myID].x;
+        lightpos[0]=sys->player[sys->myID].x;
         lightpos[1]=sys->player[sys->myID].y;
         lightpos[2]=sys->player[sys->myID].z;
         lightpos[3]=1;
@@ -49,6 +49,7 @@ void Draw::routine(){
         //model[0].Draw();
 
         sys->map->drawMap();//
+        sys->model[0].Draw();
         //if(sys->player[sys->myID].attflag == 1)
         //drawA(sys->player[sys->myID].x,sys->player[sys->myID].y+5);
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
@@ -461,10 +462,10 @@ void Draw::init3D(){
    // glFogi(GL_FOG_MODE, GL_LINEAR);
    // glFogfv(GL_FOG_COLOR, FogColor);
     //glFogf(GL_FOG_DENSITY,0.5);
-    glHint(GL_FOG_HINT, GL_DONT_CARE);
-    glFogf(GL_FOG_START, 10);
-    glFogf(GL_FOG_END,15);
-    glEnable(GL_FOG);
+   // glHint(GL_FOG_HINT, GL_DONT_CARE);
+   // glFogf(GL_FOG_START, 10);
+   // glFogf(GL_FOG_END,15);
+   // glEnable(GL_FOG);
 
     //z buffer
     glEnable(GL_DEPTH_TEST);

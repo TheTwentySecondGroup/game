@@ -72,11 +72,11 @@ void System::moveChara() {
 	//x_move = SDL_JoystickGetAxis(joystick, 0);
 	//y_move = SDL_JoystickGetAxis(joystick, 1);
 	if (io->key[KEY_RIGHT] > 0) {
-		player[myID].dir += 0.03;
+		player[myID].dir -= 0.03;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
-		player[myID].dir -= 0.03;
+		player[myID].dir += 0.03;
 	}
 	/*
 	 if(key[SDLK_SPACE] == SDL_PRESSED){
@@ -97,13 +97,13 @@ void System::moveChara() {
 		if (player[myID].x < 1.5)
 			player[myID].x = 1.5;
 
-		player[myID].y += cos(player[myID].dir) / 5;
-		if (player[myID].y < 1.5)
-			player[myID].y = 1.5;
-		if (player[myID].y > STAGE_Y)
-			player[myID].y = STAGE_Y;
+		player[myID].z += cos(player[myID].dir) / 5;
+		if (player[myID].z < 1.5)
+			player[myID].z = 1.5;
+		if (player[myID].z > STAGE_Y)
+			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].y] == 2) {
+		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
 			player[myID] = old;
 		}
 	}
@@ -115,13 +115,13 @@ void System::moveChara() {
 		if (player[myID].x > STAGE_X)
 			player[myID].x = STAGE_X;
 
-		player[myID].y -= cos(player[myID].dir) / 5;
-		if (player[myID].y < 1.5)
-			player[myID].y = 1.5;
-		if (player[myID].y > STAGE_Y)
-			player[myID].y = STAGE_Y;
+		player[myID].z -= cos(player[myID].dir) / 5;
+		if (player[myID].z < 1.5)
+			player[myID].z = 1.5;
+		if (player[myID].z > STAGE_Y)
+			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].y] == 2) {
+		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
 			player[myID] = old;
 		}
 	}
@@ -130,49 +130,6 @@ void System::moveChara() {
 		player[myID].attflag = 1;
 	}
 
-	//ゲームパッド
-	if (io->key[KEY_RIGHT] > 0) {
-		player[myID].dir -= 0.03;
-	} else if (io->key[KEY_LEFT] > 0) {
-		player[myID].dir += 0.03;
-	}
-	if (io->key[KEY_UP] > 0) {
-		//x方向
-		player[myID].x -= sin(player[myID].dir) / 5;
-		if (player[myID].x < 1.5)
-			player[myID].x = 1.5;
-		if (player[myID].x > STAGE_X)
-			player[myID].x = STAGE_X;
-
-		//y方向
-		player[myID].y -= cos(player[myID].dir) / 5;
-		if (player[myID].y < 1.5)
-			player[myID].y = 1.5;
-		if (player[myID].y > STAGE_Y)
-			player[myID].y = STAGE_Y;
-
-		if (map->data[(int) player[myID].x][(int) player[myID].y] == 2) {
-			player[myID] = old;
-		}
-	} else if (io->key[KEY_DOWN] < 0) {
-		//x方向
-		player[myID].x += sin(player[myID].dir) / 5;
-		if (player[myID].x > STAGE_X)
-			player[myID].x = STAGE_X;
-		if (player[myID].x < 1.5)
-			player[myID].x = 1.5;
-
-		//y方向
-		player[myID].y += cos(player[myID].dir) / 5;
-		if (player[myID].y < 1.5)
-			player[myID].y = 1.5;
-		if (player[myID].y > STAGE_Y)
-			player[myID].y = STAGE_Y;
-
-		if (map->data[(int) player[myID].x][(int) player[myID].y] == 2) {
-			player[myID] = old;
-		}
-	}
 }
 
 int System::judgeHit() {
@@ -191,7 +148,7 @@ void System::gameMain() {
 	}
 	moveChara();
 	draw->routine();
-	sys->model[0].Draw();
+
 	//attack(10.0, 10.0, 10.0, 10.0);
 	//glFlush();
 	//SDL_GL_SwapBuffers();
