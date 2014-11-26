@@ -19,11 +19,22 @@ class Model
     public:
         Model(const char* filename);
         ~Model();
+
+        FbxNode* rootnode;
         int  getMesh(FbxNode* node);//情報所得
+
+        void GetAnimation(const char*);
+
+
+        FbxTime animationStartFrame;
+		FbxTime animationEndFrame;
+
         void  Draw();//描写
         char Name[256];//モデル名
         vector <material> mat;//モデルの情報
         vector <TEXTURE> texture;//テクスチャデータ
+
+        double x,y,z;
 };
 
 #endif

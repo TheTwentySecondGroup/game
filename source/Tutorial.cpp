@@ -18,9 +18,9 @@ Tutorial::Tutorial() { //(System *system){
 	TutorialImage[0] = sys->draw->initTexture("data/image/1.bmp");
 	TutorialImage[1] = sys->draw->initTexture("data/image/2.bmp");
 	//TutorialImage[2] = sys->draw->initTexture("data/image/3.bmp");
-
-
 }
+
+
 
 Tutorial::~Tutorial() {
 	glDeleteTextures(SLIDE_MAX, *TutorialImage);
