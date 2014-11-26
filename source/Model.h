@@ -33,6 +33,8 @@ class Model
         char Name[256];//モデル名
         vector <material> mat;//モデルの情報
         vector <TEXTURE> texture;//テクスチャデータ
+
+        double x,y,z;
 };
 
 #endif
