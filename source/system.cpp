@@ -106,6 +106,7 @@ void System::moveChara() {
 		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
 			player[myID] = old;
 		}
+		printf("%f %f\n", player[myID].x, player[myID].z);
 	}
 
 	if (io->key[KEY_DOWN] > 0) {
