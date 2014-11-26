@@ -68,10 +68,8 @@ void GameIO::routine() {
 			key[KEY_A]++;
 	} else {
 		key[KEY_A] = 0;
-
 	}
-
-
+	
 }
 
 GameIO::GameIO() {

@@ -19,6 +19,8 @@
 #define KEY_LEFT 3
 #define KEY_A 4
 #define KEY_B 5
+#define KEY_C 6
+#define KEY_D 7
 
 
 using namespace std;
