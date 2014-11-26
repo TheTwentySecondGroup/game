@@ -140,11 +140,11 @@ int System::judgeHit() {
 
 void System::gameMain() {
 	cout << "execute sys gameMain()" << endl;
-	if (player[0].attflag == 1) {
+	if (player[myID].attflag == 1) {
 		count++;
 		if (count == 50) {
 			count = 0;
-			player[0].attflag = 0;
+			player[myID].attflag = 0;
 		}
 	}
 	moveChara();

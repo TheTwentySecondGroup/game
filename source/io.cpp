@@ -70,6 +70,12 @@ void GameIO::routine() {
 		key[KEY_A] = 0;
 	}
 	
+	if(SdlKey[SDLK_SPACE] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+			if(key[KEY_A] < KEY_MAX_COUNT)
+				key[KEY_B]++;
+		} else {
+			key[KEY_B] = 0;
+		}
 }
 
 GameIO::GameIO() {
