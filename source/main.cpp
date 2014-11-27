@@ -107,9 +107,9 @@ int main(int argc, char* argv[]) {
 
 
 	//initialize my position
-	sys->player[0].x = 0;
+	sys->player[0].x = 2.0;
 	sys->player[0].y=0.5;
-	sys->player[0].z = 0;
+	sys->player[0].z = 2.0;
 
 
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){

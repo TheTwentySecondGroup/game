@@ -27,7 +27,6 @@ public:
 
 	Map *map;
 
-
 	Player *player;
 
 

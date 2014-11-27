@@ -128,8 +128,13 @@ void System::moveChara() {
 
 	if (io->key[KEY_A] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
-		draw->drawAttack();
+		//draw->drawAttack(sys->player[sys->myID].x, sys->player[sys->myID].z);
 	}
+	
+	if(io->key[KEY_B] == 1 && player[myID].attflag == 0){
+		player[myID].attflag = 1;
+		//draw->drawAttack(sys->player[sys->myID].x, sys->player[sys->myID].z);
+	};
 
 }
 

@@ -13,6 +13,7 @@ Title::Title(){
 
 	sys->player[sys->myID].x=2.5;
     sys->player[sys->myID].y=0;
+    //sys->player[sys->myID].z = 1.5;
     sys->player[sys->myID].dir=0;
 
     glEnable(GL_LIGHTING);
