@@ -37,7 +37,7 @@ void Draw::routine(){
         glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,Light0Dir);
         glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f );
         glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 2.0f );
-        glLightfv(GL_LIGHT0,GL_AMBIENT,GrayLight);
+        glLightfv(GL_LIGHT0,GL_AMBIENT,WhiteLight);
         glLightfv(GL_LIGHT0,GL_DIFFUSE,DifLight);
         glLightfv(GL_LIGHT0,GL_SPECULAR,SpecularLight);
         glEnable(GL_LIGHTING);
@@ -138,8 +138,11 @@ Draw::Draw(){
 	GrayLight[1] = 0.3;
 	GrayLight[2] = 0.3;
 	GrayLight[3] = 1;
-
-
+	
+	WhiteLight[0] = 1.0;
+	WhiteLight[1] = 1.0;
+	WhiteLight[2] = 1.0;
+	WhiteLight[3] = 1.0;
 
 	FogColor[0] = 0;
 	FogColor[1] = 0;
@@ -309,24 +312,6 @@ void Draw::drawCharaSelect(){
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Draw::drawCube(int x,int y){
     glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
     glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,WhiteMaterial);
@@ -459,13 +444,13 @@ void Draw::init3D(){
     gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01, 15.0);
 
     //fog
-   // glFogi(GL_FOG_MODE, GL_LINEAR);
-   // glFogfv(GL_FOG_COLOR, FogColor);
-    //glFogf(GL_FOG_DENSITY,0.5);
-   // glHint(GL_FOG_HINT, GL_DONT_CARE);
-   // glFogf(GL_FOG_START, 10);
-   // glFogf(GL_FOG_END,15);
-   // glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogfv(GL_FOG_COLOR, FogColor);
+    glFogf(GL_FOG_DENSITY,0.5);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
+    glFogf(GL_FOG_START, 12);
+    glFogf(GL_FOG_END,20);
+    glEnable(GL_FOG);
 
     //z buffer
     glEnable(GL_DEPTH_TEST);
@@ -512,7 +497,7 @@ void Draw::drawSky(int x, int y){
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 	glBindTexture(GL_TEXTURE_2D,*texHandle[1]);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	GLfloat vertices[4][3]={
@@ -651,7 +636,9 @@ int i;
 	glEnd();
 }
 
+void Draw::drawAttack(){
 
+}
 
 
 

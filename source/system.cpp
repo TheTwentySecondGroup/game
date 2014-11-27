@@ -106,7 +106,6 @@ void System::moveChara() {
 		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
 			player[myID] = old;
 		}
-		printf("%f %f\n", player[myID].x, player[myID].z);
 	}
 
 	if (io->key[KEY_DOWN] > 0) {
@@ -129,6 +128,7 @@ void System::moveChara() {
 
 	if (io->key[KEY_A] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
+		draw->drawAttack();
 	}
 
 }
