@@ -19,6 +19,7 @@ Player::Player() {
 	mp=0;	//キャラのMP
 	mp_heal=0;	//MP回復量
 	attflag=0;	//攻撃フラグ
+	attpatern=0;
 	//string skill[4];	//キャラごとの魔法を格納
 	// TODO Auto-generated constructor stub
 

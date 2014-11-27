@@ -22,6 +22,7 @@ public:
 	int mp;	//キャラのMP
 	int mp_heal;	//MP回復量
 	int attflag;	//攻撃フラグ
+	int attpatern;	//攻撃の種類
 	string skill[4];	//キャラごとの魔法を格納
 
 

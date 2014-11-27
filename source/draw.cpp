@@ -50,7 +50,7 @@ void Draw::routine(){
 
         sys->map->drawMap();//
         sys->model[0].Draw();
-        if(sys->player[sys->myID].attflag == 1)
+        if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 1)
         drawAttack(sys->player[sys->myID].x,sys->player[sys->myID].z+5);
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
 
