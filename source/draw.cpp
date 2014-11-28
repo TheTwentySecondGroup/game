@@ -10,7 +10,7 @@
 //GLuint *texHandle[10];
 
 //TTF_Font* font;
-//static double r = 0.0;
+static double r = 0.0;
 
 
 void Draw::routine(){
@@ -53,9 +53,6 @@ void Draw::routine(){
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 1)
         drawAttack(sys->player[sys->myID].x,sys->player[sys->myID].z+5);
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
-
-
-
     }
 
     init2D();
@@ -67,12 +64,7 @@ void Draw::routine(){
     }
     glFlush();
     SDL_GL_SwapBuffers();//reflect swap
-
-
 }
-
-
-
 
 Draw::Draw(){
 
@@ -97,7 +89,7 @@ Draw::Draw(){
 
     //LoadTexture
     texHandle[0] = initTexture("data/image/glass1.bmp");
-    texHandle[1] = initTexture("data/image/sky.bmp");
+    texHandle[1] = initTexture("data/image/sky2.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
     texHandle[3] = initTexture("data/image/glass2.bmp");
     texHandle[4] = initTexture("data/image/star.bmp");
@@ -462,7 +454,6 @@ void Draw::init3D(){
     glShadeModel(GL_SMOOTH);
 }
 
-
 void Draw::drawFloor(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
@@ -520,8 +511,6 @@ void Draw::drawSky(int x, int y){
 	
 	glDisable(GL_CULL_FACE);
 }
-
-
 
 void Draw::drawFloor2(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
@@ -644,7 +633,8 @@ void Draw::drawAttack(double x, double z){
 	
 	//glDisable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D,*texHandle[4]);
-	//glRotated((double)r, 0.0, 1.0, 0.0);
+	//glRotated((double)r, x, 1.0, z);	//
+	glRotated((double)r, x, 1.0, z);
 	GLfloat vertices[4][3]={
 		{2+x, 0.1, z+2},
 		{0+x, 0.1, z+2},
@@ -739,12 +729,7 @@ void Draw::drawAttack(double x, double z){
 	glVertex3fv(vertices5[3]);
 	glEnd();
 	
-	//if (++r >= 360) r = 0;
+	if (++r >= 360) r = 0;
 	//glEnable(GL_CULL_FACE);
 }
-
-
-
-
-
 
