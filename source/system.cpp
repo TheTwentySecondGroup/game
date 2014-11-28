@@ -103,7 +103,7 @@ void System::moveChara() {
 		if (player[myID].z > STAGE_Y)
 			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
+		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
 			player[myID] = old;
 		}
 	}
@@ -121,7 +121,7 @@ void System::moveChara() {
 		if (player[myID].z > STAGE_Y)
 			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
+		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
 			player[myID] = old;
 		}
 	}
@@ -149,7 +149,7 @@ void System::gameMain() {
 	cout << "execute sys gameMain()" << endl;
 	if (player[myID].attflag == 1) {
 		count++;
-		if (count == 50) {
+		if (count == 200) {
 			count = 0;
 			player[myID].attflag = 0;
 		}
