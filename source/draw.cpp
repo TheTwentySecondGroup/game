@@ -53,11 +53,31 @@ void Draw::routine(){
         sys->map->drawMap();//
         sys->model[0].Draw();
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 1){
-        	drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir*5)));
+        	drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*5));
         }
         
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 2){
-        	drawAttack2(sys->player[sys->myID].x,sys->player[sys->myID].z);
+        	if(sys->player[sys->myID].dir >=0 && sys->player[sys->myID].dir < 1.59 || sys->player[sys->myID].dir <=0 && sys->player[sys->myID].dir > -1.59){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*6, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+        	}
+        	else if(sys->player[sys->myID].dir >=1.59 && sys->player[sys->myID].dir < 1.8 || sys->player[sys->myID].dir <= -1.59 && sys->player[sys->myID].dir > -1.8){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+        		cout << "attack2" << endl;
+        	}
+        	else if(sys->player[sys->myID].dir >=1.8 && sys->player[sys->myID].dir < 3.4 || sys->player[sys->myID].dir <=- 1.8 && sys->player[sys->myID].dir > -3.4){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+        	}
+        	else if(sys->player[sys->myID].dir >=3.4 && sys->player[sys->myID].dir < 4.53 || sys->player[sys->myID].dir <= -3.4 && sys->player[sys->myID].dir > -4.53){
+        	    drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+        	}
+        	
+        	else if(sys->player[sys->myID].dir >=4.53 && sys->player[sys->myID].dir < 4.74 || sys->player[sys->myID].dir <= -4.53 && sys->player[sys->myID].dir > -4.74){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+        	}
+        	else if(sys->player[sys->myID].dir >=4.74 && sys->player[sys->myID].dir <= 6.03 || sys->player[sys->myID].dir <= -4.74 && sys->player[sys->myID].dir >= -6.03){
+        	    drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*5, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+        	}
+        	cout << sys->player[sys->myID].dir << endl;
         }
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
     }
@@ -807,10 +827,10 @@ void Draw::drawAttack2(double x, double z){
 		//前
 		glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
 		GLfloat vertices1[4][3]={
-			{x+0,    0.6, z+4},
-			{x+0,    0.5, z+4},
-			{x+0.25, 0.6, z+3},
-			{x+0.25, 0.7, z+3},
+			{x+0,    0.6, z+3},
+			{x+0,    0.5, z+3},
+			{x+0.25, 0.6, z+2},
+			{x+0.25, 0.7, z+2},
 		};
 		glBegin(GL_POLYGON);
 		glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
@@ -833,10 +853,10 @@ void Draw::drawAttack2(double x, double z){
 		
 		glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
 		GLfloat vertices2[4][3]={
-			{x+0,    0.6, z+4},
-			{x+0,    0.5, z+4},
-			{x-0.25, 0.6, z+3},
-			{x-0.25, 0.7, z+3},
+			{x+0,    0.6, z+3},
+			{x+0,    0.5, z+3},
+			{x-0.25, 0.6, z+2},
+			{x-0.25, 0.7, z+2},
 		};
 		glBegin(GL_POLYGON);
 		glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
@@ -859,10 +879,10 @@ void Draw::drawAttack2(double x, double z){
 		
 		glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
 		GLfloat vertices3[4][3]={
-			{x+0.25, 0.7, 3+z},
-			{x+0.25, 0.6, 3+z},
-			{x+0,    0.7, 2+z},
-			{x+0,    0.8, 2+z},
+			{x+0.25, 0.7, 2+z},
+			{x+0.25, 0.6, 2+z},
+			{x+0,    0.7, 1+z},
+			{x+0,    0.8, 1+z},
 		};
 		glBegin(GL_POLYGON);
 		glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
@@ -885,10 +905,10 @@ void Draw::drawAttack2(double x, double z){
 		//右
 		glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
 		GLfloat vertices4[4][3]={
-			{x-0.25, 0.7, 3+z},
-			{x-0.25, 0.6, 3+z},
-			{x+0,    0.7, 2+z},
-			{x+0,    0.8, 2+z},
+			{x-0.25, 0.7, 2+z},
+			{x-0.25, 0.6, 2+z},
+			{x+0,    0.7, 1+z},
+			{x+0,    0.8, 1+z},
 		};
 		glBegin(GL_POLYGON);
 		glNormal3f(vertices4[0][0], vertices4[0][1], vertices4[0][2]);

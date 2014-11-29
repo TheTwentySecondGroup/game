@@ -10,7 +10,7 @@
 using namespace std;
 
 void GameIO::routine() {
-	cout << "execute io routine()" << endl;
+	//cout << "execute io routine()" << endl;
 	//keyboad
 	Uint8 *SdlKey = SDL_GetKeyState(NULL);
 	Sint16 axis0, axis1;

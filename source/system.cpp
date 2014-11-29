@@ -72,11 +72,19 @@ void System::moveChara() {
 	//x_move = SDL_JoystickGetAxis(joystick, 0);
 	//y_move = SDL_JoystickGetAxis(joystick, 1);
 	if (io->key[KEY_RIGHT] > 0) {
-		player[myID].dir -= 0.03;
+		//player[myID].dir -= 0.03;
+		if((player[myID].dir -= 0.03) <= -6.03){
+			player[myID].dir = 0;
+		}
+		cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
-		player[myID].dir += 0.03;
+		//player[myID].dir += 0.03;
+		if((player[myID].dir+= 0.03) > 6.03){
+			player[myID].dir = 0;
+		}
+		cout << player[myID].dir << endl;
 	}
 	/*
 	 if(key[SDLK_SPACE] == SDL_PRESSED){
@@ -129,14 +137,12 @@ void System::moveChara() {
 	if (io->key[KEY_A] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 1;
-		//draw->drawAttack(sys->player[sys->myID].x, sys->player[sys->myID].z);
 	}
 	
 	if(io->key[KEY_B] == 1 && player[myID].attflag == 0){
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
-		//draw->drawAttack(sys->player[sys->myID].x, sys->player[sys->myID].z);
-	};
+	}
 
 }
 
@@ -146,10 +152,10 @@ int System::judgeHit() {
 }
 
 void System::gameMain() {
-	cout << "execute sys gameMain()" << endl;
+	//cout << "execute sys gameMain()" << endl;
 	if (player[myID].attflag == 1) {
 		count++;
-		if (count == 200) {
+		if (count == 2000) {
 			count = 0;
 			player[myID].attflag = 0;
 		}

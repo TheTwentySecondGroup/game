@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		sys->io->routine();
-		cout<<"test"<<endl;
+		//cout<<"test"<<endl;
 		//timeProc();
 		switch (sys->Stage) {
 		case 0:

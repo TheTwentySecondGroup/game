@@ -50,7 +50,7 @@ int  Map::initMap(int stage) {
 	return 0;
 }
 void Map::drawMap() {
-	cout<<"execute map drawMap() "<<endl;
+	//cout<<"execute map drawMap() "<<endl;
 	int i, c;
 	int min_x = (int) sys->player[sys->myID].x - 30;
 	if (min_x < 0)
