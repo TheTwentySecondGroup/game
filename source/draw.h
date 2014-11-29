@@ -58,6 +58,7 @@ public:
 
 void drawAttack(double x, double z);
 
+void drawAttack2(double x, double z);
 //calculate and setting glNormal3f
 	GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]);
 
