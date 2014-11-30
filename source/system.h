@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "io.h"
 #include "Map.h"
+#include "net.h"
 
 using namespace std;
 
@@ -29,6 +30,8 @@ public:
 
 
 	Player *player;
+
+	NetClass *network;
 
 
 	int myID;

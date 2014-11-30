@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "system.h"
 #include "Player.h"
+#include "net.h"
 using namespace std;
 
 System::System() {

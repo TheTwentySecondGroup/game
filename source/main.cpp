@@ -99,6 +99,7 @@ int main(int argc, char* argv[]) {
 
 	sys->map = new Map();
 
+	sys->network = new NetClass();
 
 	Init();
 
@@ -157,6 +158,9 @@ int main(int argc, char* argv[]) {
 			break;
 		case -2:
 			sys->tutorial->routine();
+			break;
+		case -4:
+			//for server
 			break;
 		default:
 			//delTitle();

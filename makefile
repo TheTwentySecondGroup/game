@@ -15,7 +15,7 @@ ifeq "$(VARIANT)" "debug"
     GCC_DEBUG_FLAGS += -g -D_DEBUG
 endif
 
-M64 = -m64
+M64 = -m32
 ARCH = x86
 ifeq "$(M64)" "-m64"
     ARCH=x64
@@ -39,7 +39,9 @@ OBJS        = \
     ./source/Title.o\
     ./source/Tutorial.o\
     ./source/Player.o\
-    ./source/io.o
+    ./source/io.o\
+    ./source/net.o\
+    ./source/netBase.o
 OBJSFINAL   = \
 	$(OBJDIR)/main.o\
 	$(OBJDIR)/draw.o\
@@ -50,7 +52,9 @@ OBJSFINAL   = \
     $(OBJDIR)/Title.o\
     $(OBJDIR)/Tutorial.o\
     $(OBJDIR)/Player.o\
-    $(OBJDIR)/io.o
+    $(OBJDIR)/io.o\
+    $(OBJDIR)/net.o\
+    $(OBJDIR)/netBase.o
 
 CC          = g++
 LD          = g++
@@ -69,7 +73,7 @@ else
     FBXSDK_LIB = $(LIBDIR)/libfbxsdk.a
 endif
 
-LIBS = $(FBXSDK_LIB) -lm -lrt -luuid -lstdc++ -lpthread -ldl   -lglut -lGLU -lGL -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
+LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl   -lglut -lGLU -lGL -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
 
 .SUFFIXES: .cpp
 

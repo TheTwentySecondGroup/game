@@ -12,6 +12,7 @@ using namespace std;
 
 class Player {
 public:
+	int chara;
 	double x;	//キャラのx座標
 	double y;	//y座標
 	double z;	//z座標
