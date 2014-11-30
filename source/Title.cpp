@@ -28,6 +28,7 @@ Title::Title(){
     SDL_Color color1 = {255, 255, 0};
     SDL_Color color2 = {255, 255, 255};
 	titleImage[0] = sys->draw->initTexture("data/image/sam.bmp");
+
 	SDL_Surface *tmp1,*tmp2,*tmp3,*tmp4,*tmp5,*tmp6,*tmp7;
 	tmp1 = TTF_RenderUTF8_Blended(sys->font,"1 VS 1",color1);
 	titleImage[1] = sys->draw->timeTexture(tmp1);
@@ -41,7 +42,6 @@ Title::Title(){
 	titleImage[5] = sys->draw->timeTexture(tmp5);
 	tmp6 = TTF_RenderUTF8_Blended(sys->font,"BATTLE ROYAL",color2);
 	titleImage[6] = sys->draw->timeTexture(tmp6);
-
 
 }
 
@@ -59,10 +59,10 @@ void Title::drawMenuCube(int x,int y,GLuint *texture,double sw){
     glBindTexture( GL_TEXTURE_2D, *texture );
 
     GLfloat vertices [4][3]={
-        {1, sw+y,  2.5-x},
-        {1, sw+y, 1.5-x},
-        { 2, sw+y, 1.5-x},
-        { 2, sw+y,  2.5-x},
+        {1, 2.5-x, sw+y},
+        {1, 1.5-x, sw+y},
+        {2, 1.5-x, sw+y},
+        {2, 2.5-x, sw+y},
     };
     glBegin(GL_POLYGON);
     glNormal3f(sys->player[0].xd , sys->player[0].yd , 0);
