@@ -73,11 +73,19 @@ void System::moveChara() {
 	//x_move = SDL_JoystickGetAxis(joystick, 0);
 	//y_move = SDL_JoystickGetAxis(joystick, 1);
 	if (io->key[KEY_RIGHT] > 0) {
-		player[myID].dir -= 0.03;
+		//player[myID].dir -= 0.03;
+		if((player[myID].dir -= 0.03) <= -6.03){
+			player[myID].dir = 0;
+		}
+		cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
-		player[myID].dir += 0.03;
+		//player[myID].dir += 0.03;
+		if((player[myID].dir+= 0.03) > 6.03){
+			player[myID].dir = 0;
+		}
+		cout << player[myID].dir << endl;
 	}
 	/*
 	 if(key[SDLK_SPACE] == SDL_PRESSED){
@@ -104,10 +112,9 @@ void System::moveChara() {
 		if (player[myID].z > STAGE_Y)
 			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
+		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
 			player[myID] = old;
 		}
-		printf("%f %f\n", player[myID].x, player[myID].z);
 	}
 
 	if (io->key[KEY_DOWN] > 0) {
@@ -123,13 +130,19 @@ void System::moveChara() {
 		if (player[myID].z > STAGE_Y)
 			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 2) {
+		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
 			player[myID] = old;
 		}
 	}
 
 	if (io->key[KEY_A] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
+		player[myID].attpatern = 1;
+	}
+	
+	if(io->key[KEY_B] == 1 && player[myID].attflag == 0){
+		player[myID].attflag = 1;
+		player[myID].attpatern = 2;
 	}
 
 }
@@ -141,13 +154,18 @@ int System::judgeHit() {
 
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
+<<<<<<< HEAD
 	if (player[0].attflag == 1) {
+=======
+	if (player[myID].attflag == 1) {
+>>>>>>> branch 'master' of https://github.com/TheTwentySecondGroup/game.git
 		count++;
-		if (count == 50) {
+		if (count == 2000) {
 			count = 0;
-			player[0].attflag = 0;
+			player[myID].attflag = 0;
 		}
 	}
+	
 	moveChara();
 	draw->routine();
 

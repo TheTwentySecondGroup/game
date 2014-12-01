@@ -10,10 +10,12 @@
 //GLuint *texHandle[10];
 
 //TTF_Font* font;
-
+static double r = 0.0;
 
 
 void Draw::routine(){
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     init3D();
 
@@ -27,17 +29,17 @@ void Draw::routine(){
                 0.0f,1.0f,0.0f);
 
         //Light
-        lightpos[0]=sys->player[sys->myID].x;
-        lightpos[1]=sys->player[sys->myID].y;
-        lightpos[2]=sys->player[sys->myID].z;
+        lightpos[0]=12;//sys->player[sys->myID].x;
+        lightpos[1]=1;//sys->player[sys->myID].y;
+        lightpos[2]=28;//sys->player[sys->myID].z;
         lightpos[3]=1;
 
         glLightfv(GL_LIGHT0,GL_POSITION,lightpos); // position of light0
-        GLfloat Light0Dir[]={xd,0,zd};
+        GLfloat Light0Dir[]={0,0,1};
         glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,Light0Dir);
-        glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f );
+        glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 180.0f );
         glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 2.0f );
-        glLightfv(GL_LIGHT0,GL_AMBIENT,GrayLight);
+        glLightfv(GL_LIGHT0,GL_AMBIENT,WhiteLight);
         glLightfv(GL_LIGHT0,GL_DIFFUSE,DifLight);
         glLightfv(GL_LIGHT0,GL_SPECULAR,SpecularLight);
         glEnable(GL_LIGHTING);
@@ -50,12 +52,40 @@ void Draw::routine(){
 
         sys->map->drawMap();//
         sys->model[0].Draw();
-        //if(sys->player[sys->myID].attflag == 1)
-        //drawA(sys->player[sys->myID].x,sys->player[sys->myID].y+5);
+        
+        /*ATTACK1*/
+        if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 1){
+        	drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*5));
+        }
+        
+        /*ATTACK2*/
+        if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 2){
+        	if(sys->player[sys->myID].dir >=0 && sys->player[sys->myID].dir < 1.59 || sys->player[sys->myID].dir <=0 && sys->player[sys->myID].dir > -1.59){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*6, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+        	}
+        	
+        	else if(sys->player[sys->myID].dir >=1.59 && sys->player[sys->myID].dir < 1.8 || sys->player[sys->myID].dir <= -1.59 && sys->player[sys->myID].dir > -1.8){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+        		cout << "attack2" << endl;
+        	}
+        	
+        	else if(sys->player[sys->myID].dir >=1.8 && sys->player[sys->myID].dir < 3.4 || sys->player[sys->myID].dir <=- 1.8 && sys->player[sys->myID].dir > -3.4){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+        	}
+        	
+        	else if(sys->player[sys->myID].dir >=3.4 && sys->player[sys->myID].dir < 4.53 || sys->player[sys->myID].dir <= -3.4 && sys->player[sys->myID].dir > -4.53){
+        	    drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+        	}
+        	
+        	else if(sys->player[sys->myID].dir >=4.53 && sys->player[sys->myID].dir < 4.74 || sys->player[sys->myID].dir <= -4.53 && sys->player[sys->myID].dir > -4.74){
+        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+        	}
+        	
+        	else if(sys->player[sys->myID].dir >=4.74 && sys->player[sys->myID].dir <= 6.03 || sys->player[sys->myID].dir <= -4.74 && sys->player[sys->myID].dir >= -6.03){
+        	    drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*5, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+        	}
+        }
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
-
-
-
     }
 
     init2D();
@@ -67,12 +97,7 @@ void Draw::routine(){
     }
     glFlush();
     SDL_GL_SwapBuffers();//reflect swap
-
-
 }
-
-
-
 
 Draw::Draw(){
 
@@ -93,16 +118,16 @@ Draw::Draw(){
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB|GLUT_DEPTH);
 
     //format to black
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
 
     //LoadTexture
-    texHandle[0] = initTexture("data/image/glass1.bmp");
-    texHandle[1] = initTexture("data/image/sky.bmp");
+    texHandle[0] = initTexture("data/image/zimen.bmp");
+    texHandle[1] = initTexture("data/image/sky2.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
-    texHandle[3] = initTexture("data/image/glass2.bmp");
+    texHandle[3] = initTexture("data/image/lake.bmp");
     texHandle[4] = initTexture("data/image/star.bmp");
     texHandle[5] = initTexture("data/image/mist.bmp");
-    //texHandle[6] = initTexture("data/image/HP.bmp");
+    texHandle[6] = initTexture("data/image/fire.bmp");
     //texHandle[7] = initTexture("data/image/MP.bmp");
 	//Initialize ttf
     //TTF_Init();
@@ -138,12 +163,15 @@ Draw::Draw(){
 	GrayLight[1] = 0.3;
 	GrayLight[2] = 0.3;
 	GrayLight[3] = 1;
+	
+	WhiteLight[0] = 1.0;
+	WhiteLight[1] = 1.0;
+	WhiteLight[2] = 1.0;
+	WhiteLight[3] = 1.0;
 
-
-
-	FogColor[0] = 0;
-	FogColor[1] = 0;
-	FogColor[2] = 0;
+	FogColor[0] = 1.0;
+	FogColor[1] = 1.0;
+	FogColor[2] = 1.0;
 	FogColor[3] = 1;
 
 }
@@ -309,24 +337,6 @@ void Draw::drawCharaSelect(){
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Draw::drawCube(int x,int y){
     glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,WhiteMaterial);
     glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,WhiteMaterial);
@@ -456,16 +466,16 @@ void Draw::init3D(){
 	glLoadIdentity();	//変換行列に単位行列を設定
 
 	/*変換行列に透視変換の行列を乗じる*/
-    gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01, 15.0);
+    gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01, 150.0);
 
     //fog
-   // glFogi(GL_FOG_MODE, GL_LINEAR);
-   // glFogfv(GL_FOG_COLOR, FogColor);
-    //glFogf(GL_FOG_DENSITY,0.5);
-   // glHint(GL_FOG_HINT, GL_DONT_CARE);
-   // glFogf(GL_FOG_START, 10);
-   // glFogf(GL_FOG_END,15);
-   // glEnable(GL_FOG);
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogfv(GL_FOG_COLOR, FogColor);
+    glFogf(GL_FOG_DENSITY,0.5);
+    glHint(GL_FOG_HINT, GL_DONT_CARE);
+    glFogf(GL_FOG_START, 6);
+    glFogf(GL_FOG_END,14);
+    glEnable(GL_FOG);
 
     //z buffer
     glEnable(GL_DEPTH_TEST);
@@ -477,13 +487,12 @@ void Draw::init3D(){
     glShadeModel(GL_SMOOTH);
 }
 
-
 void Draw::drawFloor(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	glCullFace(GL_FRONT);
 	glBindTexture(GL_TEXTURE_2D,*texHandle[0]);
 
 	GLfloat vertices[4][3]={
@@ -492,50 +501,72 @@ void Draw::drawFloor(int x, int y){
 		{0+x, 0.0, 0+y},
 		{1+x, 0.0, 0+y},
 	};
+/*
+GLfloat vertices[4][3]={
+		{26, 0.0, 80},
+		{0, 0.0, 80},
+		{0, 0.0, 0},
+		{26, 0.0, 0},
+	};
+*/
 	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices[0]);
+	
+	glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices[1]);
+	
+	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices[2]);
+	
+	glNormal3f(vertices[3][0], vertices[3][1], vertices[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices[3]);
 	glEnd();
 	glDisable(GL_CULL_FACE);
+    glEnable(GL_FOG);
+
 }
 
 void Draw::drawSky(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
+    glDisable(GL_FOG);
 
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+	glCullFace(GL_BACK);
 	glBindTexture(GL_TEXTURE_2D,*texHandle[1]);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	GLfloat vertices[4][3]={
-		{26, 2.0, 80},
-		{-5, 2.0 , 80},
-		{-5, 2.0 , 0},
-		{26, 2.0, 0},
+		{26, 3.0, 80},
+		{-5, 3.0 , 80},
+		{-5, 3.0 , -2.0},
+		{26, 3.0, -2.0},
 	};
 	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices[0]);
+	
+	glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices[1]);
+	
+	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices[2]);
+	
+	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices[3]);
 	glEnd();
+	
 	glDisable(GL_CULL_FACE);
 }
-
-
 
 void Draw::drawFloor2(int x, int y){
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
@@ -579,13 +610,19 @@ int i;
 		{1+x, 0, y},
 	};
 	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices1[0]);
+	
+	glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices1[1]);
+	
+	glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices1[2]);
+	
+	glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices1[3]);
 	glEnd();
@@ -599,13 +636,19 @@ int i;
 		{1+x, 0, y+1},
 	};
 	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices2[0]);
+	
+	glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices2[1]);
+	
+	glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices2[2]);
+	
+	glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices2[3]);
 	glEnd();
@@ -619,13 +662,19 @@ int i;
 		{x, 0, 1+y},
 	};
 	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices3[0]);
+	
+	glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices3[1]);
+	
+	glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices3[2]);
+	
+	glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices3[3]);
 	glEnd();
@@ -639,6 +688,103 @@ int i;
 		{1+x, 0, 1+y},
 	};
 	glBegin(GL_POLYGON);
+	glNormal3f(vertices4[0][0], vertices4[0][1], vertices4[0][2]);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices4[0]);
+	
+	glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices4[1]);
+	
+	glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices4[2]);
+	
+	glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices4[3]);
+	glEnd();
+}
+
+void Draw::drawAttack(double x, double z){
+
+	//glPushMatrix();
+	//glLoadIdentity();
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
+	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
+	
+	
+	//glDisable(GL_CULL_FACE);
+	glBindTexture(GL_TEXTURE_2D,*texHandle[4]);
+	//glRotated((double)r, x, 1.0, z);	//
+	glTranslatef(1+x, 0, 1+z);
+	glRotated(r, 0.0, 1.0, 0.0);
+	glTranslatef(-(1+x), 0, -(1+z));
+	GLfloat vertices[4][3]={
+		{2+x, 0.3, z+2},
+		{0+x, 0.3, z+2},
+		{0+x, 0.3, z},
+		{2+x, 0.3, z},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices2[4][3]={
+		{2+x, 1.5, z},
+		{0+x, 1.5, z},
+		{0+x, 0.3, z},
+		{2+x, 0.3, z},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices2[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices2[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices2[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices2[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices3[4][3]={
+		{2+x, 1.5, 2+z},
+		{0+x, 1.5, 2+z},
+		{0+x, 0.3, 2+z},
+		{2+x, 0.3, 2+z},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices3[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices3[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices3[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices3[3]);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices4[4][3]={
+		{x, 1.5, 2+z},
+		{x, 1.5, z},
+		{x, 0.3, z},
+		{x, 0.3, 2+z},
+	};
+	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices4[0]);
@@ -649,12 +795,147 @@ int i;
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices4[3]);
 	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
+	GLfloat vertices5[4][3]={
+		{2+x, 1.5, 2+z},
+		{2+x, 1.5, z},
+		{2+x, 0.3, z},
+		{2+x, 0.3, 2+z},
+	};
+	glBegin(GL_POLYGON);
+	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+	glTexCoord2i(0,0);
+	glVertex3fv(vertices5[0]);
+	glTexCoord2i(0,1);
+	glVertex3fv(vertices5[1]);
+	glTexCoord2i(1,1);
+	glVertex3fv(vertices5[2]);
+	glTexCoord2i(1,0);
+	glVertex3fv(vertices5[3]);
+	glEnd();
+	
+	
+	/*
+	glTranslatef(-1,0,-1);
+	glRotated((double)r, 0, 1.0, 0);
+	glTranslatef(1+x,0,1+z);
+	r+=20;
+	*/
+	if ((r+=20) >= 360) r = 0;
+	//glEnable(GL_CULL_FACE);
+	
+	//glPopMatrix();
 }
 
+void Draw::drawAttack2(double x, double z){
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
+		glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
+		glDisable(GL_CULL_FACE);
+		//前
+		glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
+		GLfloat vertices1[4][3]={
+			{x+0,    0.6, z+3},
+			{x+0,    0.5, z+3},
+			{x+0.25, 0.6, z+2},
+			{x+0.25, 0.7, z+2},
+		};
+		glBegin(GL_POLYGON);
+		glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices1[0]);
+		
+		glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
+		glTexCoord2i(0,1);
+		glVertex3fv(vertices1[1]);
+		
+		glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
+		glTexCoord2i(1,1);
+		glVertex3fv(vertices1[2]);
+		
+		glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
+		glTexCoord2i(1,0);
+		glVertex3fv(vertices1[3]);
+		glEnd();
 
+		
+		glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
+		GLfloat vertices2[4][3]={
+			{x+0,    0.6, z+3},
+			{x+0,    0.5, z+3},
+			{x-0.25, 0.6, z+2},
+			{x-0.25, 0.7, z+2},
+		};
+		glBegin(GL_POLYGON);
+		glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices2[0]);
+		
+		glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
+		glTexCoord2i(0,1);
+		glVertex3fv(vertices2[1]);
+		
+		glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
+		glTexCoord2i(1,1);
+		glVertex3fv(vertices2[2]);
+		
+		glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
+		glTexCoord2i(1,0);
+		glVertex3fv(vertices2[3]);
+		glEnd();
 
+		
+		glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
+		GLfloat vertices3[4][3]={
+			{x+0.25, 0.7, 2+z},
+			{x+0.25, 0.6, 2+z},
+			{x+0,    0.7, 1+z},
+			{x+0,    0.8, 1+z},
+		};
+		glBegin(GL_POLYGON);
+		glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices3[0]);
+		
+		glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
+		glTexCoord2i(0,1);
+		glVertex3fv(vertices3[1]);
+		
+		glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
+		glTexCoord2i(1,1);
+		glVertex3fv(vertices3[2]);
+		
+		glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
+		glTexCoord2i(1,0);
+		glVertex3fv(vertices3[3]);
+		glEnd();
 
-
-
+		//右
+		glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
+		GLfloat vertices4[4][3]={
+			{x-0.25, 0.7, 2+z},
+			{x-0.25, 0.6, 2+z},
+			{x+0,    0.7, 1+z},
+			{x+0,    0.8, 1+z},
+		};
+		glBegin(GL_POLYGON);
+		glNormal3f(vertices4[0][0], vertices4[0][1], vertices4[0][2]);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices4[0]);
+		
+		glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
+		glTexCoord2i(0,1);
+		glVertex3fv(vertices4[1]);
+		
+		glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
+		glTexCoord2i(1,1);
+		glVertex3fv(vertices4[2]);
+		
+		glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
+		glTexCoord2i(1,0);
+		glVertex3fv(vertices4[3]);
+		glEnd();
+}
 

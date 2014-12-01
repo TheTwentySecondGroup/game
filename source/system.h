@@ -28,7 +28,6 @@ public:
 
 	Map *map;
 
-
 	Player *player;
 
 	NetClass *network;

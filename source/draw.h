@@ -17,6 +17,7 @@ public:
 	GLfloat WhiteMaterial[4];
 	GLfloat SpecularLight[4];
 	GLfloat GrayLight[4];
+	GLfloat WhiteLight[4];
 	GLfloat FogColor[4];
 
 //Initialize draw() function
@@ -55,8 +56,9 @@ public:
 //draw cube
 	void drawCube(int x, int y);
 
-//void drawA(int x, int y);
+void drawAttack(double x, double z);
 
+void drawAttack2(double x, double z);
 //calculate and setting glNormal3f
 	GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]);
 
