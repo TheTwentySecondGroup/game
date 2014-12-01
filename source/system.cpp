@@ -154,11 +154,7 @@ int System::judgeHit() {
 
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
-<<<<<<< HEAD
-	if (player[0].attflag == 1) {
-=======
 	if (player[myID].attflag == 1) {
->>>>>>> branch 'master' of https://github.com/TheTwentySecondGroup/game.git
 		count++;
 		if (count == 2000) {
 			count = 0;
