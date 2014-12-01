@@ -140,7 +140,7 @@ int System::judgeHit() {
 }
 
 void System::gameMain() {
-	cout << "execute sys gameMain()" << endl;
+	//cout << "execute sys gameMain()" << endl;
 	if (player[0].attflag == 1) {
 		count++;
 		if (count == 50) {

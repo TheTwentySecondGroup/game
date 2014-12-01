@@ -20,8 +20,6 @@ int fallingFlag = 0;
 
 //void* wiimoteUpdate();
 
-
-
 wiimote_t wiimote;
 int Stage = 1;
 time_t start, now, end;
@@ -59,8 +57,6 @@ void timeReset() {
 	start = time(NULL);
 }
 
-
-
 int main(int argc, char* argv[]) {
 	SDL_Surface *window;
 	SDL_Event event; //for SDL event
@@ -83,13 +79,11 @@ int main(int argc, char* argv[]) {
 	}
 	SDL_WM_SetCaption("test program", NULL);
 
-
 	sys = new System();
 
 	sys->io = new GameIO();
 
 	sys->draw = new Draw();
-
 
 	sys->player = new Player[4];
 
@@ -98,20 +92,21 @@ int main(int argc, char* argv[]) {
 	sys->tutorial = new Tutorial();
 
 	sys->map = new Map();
-
-	sys->network = new NetClass();
-
-	Init();
+	if (argc ==2 && strcmp(argv[1],"server")==0) {
+		sys->network = new NetClass(MODE_SERVER);
+		sys->Stage = -4;
+		SDL_Quit();
+	} else {
+		sys->network = new NetClass(MODE_CLIENT);
+		Init();
+	}
 
 	//Initialize System
 
-
-
 	//initialize my position
 	sys->player[0].x = 0;
-	sys->player[0].y=0.5;
+	sys->player[0].y = 0.5;
 	sys->player[0].z = 0;
-
 
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
 	 wiimote.led.one  = 1;
@@ -128,7 +123,6 @@ int main(int argc, char* argv[]) {
 
 	//Initialize openGL  etc
 	//sys->draw = new Draw();
-
 	//Initialize title
 	//sys->title =
 	//sys->title = new Title(sys);
@@ -136,12 +130,10 @@ int main(int argc, char* argv[]) {
 	//Init Map
 	//cout<<"Stage1 =  "<<sys->Stage<<endl;
 
-
-	cout<<"Stage =  "<<sys->Stage<<endl;
+	cout << "Stage =  " << sys->Stage << endl;
 
 	while (1) {
 		sys->io->routine();
-		cout<<"test"<<endl;
 		//timeProc();
 		switch (sys->Stage) {
 		case 0:
