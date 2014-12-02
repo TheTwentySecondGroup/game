@@ -1,8 +1,4 @@
 #include "global.h"
-//#include "draw.h"
-//#include "Effect.h"
-//#include "mode.h"
-//#include "Map.h"
 #include "system.h"
 
 GLuint *texHandle[10];
@@ -34,7 +30,7 @@ void Draw::routine(){
         GLfloat Light0Dir[]={0,0,1};
         glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,Light0Dir);
         glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 180.0f );
-        glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 2.0f );
+        glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 1.0f );
         glLightfv(GL_LIGHT0,GL_AMBIENT,WhiteLight);
         glLightfv(GL_LIGHT0,GL_DIFFUSE,DifLight);
         glLightfv(GL_LIGHT0,GL_SPECULAR,SpecularLight);
@@ -42,9 +38,6 @@ void Draw::routine(){
         glEnable(GL_NORMALIZE);
 
         glEnable(GL_LIGHT0);
-
-        //drawCube(1,1);
-        //model[0].Draw();
 
         sys->map->drawMap();//
         sys->model[0].Draw();
@@ -141,9 +134,9 @@ Draw::Draw(){
 	lightpos[2] = 0;
 	lightpos[3] = 0;
 
-	DifLight[0] = 0.5;
-	DifLight[1] = 0.5;
-	DifLight[2] = 0.5;
+	DifLight[0] = 0.4;
+	DifLight[1] = 0.4;
+	DifLight[2] = 0.4;
 	DifLight[3] = 1.0;
 
 	GrayMaterial[0] = 0.3;
@@ -166,9 +159,9 @@ Draw::Draw(){
 	GrayLight[2] = 0.3;
 	GrayLight[3] = 1;
 	
-	WhiteLight[0] = 1.0;
-	WhiteLight[1] = 1.0;
-	WhiteLight[2] = 1.0;
+	WhiteLight[0] = 0.7;
+	WhiteLight[1] = 0.7;
+	WhiteLight[2] = 0.7;
 	WhiteLight[3] = 1.0;
 
 	FogColor[0] = 1.0;
@@ -204,7 +197,6 @@ GLuint *Draw::pngTexture(string name){
         SDL_FreeSurface(surface);
     }
     return Handle;
-
 }
 
 GLuint *Draw::timeTexture(SDL_Surface *surface){
@@ -257,9 +249,7 @@ GLuint *Draw::initTexture(string name){
 
     if(surface == NULL){
     	cout<<"can't open "<<name<<endl;
-        //printf("can't open %s \n",name);
         exit(-1);
-
     }
     texColor = surface->format->BytesPerPixel;
     if(texColor ==4){
@@ -345,9 +335,6 @@ void Draw::drawCube(int x,int y){
     glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,WhiteMaterial);
     glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
-    //glBindTexture( GL_TEXTURE_2D, *texHandle[0] );
-
-
     GLfloat vertices [8][3]={
         {0+x, 1.0 ,0+y},
         { 1+x,  1.0, 0+y},
@@ -358,31 +345,7 @@ void Draw::drawCube(int x,int y){
         {0+x, 0.0,  1+y},
         { 1+x, 0.0,  1+y}
     };
-    /*
-       glBegin(GL_POLYGON);
-       glNormal3f(myPos.xd , myPos.yd , 0);
-       glTexCoord2i(0,0);
-       glVertex3fv(vertices[0]);
-       glTexCoord2i(0,1);
-       glVertex3fv(vertices[1]);
-       glTexCoord2i(1,1);
-       glVertex3fv(vertices[2]);
-       glTexCoord2i(1,0);
-       glVertex3fv(vertices[3]);
-       glEnd();
-    //
-    glBegin(GL_POLYGON);
-    glNormal3f(myPos.xd , myPos.yd , 0);
-    glTexCoord2i(0,0);
-    glVertex3fv(vertices[4]);
-    glTexCoord2i(0,1);
-    glVertex3fv(vertices[5]);
-    glTexCoord2i(1,1);
-    glVertex3fv(vertices[6]);
-    glTexCoord2i(1,0);
-    glVertex3fv(vertices[7]);
-    glEnd();
-     */
+   
     // 右
     glBegin(GL_POLYGON);
 
@@ -503,14 +466,7 @@ void Draw::drawFloor(int x, int y){
 		{0+x, 0.0, 0+y},
 		{1+x, 0.0, 0+y},
 	};
-/*
-GLfloat vertices[4][3]={
-		{26, 0.0, 80},
-		{0, 0.0, 80},
-		{0, 0.0, 0},
-		{26, 0.0, 0},
-	};
-*/
+
 	glBegin(GL_POLYGON);
 	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
 	glTexCoord2i(0,0);
@@ -530,7 +486,6 @@ GLfloat vertices[4][3]={
 	glEnd();
 	glDisable(GL_CULL_FACE);
     glEnable(GL_FOG);
-
 }
 
 void Draw::drawSky(int x, int y){

@@ -11,8 +11,8 @@ public:
    Effect();
    void hp(double x, double z);
    void mp();
-   void drawAttack(double x, double z);
-   void drawAttack2(double x, double z);
+   void drawAttack(double px, double pz);
+   void drawAttack2(double px, double pz);
 };
 
 #endif

@@ -130,10 +130,15 @@ void System::moveChara() {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
 	}
+	
+	if(io->key[KEY_C] == 1 && player[myID].attflag == 1){
+		player[myID].attflag = 0;
+		effect->x = -1;
+		effect->z = -1;
+	}
 }
 
 int System::judgeHit() {
-
 	return 0;
 }
 
@@ -144,6 +149,8 @@ void System::gameMain() {
 		if (count == 2000) {
 			count = 0;
 			player[myID].attflag = 0;
+			sys->effect->x = 0;
+			sys->effect->z = 0;
 		}
 	}
 	

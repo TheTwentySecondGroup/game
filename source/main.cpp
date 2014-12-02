@@ -35,8 +35,6 @@ void Init() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
-	// glEnable(GL_CULL_FACE);
-	// glCullFace(GL_BACK);
 
 	Model modeltmp("UnityChan/Models/unitychan.fbx");
 
