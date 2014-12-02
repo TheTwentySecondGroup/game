@@ -42,6 +42,10 @@ int System::selectChara() {
 		if (selChara < 4)
 			selChara++;
 		else
+		
+		
+		
+		
 			// if (selChara == 4)
 			selChara = 1;
 	}
@@ -67,13 +71,7 @@ void System::initChara() {
 
 void System::moveChara() {
 	Player old = player[myID];
-	//Uint8 *key = SDL_GetKeyState(NULL);
-	//Sint16 x_move, y_move;
-	//Sint axis1 = SDL_JoystickGetAxis(joystick,3);
-	//x_move = SDL_JoystickGetAxis(joystick, 0);
-	//y_move = SDL_JoystickGetAxis(joystick, 1);
 	if (io->key[KEY_RIGHT] > 0) {
-		//player[myID].dir -= 0.03;
 		if((player[myID].dir -= 0.03) <= -6.03){
 			player[myID].dir = 0;
 		}
@@ -81,23 +79,11 @@ void System::moveChara() {
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
-		//player[myID].dir += 0.03;
 		if((player[myID].dir+= 0.03) > 6.03){
 			player[myID].dir = 0;
 		}
 		cout << player[myID].dir << endl;
 	}
-	/*
-	 if(key[SDLK_SPACE] == SDL_PRESSED){
-	 if(player[0].z<1.4)
-	 player[0].z += 0.03;
-	 }
-
-	 if(key[SDLK_RETURN] == SDL_PRESSED){
-	 if(player[0].z>0.5)
-	 player[0].z -= 0.03;
-	 }
-	 */
 
 	if (io->key[KEY_UP] > 0) {
 		player[myID].x += sin(player[myID].dir) / 5;
@@ -144,7 +130,6 @@ void System::moveChara() {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
 	}
-
 }
 
 int System::judgeHit() {
@@ -154,11 +139,7 @@ int System::judgeHit() {
 
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
-<<<<<<< HEAD
-	if (player[0].attflag == 1) {
-=======
 	if (player[myID].attflag == 1) {
->>>>>>> branch 'master' of https://github.com/TheTwentySecondGroup/game.git
 		count++;
 		if (count == 2000) {
 			count = 0;
@@ -168,10 +149,5 @@ void System::gameMain() {
 	
 	moveChara();
 	draw->routine();
-
-	//attack(10.0, 10.0, 10.0, 10.0);
-	//glFlush();
-	//SDL_GL_SwapBuffers();
-	//SDL_Delay(30);
 }
 

@@ -92,6 +92,8 @@ int main(int argc, char* argv[]) {
 	sys->tutorial = new Tutorial();
 
 	sys->map = new Map();
+	
+	sys->effect = new Effect();
 	if (argc ==2 && strcmp(argv[1],"server")==0) {
 		sys->network = new NetClass(MODE_SERVER);
 		sys->Stage = -4;
@@ -104,16 +106,9 @@ int main(int argc, char* argv[]) {
 	//Initialize System
 
 	//initialize my position
-<<<<<<< HEAD
-	sys->player[0].x = 0;
-	sys->player[0].y = 0.5;
-	sys->player[0].z = 0;
-=======
 	sys->player[0].x = 2.0;
 	sys->player[0].y=0.5;
 	sys->player[0].z = 2.0;
-
->>>>>>> branch 'master' of https://github.com/TheTwentySecondGroup/game.git
 
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
 	 wiimote.led.one  = 1;
@@ -141,10 +136,7 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		sys->io->routine();
-<<<<<<< HEAD
-=======
-		//cout<<"test"<<endl;
->>>>>>> branch 'master' of https://github.com/TheTwentySecondGroup/game.git
+
 		//timeProc();
 		switch (sys->Stage) {
 		case 0:

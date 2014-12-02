@@ -10,6 +10,7 @@
 #include "io.h"
 #include "Map.h"
 #include "net.h"
+#include "Effect.h"
 
 using namespace std;
 
@@ -31,6 +32,8 @@ public:
 	Player *player;
 
 	NetClass *network;
+	
+	Effect *effect;
 
 
 	int myID;

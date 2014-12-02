@@ -9,8 +9,6 @@ public:
 
 	GLuint *charaImage[8];
 
-
-
 	GLfloat lightpos[4];
 	GLfloat DifLight[4];
 	GLfloat GrayMaterial[4];
@@ -56,23 +54,11 @@ public:
 //draw cube
 	void drawCube(int x, int y);
 
-void drawAttack(double x, double z);
-
-void drawAttack2(double x, double z);
 //calculate and setting glNormal3f
 	GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]);
 
 //for font
 	TTF_Font* font;
-
-// for light
-	/*light0 position
-	 [0]=my x position
-	 [1]=my y position
-	 [2]=my z position
-	 [3]=1.0  never change*/
-
-
 };
 
 #endif            

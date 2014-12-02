@@ -5,13 +5,9 @@
 //#include "Map.h"
 #include "system.h"
 
-
-
-//GLuint *texHandle[10];
+GLuint *texHandle[10];
 
 //TTF_Font* font;
-static double r = 0.0;
-
 
 void Draw::routine(){
     glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -55,34 +51,45 @@ void Draw::routine(){
         
         /*ATTACK1*/
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 1){
-        	drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*5));
+		if(sys->player[sys->myID].dir >=0 && sys->player[sys->myID].dir < 1.5 || sys->player[sys->myID].dir <0 && sys->player[sys->myID].dir > -1.5){
+        	sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*4));
+}
+	else if(sys->player[sys->myID].dir >=1.5 && sys->player[sys->myID].dir < 2 || sys->player[sys->myID].dir <= -1.5 && sys->player[sys->myID].dir > -2){
+		sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*6),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*7.5));
+}	
+	else if(sys->player[sys->myID].dir >=2 && sys->player[sys->myID].dir < 4.5 || sys->player[sys->myID].dir <= -2 && sys->player[sys->myID].dir > -4.5){
+        sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*6.25));
+}
+	else if(sys->player[sys->myID].dir >=4.5 && sys->player[sys->myID].dir <= 6.03 || sys->player[sys->myID].dir <= -4.5 && sys->player[sys->myID].dir > -6.03){
+        sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*4));
+}
         }
         
         /*ATTACK2*/
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 2){
         	if(sys->player[sys->myID].dir >=0 && sys->player[sys->myID].dir < 1.59 || sys->player[sys->myID].dir <=0 && sys->player[sys->myID].dir > -1.59){
-        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*6, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*6, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
         	}
         	
         	else if(sys->player[sys->myID].dir >=1.59 && sys->player[sys->myID].dir < 1.8 || sys->player[sys->myID].dir <= -1.59 && sys->player[sys->myID].dir > -1.8){
-        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+         sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
         		cout << "attack2" << endl;
         	}
         	
         	else if(sys->player[sys->myID].dir >=1.8 && sys->player[sys->myID].dir < 3.4 || sys->player[sys->myID].dir <=- 1.8 && sys->player[sys->myID].dir > -3.4){
-        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
         	}
         	
         	else if(sys->player[sys->myID].dir >=3.4 && sys->player[sys->myID].dir < 4.53 || sys->player[sys->myID].dir <= -3.4 && sys->player[sys->myID].dir > -4.53){
-        	    drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
         	}
         	
         	else if(sys->player[sys->myID].dir >=4.53 && sys->player[sys->myID].dir < 4.74 || sys->player[sys->myID].dir <= -4.53 && sys->player[sys->myID].dir > -4.74){
-        		drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
         	}
         	
         	else if(sys->player[sys->myID].dir >=4.74 && sys->player[sys->myID].dir <= 6.03 || sys->player[sys->myID].dir <= -4.74 && sys->player[sys->myID].dir >= -6.03){
-        	    drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*5, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+         sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*5, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
         	}
         }
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
@@ -124,11 +131,6 @@ Draw::Draw(){
     texHandle[0] = initTexture("data/image/zimen.bmp");
     texHandle[1] = initTexture("data/image/sky2.bmp");
     texHandle[2] = initTexture("data/image/block.bmp");
-    texHandle[3] = initTexture("data/image/lake.bmp");
-    texHandle[4] = initTexture("data/image/star.bmp");
-    texHandle[5] = initTexture("data/image/mist.bmp");
-    texHandle[6] = initTexture("data/image/fire.bmp");
-    //texHandle[7] = initTexture("data/image/MP.bmp");
 	//Initialize ttf
     //TTF_Init();
     //font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
@@ -705,237 +707,3 @@ int i;
 	glVertex3fv(vertices4[3]);
 	glEnd();
 }
-
-void Draw::drawAttack(double x, double z){
-
-	//glPushMatrix();
-	//glLoadIdentity();
-	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
-	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
-	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
-	
-	
-	//glDisable(GL_CULL_FACE);
-	glBindTexture(GL_TEXTURE_2D,*texHandle[4]);
-	//glRotated((double)r, x, 1.0, z);	//
-	glTranslatef(1+x, 0, 1+z);
-	glRotated(r, 0.0, 1.0, 0.0);
-	glTranslatef(-(1+x), 0, -(1+z));
-	GLfloat vertices[4][3]={
-		{2+x, 0.3, z+2},
-		{0+x, 0.3, z+2},
-		{0+x, 0.3, z},
-		{2+x, 0.3, z},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices[3]);
-	glEnd();
-	
-	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
-	GLfloat vertices2[4][3]={
-		{2+x, 1.5, z},
-		{0+x, 1.5, z},
-		{0+x, 0.3, z},
-		{2+x, 0.3, z},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices2[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices2[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices2[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices2[3]);
-	glEnd();
-	
-	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
-	GLfloat vertices3[4][3]={
-		{2+x, 1.5, 2+z},
-		{0+x, 1.5, 2+z},
-		{0+x, 0.3, 2+z},
-		{2+x, 0.3, 2+z},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices3[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices3[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices3[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices3[3]);
-	glEnd();
-	
-	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
-	GLfloat vertices4[4][3]={
-		{x, 1.5, 2+z},
-		{x, 1.5, z},
-		{x, 0.3, z},
-		{x, 0.3, 2+z},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices4[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices4[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices4[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices4[3]);
-	glEnd();
-	
-	glBindTexture(GL_TEXTURE_2D,*texHandle[5]);
-	GLfloat vertices5[4][3]={
-		{2+x, 1.5, 2+z},
-		{2+x, 1.5, z},
-		{2+x, 0.3, z},
-		{2+x, 0.3, 2+z},
-	};
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0,0);
-	glVertex3fv(vertices5[0]);
-	glTexCoord2i(0,1);
-	glVertex3fv(vertices5[1]);
-	glTexCoord2i(1,1);
-	glVertex3fv(vertices5[2]);
-	glTexCoord2i(1,0);
-	glVertex3fv(vertices5[3]);
-	glEnd();
-	
-	
-	/*
-	glTranslatef(-1,0,-1);
-	glRotated((double)r, 0, 1.0, 0);
-	glTranslatef(1+x,0,1+z);
-	r+=20;
-	*/
-	if ((r+=20) >= 360) r = 0;
-	//glEnable(GL_CULL_FACE);
-	
-	//glPopMatrix();
-}
-
-void Draw::drawAttack2(double x, double z){
-	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,GrayMaterial);
-		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,GrayMaterial);
-		glMaterialf(GL_FRONT,GL_SHININESS,60.0);
-
-		glDisable(GL_CULL_FACE);
-		//前
-		glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
-		GLfloat vertices1[4][3]={
-			{x+0,    0.6, z+3},
-			{x+0,    0.5, z+3},
-			{x+0.25, 0.6, z+2},
-			{x+0.25, 0.7, z+2},
-		};
-		glBegin(GL_POLYGON);
-		glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
-		glTexCoord2i(0,0);
-		glVertex3fv(vertices1[0]);
-		
-		glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
-		glTexCoord2i(0,1);
-		glVertex3fv(vertices1[1]);
-		
-		glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
-		glTexCoord2i(1,1);
-		glVertex3fv(vertices1[2]);
-		
-		glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
-		glTexCoord2i(1,0);
-		glVertex3fv(vertices1[3]);
-		glEnd();
-
-		
-		glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
-		GLfloat vertices2[4][3]={
-			{x+0,    0.6, z+3},
-			{x+0,    0.5, z+3},
-			{x-0.25, 0.6, z+2},
-			{x-0.25, 0.7, z+2},
-		};
-		glBegin(GL_POLYGON);
-		glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
-		glTexCoord2i(0,0);
-		glVertex3fv(vertices2[0]);
-		
-		glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
-		glTexCoord2i(0,1);
-		glVertex3fv(vertices2[1]);
-		
-		glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
-		glTexCoord2i(1,1);
-		glVertex3fv(vertices2[2]);
-		
-		glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
-		glTexCoord2i(1,0);
-		glVertex3fv(vertices2[3]);
-		glEnd();
-
-		
-		glBindTexture(GL_TEXTURE_2D,*texHandle[3]);
-		GLfloat vertices3[4][3]={
-			{x+0.25, 0.7, 2+z},
-			{x+0.25, 0.6, 2+z},
-			{x+0,    0.7, 1+z},
-			{x+0,    0.8, 1+z},
-		};
-		glBegin(GL_POLYGON);
-		glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
-		glTexCoord2i(0,0);
-		glVertex3fv(vertices3[0]);
-		
-		glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
-		glTexCoord2i(0,1);
-		glVertex3fv(vertices3[1]);
-		
-		glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
-		glTexCoord2i(1,1);
-		glVertex3fv(vertices3[2]);
-		
-		glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
-		glTexCoord2i(1,0);
-		glVertex3fv(vertices3[3]);
-		glEnd();
-
-		//右
-		glBindTexture(GL_TEXTURE_2D,*texHandle[6]);
-		GLfloat vertices4[4][3]={
-			{x-0.25, 0.7, 2+z},
-			{x-0.25, 0.6, 2+z},
-			{x+0,    0.7, 1+z},
-			{x+0,    0.8, 1+z},
-		};
-		glBegin(GL_POLYGON);
-		glNormal3f(vertices4[0][0], vertices4[0][1], vertices4[0][2]);
-		glTexCoord2i(0,0);
-		glVertex3fv(vertices4[0]);
-		
-		glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
-		glTexCoord2i(0,1);
-		glVertex3fv(vertices4[1]);
-		
-		glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
-		glTexCoord2i(1,1);
-		glVertex3fv(vertices4[2]);
-		
-		glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
-		glTexCoord2i(1,0);
-		glVertex3fv(vertices4[3]);
-		glEnd();
-}
-
