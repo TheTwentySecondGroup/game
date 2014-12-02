@@ -126,10 +126,14 @@ void Effect::drawAttack(double px, double pz){
 }
 
 void Effect::drawAttack2(double px, double pz){
+	if(x == -1 && z == -1){
+		x = px;
+		z = pz;
+	}
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
 	glDisable(GL_CULL_FACE);
-	//前
+	
 	glBindTexture(GL_TEXTURE_2D,*effectImage[3]);
 	GLfloat vertices1[4][3]={
 		{x+0,    0.6, z+3},
@@ -155,7 +159,6 @@ void Effect::drawAttack2(double px, double pz){
 	glVertex3fv(vertices1[3]);
 	glEnd();
 
-		
 	glBindTexture(GL_TEXTURE_2D,*effectImage[0]);
 	GLfloat vertices2[4][3]={
 		{x+0,    0.6, z+3},
@@ -207,7 +210,6 @@ void Effect::drawAttack2(double px, double pz){
 	glVertex3fv(vertices3[3]);
 	glEnd();
 
-	//右
 	glBindTexture(GL_TEXTURE_2D,*effectImage[3]);
 	GLfloat vertices4[4][3]={
 		{x-0.25, 0.7, 2+z},
