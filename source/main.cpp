@@ -109,7 +109,6 @@ int main(int argc, char* argv[]) {
 	sys->player[0].x = 2.0;
 	sys->player[0].y=0.5;
 	sys->player[0].z = 2.0;
-
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
 	 wiimote.led.one  = 1;
 	 wiimote.mode.ir = 1;
@@ -136,7 +135,6 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		sys->io->routine();
-
 		//timeProc();
 		switch (sys->Stage) {
 		case 0:
