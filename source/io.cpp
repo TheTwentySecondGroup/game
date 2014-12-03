@@ -63,23 +63,31 @@ void GameIO::routine() {
 	if (SdlKey[SDLK_RETURN] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED|| jbutton[2] == 1) {
 		if (key[KEY_A] < KEY_MAX_COUNT)
 			key[KEY_A]++;
-	} 
+	}
 	else {
 		key[KEY_A] = 0;
 	}
-	
+
 	if(SdlKey[SDLK_1] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_B] < KEY_MAX_COUNT)
 			key[KEY_B]++;
-	} 
+	}
 	else {
 		key[KEY_B] = 0;
 	}
-	
+
+	if(SdlKey[SDLK_2] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+		if(key[KEY_D] < KEY_MAX_COUNT)
+			key[KEY_D]++;
+	}
+	else {
+		key[KEY_D] = 0;
+	}
+
 	if(SdlKey[SDLK_9] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_C] < KEY_MAX_COUNT)
 			key[KEY_C]++;
-	} 
+	}
 	else {
 		key[KEY_C] = 0;
 	}

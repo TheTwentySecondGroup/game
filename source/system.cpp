@@ -42,10 +42,10 @@ int System::selectChara() {
 		if (selChara < 4)
 			selChara++;
 		else
-		
-		
-		
-		
+
+
+
+
 			// if (selChara == 4)
 			selChara = 1;
 	}
@@ -125,12 +125,17 @@ void System::moveChara() {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 1;
 	}
-	
+
 	if(io->key[KEY_B] == 1 && player[myID].attflag == 0){
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
 	}
-	
+
+	if(io->key[KEY_D] == 1 && player[myID].attflag == 0){
+		player[myID].attflag = 1;
+		player[myID].attpatern = 3;
+	}
+
 	if(io->key[KEY_C] == 1 && player[myID].attflag == 1){
 		player[myID].attflag = 0;
 		effect->x = -1;
@@ -153,7 +158,7 @@ void System::gameMain() {
 			sys->effect->z = 0;
 		}
 	}
-	
+
 	moveChara();
 	draw->routine();
 }
