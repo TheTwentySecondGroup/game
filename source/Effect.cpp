@@ -237,10 +237,6 @@ void Effect::drawAttack2(double px, double pz){
 }
 
 void Effect::drawAttack3(double px, double pz, double pr){
-
-void Effect::drawAttack4(double px, double pz){
-
-}
     double xd= sin(pr)/20;
     double zd= cos(pr)/20;
     if(x == -1 && z == -1){
@@ -364,4 +360,8 @@ void Effect::drawAttack4(double px, double pz){
     }
 //r=0;
     //if ((r+=20) >= 360) r = 0;
+}
+
+void Effect::drawAttack4(double px, double pz){
+
 }
