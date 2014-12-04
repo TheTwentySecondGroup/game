@@ -17,9 +17,11 @@ void Draw::routine(){
         glLoadIdentity();
         double xd= sin(sys->player[sys->myID].dir);
         double zd=   cos(sys->player[sys->myID].dir) ;
-        gluLookAt(sys->player[sys->myID].x - xd/20 ,sys->player[sys->myID].y,sys->player[sys->myID].z- zd/20, // position of camera
-        		sys->player[sys->myID].x  , sys->player[sys->myID].y ,sys->player[sys->myID].z, //look-at point
-                0.0f,1.0f,0.0f);
+		gluLookAt(sys->player[sys->myID].x - xd*2 , sys->player[sys->myID].y+0.5,
+				sys->player[sys->myID].z - zd*2, // position of camera
+				sys->player[sys->myID].x, sys->player[sys->myID].y,
+				sys->player[sys->myID].z, //look-at point
+				0, 1.0f, 0);
 
         //Light
         lightpos[0]=12;//sys->player[sys->myID].x;
