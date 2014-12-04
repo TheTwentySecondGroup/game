@@ -92,17 +92,17 @@ void Draw::routine(){
 
         /*ATTACK3*/
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 3){
-            if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
+            //if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
                 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-        	}
-        	else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
+        	//}
+        	/*else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
                 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
         		cout << "attack3" << endl;
         	}
         	else if(pdir >=3.0 && pdir < 5.0 || pdir <=- 3.0 && pdir > -5.0){
                 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
         	}
-
+            */
         }
 
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);

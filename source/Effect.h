@@ -14,6 +14,7 @@ public:
    void drawAttack(double px, double pz);
    void drawAttack2(double px, double pz);
    void drawAttack3(double px, double pz, double pr);
+   void drawAttack4(double px, double pz);
 };
 
 #endif
