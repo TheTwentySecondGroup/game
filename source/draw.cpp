@@ -46,8 +46,9 @@ void Draw::routine() {
 		sys->map->drawMap(); //
 
 		for (int i = 0; i < 4; i++) {
-			if(sys->player[i].hp>0)sys->model[sys->player[i].chara].Draw(sys->player[i].x,
-					sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+			if (sys->player[i].hp > 0) {
+				sys->model[sys->player[i].chara].Draw(sys->player[i].x,sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+			}
 		}
 
 		// sys->model[0].Draw();
@@ -235,7 +236,7 @@ GLuint *Draw::pngTexture(string name) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	gluBuild2DMipmaps( GL_TEXTURE_2D, 4, surface->w, surface->h, GL_RGBA,
-			GL_UNSIGNED_BYTE, surface->pixels);
+	GL_UNSIGNED_BYTE, surface->pixels);
 	if (surface) {
 		SDL_FreeSurface(surface);
 	}
