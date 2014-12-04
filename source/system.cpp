@@ -132,6 +132,7 @@ void System::moveChara() {
 				effect[serchEffect].z = player[myID].z
 						+ cos(player[myID].dir) * 1;
 				effect[serchEffect].r = player[myID].dir;
+				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}

@@ -24,6 +24,7 @@ using namespace std;
 #define POS_COMMAND 'P'
 #define SYNC_COMMAND 'S'
 #define EFFECT_COMMAND 'E'
+#define E_SYNC_COMMAND 'W'
 
 
 //1==non-blocking 0==blocking
