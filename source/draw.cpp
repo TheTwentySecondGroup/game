@@ -1,6 +1,7 @@
 #include "global.h"
 #include "system.h"
 
+static double px, pz, pdir;
 GLuint *texHandle[10];
 
 //TTF_Font* font;
@@ -41,50 +42,69 @@ void Draw::routine(){
 
         sys->map->drawMap();//
         sys->model[0].Draw();
-        
+
+        px = sys->player[sys->myID].x;
+        pz = sys->player[sys->myID].z;
+        pdir = sys->player[sys->myID].dir;
         /*ATTACK1*/
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 1){
-		if(sys->player[sys->myID].dir >=0 && sys->player[sys->myID].dir < 1.5 || sys->player[sys->myID].dir <0 && sys->player[sys->myID].dir > -1.5){
-        	sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*4));
-}
-	else if(sys->player[sys->myID].dir >=1.5 && sys->player[sys->myID].dir < 2 || sys->player[sys->myID].dir <= -1.5 && sys->player[sys->myID].dir > -2){
-		sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*6),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*7.5));
-}	
-	else if(sys->player[sys->myID].dir >=2 && sys->player[sys->myID].dir < 4.5 || sys->player[sys->myID].dir <= -2 && sys->player[sys->myID].dir > -4.5){
-        sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*6.25));
-}
-	else if(sys->player[sys->myID].dir >=4.5 && sys->player[sys->myID].dir <= 6.03 || sys->player[sys->myID].dir <= -4.5 && sys->player[sys->myID].dir > -6.03){
-        sys->effect->drawAttack(sys->player[sys->myID].x+(sin(sys->player[sys->myID].dir)*5),sys->player[sys->myID].z+(cos(sys->player[sys->myID].dir)*4));
-}
+            if(pdir >=0 && pdir < 1.5 || pdir <0 && pdir > -1.5){
+                sys->effect->drawAttack(px+(sin(pdir)*5),pz+(cos(pdir)*4));
+            }
+            else if(pdir >=1.5 && pdir < 2 || pdir <= -1.5 && pdir > -2){
+                sys->effect->drawAttack(px+(sin(pdir)*6),pz+(cos(pdir)*7.5));
+            }
+            else if(pdir >=2 && pdir < 4.5 || pdir <= -2 && pdir > -4.5){
+                sys->effect->drawAttack(px+(sin(pdir)*5),pz+(cos(pdir)*6.25));
+            }
+            else if(pdir >=4.5 && pdir <= 6.03 || pdir <= -4.5 && pdir > -6.03){
+                sys->effect->drawAttack(px+(sin(pdir)*5),pz+(cos(pdir)*4));
+            }
         }
-        
+
         /*ATTACK2*/
         if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 2){
-        	if(sys->player[sys->myID].dir >=0 && sys->player[sys->myID].dir < 1.59 || sys->player[sys->myID].dir <=0 && sys->player[sys->myID].dir > -1.59){
-        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*6, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+        	if(pdir >=0 && pdir < 1.59 || pdir <=0 && pdir > -1.59){
+                sys->effect->drawAttack2(px+sin(pdir)*6, pz+cos(pdir)*5);
         	}
-        	
-        	else if(sys->player[sys->myID].dir >=1.59 && sys->player[sys->myID].dir < 1.8 || sys->player[sys->myID].dir <= -1.59 && sys->player[sys->myID].dir > -1.8){
-         sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+
+        	else if(pdir >=1.59 && pdir < 1.8 || pdir <= -1.59 && pdir > -1.8){
+                sys->effect->drawAttack2(px+sin(pdir)*8, pz+cos(pdir)*16);
         		cout << "attack2" << endl;
         	}
-        	
-        	else if(sys->player[sys->myID].dir >=1.8 && sys->player[sys->myID].dir < 3.4 || sys->player[sys->myID].dir <=- 1.8 && sys->player[sys->myID].dir > -3.4){
-        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+
+        	else if(pdir >=1.8 && pdir < 3.4 || pdir <=- 1.8 && pdir > -3.4){
+                sys->effect->drawAttack2(px+sin(pdir)*8, pz+cos(pdir)*11);
         	}
-        	
-        	else if(sys->player[sys->myID].dir >=3.4 && sys->player[sys->myID].dir < 4.53 || sys->player[sys->myID].dir <= -3.4 && sys->player[sys->myID].dir > -4.53){
-        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*11);
+
+        	else if(pdir >=3.4 && pdir < 4.53 || pdir <= -3.4 && pdir > -4.53){
+                sys->effect->drawAttack2(px+sin(pdir)*8, pz+cos(pdir)*11);
         	}
-        	
-        	else if(sys->player[sys->myID].dir >=4.53 && sys->player[sys->myID].dir < 4.74 || sys->player[sys->myID].dir <= -4.53 && sys->player[sys->myID].dir > -4.74){
-        sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*8, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*16);
+
+        	else if(pdir >=4.53 && pdir < 4.74 || pdir <= -4.53 && pdir > -4.74){
+                sys->effect->drawAttack2(px+sin(pdir)*8, pz+cos(pdir)*16);
         	}
-        	
-        	else if(sys->player[sys->myID].dir >=4.74 && sys->player[sys->myID].dir <= 6.03 || sys->player[sys->myID].dir <= -4.74 && sys->player[sys->myID].dir >= -6.03){
-         sys->effect->drawAttack2(sys->player[sys->myID].x+sin(sys->player[sys->myID].dir)*5, sys->player[sys->myID].z+cos(sys->player[sys->myID].dir)*5);
+
+        	else if(pdir >=4.74 && pdir <= 6.03 || pdir <= -4.74 && pdir >= -6.03){
+                sys->effect->drawAttack2(px+sin(pdir)*5, pz+cos(pdir)*5);
         	}
         }
+
+        /*ATTACK3*/
+        if(sys->player[sys->myID].attflag == 1 && sys->player[sys->myID].attpatern == 3){
+            if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
+                sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
+        	}
+        	else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
+                sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
+        		cout << "attack3" << endl;
+        	}
+        	else if(pdir >=3.0 && pdir < 5.0 || pdir <=- 3.0 && pdir > -5.0){
+                sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
+        	}
+
+        }
+
         //hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
     }
 
@@ -117,7 +137,7 @@ Draw::Draw(){
     //initialize GLUT
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB|GLUT_DEPTH);
 
-    //format to black
+    //format to white
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
     //LoadTexture
@@ -158,7 +178,7 @@ Draw::Draw(){
 	GrayLight[1] = 0.3;
 	GrayLight[2] = 0.3;
 	GrayLight[3] = 1;
-	
+
 	WhiteLight[0] = 0.7;
 	WhiteLight[1] = 0.7;
 	WhiteLight[2] = 0.7;
@@ -345,7 +365,7 @@ void Draw::drawCube(int x,int y){
         {0+x, 0.0,  1+y},
         { 1+x, 0.0,  1+y}
     };
-   
+
     // 右
     glBegin(GL_POLYGON);
 
@@ -471,15 +491,15 @@ void Draw::drawFloor(int x, int y){
 	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices[0]);
-	
+
 	glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices[1]);
-	
+
 	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices[2]);
-	
+
 	glNormal3f(vertices[3][0], vertices[3][1], vertices[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices[3]);
@@ -508,20 +528,20 @@ void Draw::drawSky(int x, int y){
 	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices[0]);
-	
+
 	glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices[1]);
-	
+
 	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices[2]);
-	
+
 	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices[3]);
 	glEnd();
-	
+
 	glDisable(GL_CULL_FACE);
 }
 
@@ -570,15 +590,15 @@ int i;
 	glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices1[0]);
-	
+
 	glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices1[1]);
-	
+
 	glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices1[2]);
-	
+
 	glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices1[3]);
@@ -596,15 +616,15 @@ int i;
 	glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices2[0]);
-	
+
 	glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices2[1]);
-	
+
 	glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices2[2]);
-	
+
 	glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices2[3]);
@@ -622,15 +642,15 @@ int i;
 	glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices3[0]);
-	
+
 	glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices3[1]);
-	
+
 	glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices3[2]);
-	
+
 	glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices3[3]);
@@ -648,15 +668,15 @@ int i;
 	glNormal3f(vertices4[0][0], vertices4[0][1], vertices4[0][2]);
 	glTexCoord2i(0,0);
 	glVertex3fv(vertices4[0]);
-	
+
 	glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
 	glTexCoord2i(0,1);
 	glVertex3fv(vertices4[1]);
-	
+
 	glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
 	glTexCoord2i(1,1);
 	glVertex3fv(vertices4[2]);
-	
+
 	glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
 	glTexCoord2i(1,0);
 	glVertex3fv(vertices4[3]);
