@@ -140,6 +140,7 @@ void System::moveChara() {
 		player[myID].attflag = 0;
 		effect->x = -1;
 		effect->z = -1;
+		count = 0;
 	}
 }
 
