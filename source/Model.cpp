@@ -2,9 +2,6 @@
 #include "Model.h"
 
 Model::Model(const char* filename) {
-	x=3;
-	y=0;
-	z=3;
 	bzero(Name, '\0');
 	strcpy(Name, filename);
 	cout << "A model \"" << filename << "\" is loading\n";
@@ -42,19 +39,31 @@ Model::~Model() {
 	cout << "A model has been destroied!\n";
 }
 
-void Model::Draw() {
-	z+=0.001;
+void Model::Draw(double x,double y,double z,double dir) {
+	cout<<"--Model """<<x<<y<<z<<dir<<endl;
 
 	//int i,j;
 	//cout<<"numIndices="<< numIndices<<"\n";
 	//cout<<mat.size()<<"\n";
 
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glEnableClientState(GL_NORMAL_ARRAY);
 
+
 	for (int i = 0; i < mat.size(); i++) {
 		glPushMatrix();
+
+
+		glTranslatef(x,0,z);
+		glScalef(0.003f, 0.003f, 0.003f);
+		glRotatef(dir*360/6.28,0.0f,1.0f,0.0f);
+
+
+
+
+
 		//material
 		GLfloat WhiteMaterial[] = { 0.8, 0.8, 0.8, 1 };
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
@@ -66,8 +75,7 @@ void Model::Draw() {
 
 		glNormalPointer(GL_FLOAT, sizeof(vec3f), &mat[i].nor[0].x);
 		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
-		glTranslatef(x,y,z);
-		glScalef(0.003f, 0.003f, 0.003f);
+
 
 		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
 

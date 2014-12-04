@@ -29,12 +29,11 @@ class Model
         FbxTime animationStartFrame;
 		FbxTime animationEndFrame;
 
-        void  Draw();//描写
+        void  Draw(double x ,double y,double z,double dir);//描写
         char Name[256];//モデル名
         vector <material> mat;//モデルの情報
         vector <TEXTURE> texture;//テクスチャデータ
 
-        double x,y,z;
 };
 
 #endif
