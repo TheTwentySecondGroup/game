@@ -242,25 +242,32 @@ void Effect::drawAttack3(double px, double pz, double pr){
     if(x == -1 && z == -1){
 		x = px;
 		z = pz;
+		r=0;
 	}
 	glMaterialf(GL_FRONT,GL_SHININESS,60.0);
 
 	glDisable(GL_CULL_FACE);
+    /*
+	glTranslatef(x, 0.55, z+2);
+	glRotated(r, 0.0, 0.0, 1.0);
+	glTranslatef(-x, -0.55, -(z+2));
+    */
+    /*
     glTranslatef(x, 0.0, z+2);
 	glRotated(pr*25, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -(z+2));
-
-	glTranslatef(px-xd, 0.0, pz-zd);
-	glRotated(pr*42, 0.0, 1.0, 0.0);
-	glTranslatef(-(px-xd), 0.0, -(pz-zd));
+    */
+	glTranslatef(-2, 0, -2);
+	glRotated(r,0.0, 1.0, 0.0);
+	glTranslatef(2, 0, 2);
 
 	glBindTexture(GL_TEXTURE_2D,*effectImage[1]);
 	{
         GLfloat vertices1[4][3]={
-            {x+0.5, 1, z+2},
-            {x-0.5, 1, z+2},
-            {x-0.5, 0, z+2},
-            {x+0.5, 0, z+2},
+            {x+0.5, 1.1, z+2},
+            {x-0.5, 1.1, z+2},
+            {x-0.5, 0.1, z+2},
+            {x+0.5, 0.1, z+2},
         };
 
         glBegin(GL_POLYGON);
@@ -274,13 +281,13 @@ void Effect::drawAttack3(double px, double pz, double pr){
         glVertex3fv(vertices1[3]);
         glEnd();
 	}
-
+if(sys->count > 100){
     glBindTexture(GL_TEXTURE_2D,*effectImage[0]);
     {
         GLfloat vertices2[4][3]={
             {x, 1.1, z+10},
-            {x+0.6, 0.5, z+10},
-            {x+0.6, 0.5, z+2},
+            {x+0.6, 0.55, z+10},
+            {x+0.6, 0.55, z+2},
             {x, 1.1, z+2},
         };
 
@@ -300,8 +307,8 @@ void Effect::drawAttack3(double px, double pz, double pr){
     {
         GLfloat vertices3[4][3]={
             {x, 1.1, z+10},
-            {x-0.6, 0.5, z+10},
-            {x-0.6, 0.5, z+2},
+            {x-0.6, 0.55, z+10},
+            {x-0.6, 0.55, z+2},
             {x, 1.1, z+2},
         };
 
@@ -320,10 +327,10 @@ void Effect::drawAttack3(double px, double pz, double pr){
     glBindTexture(GL_TEXTURE_2D,*effectImage[0]);
     {
         GLfloat vertices4[4][3]={
-            {x+0.6, 0.5, z+10},
-            {x, 0, z+10},
-            {x, 0, z+2},
-            {x+0.6, 0.5, z+2},
+            {x+0.6, 0.55, z+10},
+            {x, -0.1, z+10},
+            {x, -0.1, z+2},
+            {x+0.6, 0.55, z+2},
         };
 
         glBegin(GL_POLYGON);
@@ -341,10 +348,10 @@ void Effect::drawAttack3(double px, double pz, double pr){
      glBindTexture(GL_TEXTURE_2D,*effectImage[0]);
     {
         GLfloat vertices5[4][3]={
-            {x-0.6, 0.5, z+10},
-            {x, 0, z+10},
-            {x, 0, z+2},
-            {x-0.6, 0.5, z+2},
+            {x-0.6, 0.55, z+10},
+            {x, -0.1, z+10},
+            {x, -0.1, z+2},
+            {x-0.6, 0.55, z+2},
         };
 
         glBegin(GL_POLYGON);
@@ -358,8 +365,9 @@ void Effect::drawAttack3(double px, double pz, double pr){
         glVertex3fv(vertices5[3]);
         glEnd();
     }
+}
 //r=0;
-    //if ((r+=20) >= 360) r = 0;
+    if ((r+=0.1) >= 360) r = 0;
 }
 
 void Effect::drawAttack4(double px, double pz){
