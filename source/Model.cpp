@@ -40,7 +40,7 @@ Model::~Model() {
 }
 
 void Model::Draw(double x,double y,double z,double dir) {
-	cout<<"--Model """<<x<<y<<z<<dir<<endl;
+	//cout<<"--Model """<<x<<y<<z<<dir<<endl;
 
 	//int i,j;
 	//cout<<"numIndices="<< numIndices<<"\n";

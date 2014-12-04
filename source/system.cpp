@@ -43,9 +43,6 @@ int System::selectChara() {
 			selChara++;
 		else
 
-
-
-
 			// if (selChara == 4)
 			selChara = 1;
 	}
@@ -71,19 +68,22 @@ void System::initChara() {
 
 void System::moveChara() {
 	Player old = player[myID];
+
 	if (io->key[KEY_RIGHT] > 0) {
-		if((player[myID].dir -= 0.03) <= -6.03){
+		if ((player[myID].dir -= 0.03) <= -6.03) {
 			player[myID].dir = 0;
 		}
 		cout << player[myID].dir << endl;
 	}
 
+
 	if (io->key[KEY_LEFT] > 0) {
-		if((player[myID].dir+= 0.03) > 6.03){
+		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
 		cout << player[myID].dir << endl;
 	}
+
 
 	if (io->key[KEY_UP] > 0) {
 		player[myID].x += sin(player[myID].dir) / 5;
@@ -124,22 +124,57 @@ void System::moveChara() {
 	if (io->key[KEY_A] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 1;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 1;
+				effect[serchEffect].x = player[myID].x
+						+ sin(player[myID].dir) * 1;
+				effect[serchEffect].z = player[myID].z
+						+ cos(player[myID].dir) * 1;
+				effect[serchEffect].r = player[myID].dir;
+				break;
+			}
+		}
+
 	}
 
-	if(io->key[KEY_B] == 1 && player[myID].attflag == 0){
+
+	if (io->key[KEY_B] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 2;
+				effect[serchEffect].x = player[myID].x
+						+ sin(player[myID].dir) * 3;
+				effect[serchEffect].y = player[myID].y
+						+ cos(player[myID].dir) * 3;
+				effect[serchEffect].r = player[myID].dir;
+				break;
+			}
+		}
 	}
 
-	if(io->key[KEY_D] == 1 && player[myID].attflag == 0){
+	if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 3;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 3;
+				effect[serchEffect].x = player[myID].x
+						+ sin(player[myID].dir) * 3;
+				effect[serchEffect].y = player[myID].y
+						+ cos(player[myID].dir) * 3;
+				effect[serchEffect].r = player[myID].dir;
+				break;
+			}
+		}
 	}
 
-	if(io->key[KEY_C] == 1 && player[myID].attflag == 1){
+	if (io->key[KEY_C] == 1 && player[myID].attflag == 1) {
 		player[myID].attflag = 0;
-		effect->x = -1;
-		effect->z = -1;
+		//effect->x = -1;
+		//effect->z = -1;
 	}
 }
 
@@ -149,16 +184,10 @@ int System::judgeHit() {
 
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
-	if (player[myID].attflag == 1) {
-		count++;
-		if (count == 2000) {
-			count = 0;
-			player[myID].attflag = 0;
-			effect->x = -1;
-			effect->z = -1;
-		}
-	}
 
+	for (int i = 0; i < MAX_EFFECT; i++) {
+		effect[i].routine();
+	}
 	moveChara();
 	draw->routine();
 }

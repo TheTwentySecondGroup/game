@@ -169,6 +169,20 @@ int netBase::clientCommand(char command, int index) {
 				}
 			}
 			return 0;
+		}else if (command == EFFECT_COMMAND) {
+			int res = 0;
+			res += send_data(TO_SERVER, &command, sizeof(command));
+			res += send_data(TO_SERVER, &sys->myID, sizeof(sys->myID));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].x,
+					sizeof(sys->player[sys->myID].x));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].y,
+					sizeof(sys->player[sys->myID].y));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].z,
+					sizeof(sys->player[sys->myID].z));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].dir,
+					sizeof(sys->player[sys->myID].dir));
+			return res;
+
 		}
 
 	}

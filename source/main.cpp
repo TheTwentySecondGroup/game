@@ -91,7 +91,8 @@ int main(int argc, char* argv[]) {
 
 	sys->map = new Map();
 	
-	sys->effect = new Effect();
+	sys->effect = new Effect[MAX_EFFECT];
+
 	if (argc ==2 && strcmp(argv[1],"server")==0) {
 		sys->network = new NetClass(MODE_SERVER);
 		sys->Stage = -4;
