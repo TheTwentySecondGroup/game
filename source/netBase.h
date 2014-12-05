@@ -21,14 +21,10 @@ using namespace std;
 #include <assert.h>
 
 
-
-
-#define INT_COMMAND 'I'
-#define CHAR_COMMAND 'C'
-
-
 #define POS_COMMAND 'P'
 #define SYNC_COMMAND 'S'
+#define EFFECT_COMMAND 'E'
+#define E_SYNC_COMMAND 'W'
 
 
 //1==non-blocking 0==blocking

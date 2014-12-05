@@ -91,7 +91,8 @@ int main(int argc, char* argv[]) {
 
 	sys->map = new Map();
 	
-	sys->effect = new Effect();
+	sys->effect = new Effect[MAX_EFFECT];
+
 	if (argc ==2 && strcmp(argv[1],"server")==0) {
 		sys->network = new NetClass(MODE_SERVER);
 		sys->Stage = -4;
@@ -105,9 +106,9 @@ int main(int argc, char* argv[]) {
 
 	//initialize my position
 	for(int c=0 ;c<4;c++){
-	sys->player[c].x = 2.0;
+	sys->player[c].x = 2.0+c;
 	sys->player[c].y=0.5;
-	sys->player[c].z = 2.0;
+	sys->player[c].z = 2.0+c;
 	}
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
 	 wiimote.led.one  = 1;

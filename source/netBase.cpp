@@ -6,7 +6,7 @@
  */
 #include "global.h"
 #include "netBase.h"
-//#include "net.h"
+#include "Effect.h"
 #include "system.h"
 
 client::client() {
@@ -169,6 +169,35 @@ int netBase::clientCommand(char command, int index) {
 				}
 			}
 			return 0;
+		} else if (command == EFFECT_COMMAND) {
+			int res = 0;
+			res += send_data(TO_SERVER, &command, sizeof(command));
+			for (int i = 0; i < MAX_EFFECT; i++) {
+				res += send_data(TO_SERVER, &sys->effect[i].f, sizeof(int));
+				res += send_data(TO_SERVER, &sys->effect[i].fromPlayerID,
+						sizeof(int));
+				res += send_data(TO_SERVER, &sys->effect[i].count, sizeof(int));
+				res += send_data(TO_SERVER, &sys->effect[i].x, sizeof(double));
+				res += send_data(TO_SERVER, &sys->effect[i].y, sizeof(double));
+				res += send_data(TO_SERVER, &sys->effect[i].z, sizeof(double));
+				res += send_data(TO_SERVER, &sys->effect[i].r, sizeof(double));
+				res += send_data(TO_SERVER, &sys->effect[i].dir,
+						sizeof(double));
+			}
+			return res;
+
+		} else if (command == E_SYNC_COMMAND) {
+			for (int i = 0; i < MAX_EFFECT; i++) {
+				receive_data(index, &sys->effect[i].f, sizeof(int));
+				receive_data(index, &sys->effect[i].fromPlayerID, sizeof(int));
+				receive_data(index, &sys->effect[i].count, sizeof(int));
+				receive_data(index, &sys->effect[i].x, sizeof(double));
+				receive_data(index, &sys->effect[i].y, sizeof(double));
+				receive_data(index, &sys->effect[i].z, sizeof(double));
+				receive_data(index, &sys->effect[i].r, sizeof(double));
+				receive_data(TO_SERVER, &sys->effect[i].dir, sizeof(double));
+			}
+			return 0;
 		}
 
 	}
@@ -235,6 +264,39 @@ int netBase::serverCommand(char command, int index) {
 
 		 send_data(ALL_CLIENTS, sending_data, data_size);
 		 */
+	} else if (command == EFFECT_COMMAND) {
+		for (int i = 0; i < MAX_EFFECT; i++) {
+			receive_data(index, &sys->effect[i].f, sizeof(int));
+			receive_data(index, &sys->effect[i].fromPlayerID, sizeof(int));
+			receive_data(index, &sys->effect[i].count, sizeof(int));
+			receive_data(index, &sys->effect[i].x, sizeof(double));
+			receive_data(index, &sys->effect[i].y, sizeof(double));
+			receive_data(index, &sys->effect[i].z, sizeof(double));
+			receive_data(index, &sys->effect[i].r, sizeof(double));
+			receive_data(TO_SERVER, &sys->effect[i].dir, sizeof(double));
+		}
+		for (int i = 0; i < 4; i++) {
+			if (sys->network->cli[i].socket > 0) {
+				serverCommand(E_SYNC_COMMAND, i);
+			}
+		}
+		return 0;
+
+	} else if (command == E_SYNC_COMMAND) {
+		int res = 0;
+		res += send_data(index, &command, sizeof(char));
+		for (int i = 0; i < MAX_EFFECT; i++) {
+			res += send_data(index, &sys->effect[i].f, sizeof(int));
+			res += send_data(index, &sys->effect[i].fromPlayerID, sizeof(int));
+			res += send_data(index, &sys->effect[i].count, sizeof(int));
+			res += send_data(index, &sys->effect[i].x, sizeof(double));
+			res += send_data(index, &sys->effect[i].y, sizeof(double));
+			res += send_data(index, &sys->effect[i].z, sizeof(double));
+			res += send_data(index, &sys->effect[i].r, sizeof(double));
+			res += send_data(TO_SERVER, &sys->effect[i].dir, sizeof(double));
+		}
+		return res;
+
 	} else {
 		//printf("%s : Command = %c\n", clients->name, command);
 		/*

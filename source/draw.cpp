@@ -46,90 +46,99 @@ void Draw::routine() {
 		sys->map->drawMap(); //
 
 		for (int i = 0; i < 4; i++) {
-			if(sys->player[i].hp>0)sys->model[sys->player[i].chara].Draw(sys->player[i].x,
-					sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+			if (sys->player[i].hp > 0) {
+				sys->model[sys->player[i].chara].Draw(sys->player[i].x,
+						sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+			}
 		}
 
 		// sys->model[0].Draw();
 
-		px = sys->player[sys->myID].x;
-		pz = sys->player[sys->myID].z;
-		pdir = sys->player[sys->myID].dir;
-		/*ATTACK1*/
-		if (sys->player[sys->myID].attflag == 1
-				&& sys->player[sys->myID].attpatern == 1) {
-			if (pdir >= 0 && pdir < 1.5 || pdir < 0 && pdir > -1.5) {
-				sys->effect->drawAttack(px + (sin(pdir) * 5),
-						pz + (cos(pdir) * 4));
-			} else if (pdir >= 1.5 && pdir < 2 || pdir <= -1.5 && pdir > -2) {
-				sys->effect->drawAttack(px + (sin(pdir) * 6),
-						pz + (cos(pdir) * 7.5));
-			} else if (pdir >= 2 && pdir < 4.5 || pdir <= -2 && pdir > -4.5) {
-				sys->effect->drawAttack(px + (sin(pdir) * 5),
-						pz + (cos(pdir) * 6.25));
-			} else if (pdir >= 4.5 && pdir <= 6.03
-					|| pdir <= -4.5 && pdir > -6.03) {
-				sys->effect->drawAttack(px + (sin(pdir) * 5),
-						pz + (cos(pdir) * 4));
+		for (int i = 0; i < MAX_EFFECT; i++) {
+			if (sys->effect[i].f > 0) {
+				sys->effect->draw();
 			}
 		}
+
+		//px = sys->player[sys->myID].x;
+		//pz = sys->player[sys->myID].z;
+		//pdir = sys->player[sys->myID].dir;
+		/*ATTACK1*/
+		/*
+		 if (sys->player[sys->myID].attflag == 1
+		 && sys->player[sys->myID].attpatern == 1) {
+		 if (pdir >= 0 && pdir < 1.5 || pdir < 0 && pdir > -1.5) {
+		 sys->effect->drawAttack(px + (sin(pdir) * 5),
+		 pz + (cos(pdir) * 4));
+		 } else if (pdir >= 1.5 && pdir < 2 || pdir <= -1.5 && pdir > -2) {
+		 sys->effect->drawAttack(px + (sin(pdir) * 6),
+		 pz + (cos(pdir) * 7.5));
+		 } else if (pdir >= 2 && pdir < 4.5 || pdir <= -2 && pdir > -4.5) {
+		 sys->effect->drawAttack(px + (sin(pdir) * 5),
+		 pz + (cos(pdir) * 6.25));
+		 } else if (pdir >= 4.5 && pdir <= 6.03
+		 || pdir <= -4.5 && pdir > -6.03) {
+		 sys->effect->drawAttack(px + (sin(pdir) * 5),
+		 pz + (cos(pdir) * 4));
+		 }
+		 }*/
 
 		/*ATTACK2*/
-		if (sys->player[sys->myID].attflag == 1
-				&& sys->player[sys->myID].attpatern == 2) {
-			if (pdir >= 0 && pdir < 1.59 || pdir <= 0 && pdir > -1.59) {
-				sys->effect->drawAttack2(px + sin(pdir) * 6,
-						pz + cos(pdir) * 5);
-			}
+		/*if (sys->player[sys->myID].attflag == 1
+		 && sys->player[sys->myID].attpatern == 2) {
+		 if (pdir >= 0 && pdir < 1.59 || pdir <= 0 && pdir > -1.59) {
+		 sys->effect->drawAttack2(px + sin(pdir) * 6,
+		 pz + cos(pdir) * 5);
+		 }
 
-			else if (pdir >= 1.59 && pdir < 1.8
-					|| pdir <= -1.59 && pdir > -1.8) {
-				sys->effect->drawAttack2(px + sin(pdir) * 8,
-						pz + cos(pdir) * 16);
-				cout << "attack2" << endl;
-			}
+		 else if (pdir >= 1.59 && pdir < 1.8
+		 || pdir <= -1.59 && pdir > -1.8) {
+		 sys->effect->drawAttack2(px + sin(pdir) * 8,
+		 pz + cos(pdir) * 16);
+		 cout << "attack2" << endl;
+		 }
 
-			else if (pdir >= 1.8 && pdir < 3.4 || pdir <= -1.8 && pdir > -3.4) {
-				sys->effect->drawAttack2(px + sin(pdir) * 8,
-						pz + cos(pdir) * 11);
-			}
+		 else if (pdir >= 1.8 && pdir < 3.4 || pdir <= -1.8 && pdir > -3.4) {
+		 sys->effect->drawAttack2(px + sin(pdir) * 8,
+		 pz + cos(pdir) * 11);
+		 }
 
-			else if (pdir >= 3.4 && pdir < 4.53
-					|| pdir <= -3.4 && pdir > -4.53) {
-				sys->effect->drawAttack2(px + sin(pdir) * 8,
-						pz + cos(pdir) * 11);
-			}
+		 else if (pdir >= 3.4 && pdir < 4.53
+		 || pdir <= -3.4 && pdir > -4.53) {
+		 sys->effect->drawAttack2(px + sin(pdir) * 8,
+		 pz + cos(pdir) * 11);
+		 }
 
-			else if (pdir >= 4.53 && pdir < 4.74
-					|| pdir <= -4.53 && pdir > -4.74) {
-				sys->effect->drawAttack2(px + sin(pdir) * 8,
-						pz + cos(pdir) * 16);
-			}
+		 else if (pdir >= 4.53 && pdir < 4.74
+		 || pdir <= -4.53 && pdir > -4.74) {
+		 sys->effect->drawAttack2(px + sin(pdir) * 8,
+		 pz + cos(pdir) * 16);
+		 }
 
-			else if (pdir >= 4.74 && pdir <= 6.03
-					|| pdir <= -4.74 && pdir >= -6.03) {
-				sys->effect->drawAttack2(px + sin(pdir) * 5,
-						pz + cos(pdir) * 5);
-			}
-		}
-
+		 else if (pdir >= 4.74 && pdir <= 6.03
+		 || pdir <= -4.74 && pdir >= -6.03) {
+		 sys->effect->drawAttack2(px + sin(pdir) * 5,
+		 pz + cos(pdir) * 5);
+		 }
+		 }
+		 */
 		/*ATTACK3*/
-		if (sys->player[sys->myID].attflag == 1
-				&& sys->player[sys->myID].attpatern == 3) {
-			//if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
-			sys->effect->drawAttack3(px + sin(pdir) * 5, pz + cos(pdir) * 5,
-					pdir);
-			//}
-			/*else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
-			 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-			 cout << "attack3" << endl;
-			 }
-			 else if(pdir >=3.0 && pdir < 5.0 || pdir <=- 3.0 && pdir > -5.0){
-			 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-			 }
-			 */
-		}
-
+		/*
+		 if (sys->player[sys->myID].attflag == 1
+		 && sys->player[sys->myID].attpatern == 3) {
+		 //if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
+		 sys->effect->drawAttack3(px + sin(pdir) * 5, pz + cos(pdir) * 5,
+		 pdir);
+		 //}
+		 /*else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
+		 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
+		 cout << "attack3" << endl;
+		 }
+		 else if(pdir >=3.0 && pdir < 5.0 || pdir <=- 3.0 && pdir > -5.0){
+		 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
+		 }
+		 */
+		//}
 		//hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
 	}
 
@@ -146,7 +155,7 @@ void Draw::routine() {
 
 Draw::Draw() {
 
-	//system
+//system
 
 	charaImage[0] = initTexture("data/image/chara1.bmp");
 	charaImage[1] = initTexture("data/image/chara2.bmp");
@@ -157,19 +166,19 @@ Draw::Draw() {
 	charaImage[6] = initTexture("data/image/chara3g.bmp");
 	charaImage[7] = initTexture("data/image/chara4g.bmp");
 
-	//initialize GLUT
+//initialize GLUT
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
 
-	//format to white
+//format to white
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
-	//LoadTexture
+//LoadTexture
 	texHandle[0] = initTexture("data/image/zimen.bmp");
 	texHandle[1] = initTexture("data/image/sky2.bmp");
 	texHandle[2] = initTexture("data/image/block.bmp");
-	//Initialize ttf
-	//TTF_Init();
-	//font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
+//Initialize ttf
+//TTF_Init();
+//font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
 
 	lightpos[0] = 0;
 	lightpos[1] = 0;
@@ -235,7 +244,7 @@ GLuint *Draw::pngTexture(string name) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	gluBuild2DMipmaps( GL_TEXTURE_2D, 4, surface->w, surface->h, GL_RGBA,
-			GL_UNSIGNED_BYTE, surface->pixels);
+	GL_UNSIGNED_BYTE, surface->pixels);
 	if (surface) {
 		SDL_FreeSurface(surface);
 	}
@@ -275,7 +284,8 @@ GLuint *Draw::timeTexture(SDL_Surface *surface) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D( GL_TEXTURE_2D, 0, texColor, surface->w, surface->h, 0,
-			texFormat, GL_UNSIGNED_BYTE, surface->pixels);
+			texFormat,
+			GL_UNSIGNED_BYTE, surface->pixels);
 	if (surface) {
 		SDL_FreeSurface(surface);
 	}
@@ -316,7 +326,8 @@ GLuint *Draw::initTexture(string name) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	glTexImage2D( GL_TEXTURE_2D, 0, texColor, surface->w, surface->h, 0,
-			texFormat, GL_UNSIGNED_BYTE, surface->pixels);
+			texFormat,
+			GL_UNSIGNED_BYTE, surface->pixels);
 	if (surface) {
 		SDL_FreeSurface(surface);
 	}
@@ -383,7 +394,7 @@ void Draw::drawCube(int x, int y) {
 			+ x, 1.0, 1 + y }, { 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0
 			+ x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1 + y } };
 
-	// 右
+// 右
 	glBegin(GL_POLYGON);
 
 	Normal3f(vertices[1], vertices[4], vertices[7]);
@@ -396,7 +407,7 @@ void Draw::drawCube(int x, int y) {
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices[2]);
 	glEnd();
-	// 左
+// 左
 	glBegin(GL_POLYGON);
 	Normal3f(vertices[5], vertices[0], vertices[3]);
 	glTexCoord2i(0, 0);
@@ -408,7 +419,7 @@ void Draw::drawCube(int x, int y) {
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices[6]);
 	glEnd();
-	// 上
+// 上
 	glBegin(GL_POLYGON);
 	Normal3f(vertices[3], vertices[2], vertices[7]);
 	glTexCoord2i(1, 0);
@@ -420,7 +431,7 @@ void Draw::drawCube(int x, int y) {
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices[6]);
 	glEnd();
-	// 下
+// 下
 	glBegin(GL_POLYGON);
 	Normal3f(vertices[1], vertices[0], vertices[5]);
 	glTexCoord2i(1, 0);
@@ -463,14 +474,14 @@ void Draw::init2D() {
 }
 void Draw::init3D() {
 	glViewport(0, 0, WINDOW_X, WINDOW_Y);
-	//perspective
+//perspective
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
 	gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01,
 			150.0);
 
-	//fog
+//fog
 	glFogi(GL_FOG_MODE, GL_LINEAR);
 	glFogfv(GL_FOG_COLOR, FogColor);
 	glFogf(GL_FOG_DENSITY, 0.5);
@@ -479,13 +490,13 @@ void Draw::init3D() {
 	glFogf(GL_FOG_END, 14);
 	glEnable(GL_FOG);
 
-	//z buffer
+//z buffer
 	glEnable(GL_DEPTH_TEST);
 
-	//CULLING
+//CULLING
 	glEnable(GL_CULL_FACE);
 
-	//to smooth
+//to smooth
 	glShadeModel(GL_SMOOTH);
 }
 
@@ -525,7 +536,7 @@ void Draw::drawSky(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
-	//glDisable(GL_FOG);
+//glDisable(GL_FOG);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -583,7 +594,7 @@ void Draw::drawWall(int x, int y) {
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
-	//前
+//前
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
 	GLfloat vertices1[4][3] = { { 1 + x, 1.5, y }, { 0 + x, 1.5, y }, { 0 + x,
 			0, y }, { 1 + x, 0, y }, };
@@ -605,7 +616,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices1[3]);
 	glEnd();
 
-	//後ろ
+//後ろ
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
 	GLfloat vertices2[4][3] = { { 1 + x, 1.5, y + 1 }, { 0 + x, 1.5, y + 1 }, {
 			0 + x, 0, y + 1 }, { 1 + x, 0, y + 1 }, };
@@ -627,7 +638,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices2[3]);
 	glEnd();
 
-	//左
+//左
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
 	GLfloat vertices3[4][3] = { { x, 1.5, y + 1 }, { x, 1.5, 0 + y }, { x, 0, 0
 			+ y }, { x, 0, 1 + y }, };
@@ -649,7 +660,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices3[3]);
 	glEnd();
 
-	//右
+//右
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
 	GLfloat vertices4[4][3] = { { 1 + x, 1.5, 1 + y }, { 1 + x, 1.5, 0 + y }, {
 			1 + x, 0, 0 + y }, { 1 + x, 0, 1 + y }, };
