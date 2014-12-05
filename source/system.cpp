@@ -76,14 +76,12 @@ void System::moveChara() {
 		cout << player[myID].dir << endl;
 	}
 
-
 	if (io->key[KEY_LEFT] > 0) {
 		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
 		cout << player[myID].dir << endl;
 	}
-
 
 	if (io->key[KEY_UP] > 0) {
 		player[myID].x += sin(player[myID].dir) / 5;
@@ -132,13 +130,12 @@ void System::moveChara() {
 				effect[serchEffect].z = player[myID].z
 						+ cos(player[myID].dir) * 1;
 				effect[serchEffect].r = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				network->clientCommand(EFFECT_COMMAND, TO_SERVER);
 				break;
 			}
 		}
 
 	}
-
 
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
@@ -179,7 +176,12 @@ void System::moveChara() {
 	}
 }
 
-int System::judgeHit() {
+int System::judgeHit(int mode, Player *pl, Effect *ef) {
+	if (mode == 1) {
+		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
+			return 1;
+		}
+	}
 	return 0;
 }
 
@@ -191,5 +193,21 @@ void System::gameMain() {
 	}
 	moveChara();
 	draw->routine();
+}
+
+void System::detectCollision() {
+	for (int i = 0; i < MAX_EFFECT; i++) {
+		if (effect[i].f>0) {
+			for (int c=0;c<4;c++){
+				if(player[c].avoidDamageCount==0 &&effect[i].fromPlayerID!=myID && judgeHit(effect[i].f,&player[c],&effect[i])>0){
+						player[c].avoidDamageCount=30;
+						player[c].hp-=10;
+				}
+			}
+
+		}
+
+	}
+
 }
 

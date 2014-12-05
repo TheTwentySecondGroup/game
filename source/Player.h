@@ -27,6 +27,10 @@ public:
 	string skill[4];	//キャラごとの魔法を格納
 
 
+	//1以上の時はダメージを受けない
+	int avoidDamageCount;
+
+	void routine();
 	Player();
 	~Player();
 };

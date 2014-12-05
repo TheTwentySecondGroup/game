@@ -58,8 +58,10 @@ public:
 	void initChara();
 	int selectChara();
 	void moveChara();	//キャラの移動
-	int judgeHit();	//当たり判定
+	int judgeHit(int mode,Player *pl,Effect *ef);	//当たり判定
 	void gameMain();	//ゲームのメイン
+
+	void detectCollision();
 
 };
 
