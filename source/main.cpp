@@ -136,6 +136,11 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		sys->io->routine();
+		for(int i=0;i<4;i++){
+			sys->player[i].routine();
+		}
+
+
 		//timeProc();
 		switch (sys->Stage) {
 		case 0:
@@ -155,6 +160,7 @@ int main(int argc, char* argv[]) {
 			break;
 		case -4:
 			//for server
+			sys->detectCollision();
 			break;
 		default:
 			//delTitle();

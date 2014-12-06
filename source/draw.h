@@ -54,6 +54,9 @@ public:
 //draw cube
 	void drawCube(int x, int y);
 
+//draw 2D HP
+	void drawHP(int x,int y ,int w,int h);
+
 //calculate and setting glNormal3f
 	GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]);
 
