@@ -20,14 +20,17 @@ Effect::Effect() {
 	effectImage[2] = sys->draw->initTexture("data/image/mist.bmp");
 	effectImage[3] = sys->draw->initTexture("data/image/fire.bmp");
 	effectImage[4] = sys->draw->initTexture("data/image/thunder.bmp");
+	effectImage[5] = sys->draw->initTexture("data/image/star2.bmp");
+	effectImage[6] = sys->draw->initTexture("data/image/star3.bmp");
+	effectImage[7] = sys->draw->initTexture("data/image/ice.bmp");
 }
 
 void Effect::routine() {
 	//if(fromPlayerID == sys->myID)
 	if (f > 0) {
-		dir+=0.1    ;
+		dir+=0.1;
 		count++;
-		if (count == 200) {
+		if (count == 400) {
             sys->player[sys->myID].attflag = 0;
 			count = 0;
 			f = 0;
@@ -38,11 +41,6 @@ void Effect::routine() {
 			dir=0;
 			return;
 		}
-
-        if(f==1){
-
-
-		}
 	}
 }
 void Effect::draw(){
@@ -50,20 +48,21 @@ void Effect::draw(){
 	else if(f==2)drawAttack2(sys->player[sys->myID].x, sys->player[sys->myID].z);
 	else if(f==3)drawAttack3(sys->player[sys->myID].x, sys->player[sys->myID].z);
 	else if(f==4)drawAttack4(sys->player[sys->myID].x, sys->player[sys->myID].z);
+	else if(f==5)drawAttack5(sys->player[sys->myID].x, sys->player[sys->myID].z);
 
 }
 void Effect::drawAttack(double px, double pz) {
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
-	glTranslatef(x, 0, 3 + z);
+	glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
-	glTranslatef(-x, 0, -(3 + z));
+	glTranslatef(-x, 0, -z);
 	GLfloat vertices[4][3] = {
-	    { 1 + x, 0.3, z + 4 },
-	    { x - 1, 0.3, z + 4 },
-	    { x - 1, 0.3, z + 2 },
-	    { 1 + x, 0.3, z + 2 },
+	    { x + 2, 0.1, z + 2 },
+        { x - 2, 0.1, z + 2 },
+        { x - 2, 0.1, z - 2},
+        { x + 2, 0.1, z - 2},
     };
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -78,49 +77,53 @@ void Effect::drawAttack(double px, double pz) {
 	glEnd();
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
-	GLfloat vertices2[4][3] = {
-	    { 1 + x, 1.5, z + 2 },
-	    { x - 1, 1.5, z + 2 },
-	    { x - 1, 0.3, z + 2 },
-	    { 1 + x, 0.3, z + 2 },
-    };
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0, 0);
-	glVertex3fv(vertices2[0]);
-	glTexCoord2i(0, 1);
-	glVertex3fv(vertices2[1]);
-	glTexCoord2i(1, 1);
-	glVertex3fv(vertices2[2]);
-	glTexCoord2i(1, 0);
-	glVertex3fv(vertices2[3]);
-	glEnd();
+	{
+        GLfloat vertices2[4][3] = {
+            { x + 2, 1.5, z + 2 },
+            { x - 2, 1.5, z + 2 },
+            { x - 2, 0.3, z + 2 },
+            { x + 2, 0.3, z + 2 },
+        };
+        glBegin(GL_POLYGON);
+        glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+        glTexCoord2i(0, 0);
+        glVertex3fv(vertices2[0]);
+        glTexCoord2i(0, 1);
+        glVertex3fv(vertices2[1]);
+        glTexCoord2i(1, 1);
+        glVertex3fv(vertices2[2]);
+        glTexCoord2i(1, 0);
+        glVertex3fv(vertices2[3]);
+        glEnd();
+	}
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
-	GLfloat vertices3[4][3] = {
-	    { 1 + x, 1.5, 2 + z + 2 },
-	    { x - 1, 1.5, 2 + z + 2 },
-	    { x - 1, 0.3, 2 + z + 2 },
-	    { 1 + x, 0.3, 2 + z + 2 },
-    };
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0, 0);
-	glVertex3fv(vertices3[0]);
-	glTexCoord2i(0, 1);
-	glVertex3fv(vertices3[1]);
-	glTexCoord2i(1, 1);
-	glVertex3fv(vertices3[2]);
-	glTexCoord2i(1, 0);
-	glVertex3fv(vertices3[3]);
-	glEnd();
+	{
+        GLfloat vertices3[4][3] = {
+            { x + 2, 1.5, 2 + z - 2 },
+            { x - 2, 1.5, 2 + z - 2 },
+            { x - 2, 0.3, 2 + z - 2 },
+            { x + 2, 0.3, 2 + z - 2 },
+        };
+        glBegin(GL_POLYGON);
+        glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
+        glTexCoord2i(0, 0);
+        glVertex3fv(vertices3[0]);
+        glTexCoord2i(0, 1);
+        glVertex3fv(vertices3[1]);
+        glTexCoord2i(1, 1);
+        glVertex3fv(vertices3[2]);
+        glTexCoord2i(1, 0);
+        glVertex3fv(vertices3[3]);
+        glEnd();
+	}
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	GLfloat vertices4[4][3] = {
-	    { x - 1, 1.5, 4 + z },
-	    { x - 1, 1.5, z + 2 },
-	    { x - 1, 0.3, z + 2},
-	    { x - 1, 0.3, 4 + z },
+	    { x - 2, 1.5, z + 2 },
+	    { x - 2, 1.5, z - 2 },
+	    { x - 2, 0.3, z - 2},
+	    { x - 2, 0.3, z + 2 },
     };
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -136,10 +139,10 @@ void Effect::drawAttack(double px, double pz) {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	GLfloat vertices5[4][3] = {
-	    { 1 + x, 1.5, 4 + z },
-	    { 1 + x, 1.5, z + 2 },
-        { 1 + x, 0.3, z + 2 },
-        { 1 + x, 0.3, 4 + z },
+	    { x + 2, 1.5, z + 2 },
+	    { x + 2, 1.5, z - 2 },
+        { x + 2, 0.3, z - 2 },
+        { x + 2, 0.3, z + 2 },
     };
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -278,6 +281,9 @@ void Effect::drawAttack3(double px, double pz) {
 		r=0;
 	}
 	*/
+
+	glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_COLOR, GL_ONE);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
@@ -300,6 +306,7 @@ void Effect::drawAttack3(double px, double pz) {
         };
 
 		glBegin(GL_POLYGON);
+		//glColor4f(1.0, 1.0, 1.0, 0.5);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices1[0]);
 		glTexCoord2i(0, 1);
@@ -394,6 +401,8 @@ void Effect::drawAttack3(double px, double pz) {
 		glVertex3fv(vertices5[3]);
 		glEnd();
 	}
+
+	//glDisable(GL_BLEND);
 //r=0;
 	//if ((r+=20) >= 360) r = 0;
 }
@@ -408,13 +417,18 @@ void Effect::drawAttack4(double px, double pz){
     glRotated(dir, 0, 1.0, 0);
     glTranslatef(px, 0, pz);
     */
-    glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
+
+    glTranslatef(x, 0, z);
+    glRotated(r, 0.0, 1.0, 0.0);
+    glTranslatef(-x, 0, -z);
+
+    glBindTexture(GL_TEXTURE_2D, *effectImage[5]);
 	{
 		GLfloat vertices1[4][3] = {
-		    { x + 2, 0.1, z + 7 },
-            { x - 2, 0.1, z + 7 },
-            { x - 2, 0.1, z + 3},
-            { x + 2, 0.1, z + 3},
+		    { x + 2, 0.1, z + 2 },
+            { x - 2, 0.1, z + 2 },
+            { x - 2, 0.1, z - 2},
+            { x + 2, 0.1, z - 2},
         };
 
 		glBegin(GL_POLYGON);
@@ -429,13 +443,112 @@ void Effect::drawAttack4(double px, double pz){
 		glEnd();
 	}
 
-	glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
+    if(count >= 200 && count%2 == 0){
+        glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
+        {
+            GLfloat vertices1[4][3] = {
+               { x + 2, 2, z + 3 },
+                { x - 2, 2, z + 3 },
+                { x - 2, 0, z + 1},
+                { x + 2, 0, z + 1},
+            };
+
+            glBegin(GL_POLYGON);
+            glTexCoord2i(0, 0);
+            glVertex3fv(vertices1[0]);
+            glTexCoord2i(0, 1);
+            glVertex3fv(vertices1[1]);
+            glTexCoord2i(1, 1);
+            glVertex3fv(vertices1[2]);
+            glTexCoord2i(1, 0);
+            glVertex3fv(vertices1[3]);
+            glEnd();
+        }
+
+        glBindTexture(GL_TEXTURE_2D,*effectImage[4]);
+        {
+            GLfloat vertices1[4][3] = {
+                { x + 2, 2, z - 3 },
+                { x - 2, 2, z - 3 },
+                { x - 2, 0, z - 1},
+                { x + 2, 0, z - 1},
+            };
+            glBegin(GL_POLYGON);
+            glTexCoord2i(0, 0);
+            glVertex3fv(vertices1[0]);
+            glTexCoord2i(0, 1);
+            glVertex3fv(vertices1[1]);
+            glTexCoord2i(1, 1);
+            glVertex3fv(vertices1[2]);
+            glTexCoord2i(1, 0);
+            glVertex3fv(vertices1[3]);
+            glEnd();
+        }
+
+        glBindTexture(GL_TEXTURE_2D,*effectImage[4]);
+        {
+            GLfloat vertices1[4][3] = {
+               { x + 3, 2, z + 3 },
+                { x + 3, 2, z - 1 },
+                { x + 1, 0, z - 1},
+                { x + 1, 0, z + 3},
+            };
+            glBegin(GL_POLYGON);
+            glTexCoord2i(0, 0);
+            glVertex3fv(vertices1[0]);
+            glTexCoord2i(0, 1);
+            glVertex3fv(vertices1[1]);
+            glTexCoord2i(1, 1);
+            glVertex3fv(vertices1[2]);
+            glTexCoord2i(1, 0);
+            glVertex3fv(vertices1[3]);
+            glEnd();
+        }
+
+        glBindTexture(GL_TEXTURE_2D,*effectImage[4]);
+        {
+            GLfloat vertices1[4][3] = {
+                { x - 3, 2, z + 3 },
+                { x - 3, 2, z - 1 },
+                { x - 1, 0, z - 1},
+                { x - 1, 0, z + 3},
+            };
+            glBegin(GL_POLYGON);
+            glTexCoord2i(0, 0);
+            glVertex3fv(vertices1[0]);
+            glTexCoord2i(0, 1);
+            glVertex3fv(vertices1[1]);
+            glTexCoord2i(1, 1);
+            glVertex3fv(vertices1[2]);
+            glTexCoord2i(1, 0);
+            glVertex3fv(vertices1[3]);
+            glEnd();
+        }
+    }
+    if((r += 10) >= 360)   r = 0;
+}
+
+void Effect::drawAttack5(double px, double pz){
+/*
+    if(x == -1 && z == -1){
+           // x = px;
+            //z = pz;
+            //r = dir*60;
+    }
+*/
+
+/*
+    glTranslatef(-px, 0, -pz);
+    glRotated(r, 0.0, 1.0, 0.0);
+    glTranslatef(sin(r), 0, cos(r));
+*/
+    glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
 	{
 		GLfloat vertices1[4][3] = {
-		    { x + 4, 2, z + 8 },
-            { x + 4, 2, z + 2 },
-            { x + 1, 0.1, z + 3},
-            { x + 1, 0.1, z + 7},
+		    { x + 2, 0.1, z + 2 },
+            { x - 2, 0.1, z + 2 },
+            { x - 2, 0.1, z - 2},
+            { x + 2, 0.1, z - 2},
         };
 
 		glBegin(GL_POLYGON);
@@ -450,65 +563,86 @@ void Effect::drawAttack4(double px, double pz){
 		glEnd();
 	}
 
-	glBindTexture(GL_TEXTURE_2D,*effectImage[4]);
+	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-	    GLfloat vertices1[4][3] = {
-		    { x - 4, 2, z + 8 },
-            { x - 4, 2, z + 2 },
-            { x - 1, 0.1, z + 3},
-            { x - 1, 0.1, z + 7},
+	    GLfloat vertices2[4][3] = {
+	        { x + 2, 2, z + 3 },
+            { x - 2, 2, z + 3 },
+            { x - 2, 0, z + 1},
+            { x + 2, 0, z + 1},
         };
         glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
-		glVertex3fv(vertices1[0]);
+		glVertex3fv(vertices2[0]);
 		glTexCoord2i(0, 1);
-		glVertex3fv(vertices1[1]);
+		glVertex3fv(vertices2[1]);
 		glTexCoord2i(1, 1);
-		glVertex3fv(vertices1[2]);
+		glVertex3fv(vertices2[2]);
 		glTexCoord2i(1, 0);
-		glVertex3fv(vertices1[3]);
+		glVertex3fv(vertices2[3]);
 		glEnd();
 	}
 
-	glBindTexture(GL_TEXTURE_2D,*effectImage[4]);
+	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-	    GLfloat vertices1[4][3] = {
-		    { x - 4, 2, z + 8 },
-            { x + 4, 2, z + 8 },
-            { x + 1, 0.1, z + 7},
-            { x - 1, 0.1, z + 7},
+	    GLfloat vertices3[4][3] = {
+	        { x + 2, 2, z - 3 },
+            { x - 2, 2, z - 3 },
+            { x - 2, 0, z - 1},
+            { x + 2, 0, z - 1},
         };
         glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
-		glVertex3fv(vertices1[0]);
+		glVertex3fv(vertices3[0]);
 		glTexCoord2i(0, 1);
-		glVertex3fv(vertices1[1]);
+		glVertex3fv(vertices3[1]);
 		glTexCoord2i(1, 1);
-		glVertex3fv(vertices1[2]);
+		glVertex3fv(vertices3[2]);
 		glTexCoord2i(1, 0);
-		glVertex3fv(vertices1[3]);
+		glVertex3fv(vertices3[3]);
 		glEnd();
 	}
 
-	glBindTexture(GL_TEXTURE_2D,*effectImage[4]);
+	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-	    GLfloat vertices1[4][3] = {
-		    { x - 4, 2, z + 2 },
-            { x + 4, 2, z + 2 },
-            { x + 1, 0.1, z + 3},
-            { x - 1, 0.1, z + 3},
+	    GLfloat vertices4[4][3] = {
+	        { x + 3, 2, z + 3 },
+            { x + 3, 2, z - 1 },
+            { x + 1, 0, z - 1},
+            { x + 1, 0, z + 3},
         };
         glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
-		glVertex3fv(vertices1[0]);
+		glVertex3fv(vertices4[0]);
 		glTexCoord2i(0, 1);
-		glVertex3fv(vertices1[1]);
+		glVertex3fv(vertices4[1]);
 		glTexCoord2i(1, 1);
-		glVertex3fv(vertices1[2]);
+		glVertex3fv(vertices4[2]);
 		glTexCoord2i(1, 0);
-		glVertex3fv(vertices1[3]);
+		glVertex3fv(vertices4[3]);
 		glEnd();
 	}
 
+	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
+	{
+	    GLfloat vertices5[4][3] = {
+	        { x - 3, 2, z + 3 },
+            { x - 3, 2, z - 1 },
+            { x - 1, 0, z - 1},
+            { x - 1, 0, z + 3},
+        };
+        glBegin(GL_POLYGON);
+		glTexCoord2i(0, 0);
+		glVertex3fv(vertices5[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices5[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices5[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices5[3]);
+		glEnd();
+	}
+
+	//if((r += 10) >= 360)   r = 0;
 
 }

@@ -7,7 +7,7 @@ public:
    int f,count,fromPlayerID;
 	double x,y, z,dir,r;
 
-   GLuint *effectImage[10];
+   GLuint *effectImage[15];
 
    Effect();
    void routine();
@@ -19,6 +19,7 @@ public:
    void drawAttack2(double px, double pz);
    void drawAttack3(double px, double pz);
    void drawAttack4(double px, double pz);
+   void drawAttack5(double px, double pz);
    /*
    void drawAttack(double px, double pz);
    void drawAttack2(double px, double pz);
