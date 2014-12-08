@@ -151,9 +151,9 @@ void System::moveChara() {
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
 				effect[serchEffect].f = 1;
-				effect[serchEffect].x = player[myID].x + sin(player[myID].dir) * 1;
-				effect[serchEffect].z = player[myID].z + cos(player[myID].dir) * 1;
-				effect[serchEffect].r = player[myID].dir;
+				effect[serchEffect].x = player[myID].x;
+				effect[serchEffect].z = player[myID].z;
+				effect[serchEffect].dir = player[myID].dir;
 				network->clientCommand(EFFECT_COMMAND, TO_SERVER);
 				break;
 			}
@@ -167,11 +167,9 @@ void System::moveChara() {
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
 				effect[serchEffect].f = 2;
-				effect[serchEffect].x = player[myID].x
-						+ sin(player[myID].dir) * 1;
-				effect[serchEffect].z = player[myID].z
-						+ cos(player[myID].dir) * 1;
-				effect[serchEffect].r = player[myID].dir;
+				effect[serchEffect].x = player[myID].x;
+				effect[serchEffect].z = player[myID].z;
+				effect[serchEffect].dir = player[myID].dir;
 				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
@@ -184,9 +182,9 @@ void System::moveChara() {
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
 				effect[serchEffect].f = 3;
-				effect[serchEffect].x = player[myID].x + sin(player[myID].dir) * 1;
-				effect[serchEffect].z = player[myID].z + cos(player[myID].dir) * 1;
-				effect[serchEffect].r = player[myID].dir;
+				effect[serchEffect].x = player[myID].x;
+				effect[serchEffect].z = player[myID].z;
+				effect[serchEffect].dir = player[myID].dir;
 				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
@@ -201,7 +199,7 @@ void System::moveChara() {
 				effect[serchEffect].f = 4;
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
-				//effect[serchEffect].r = player[myID].dir * 10;
+				effect[serchEffect].dir = player[myID].dir;
 				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
@@ -216,6 +214,7 @@ void System::moveChara() {
 				effect[serchEffect].f = 5;
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
+				effect[serchEffect].dir = player[myID].dir;
 				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
