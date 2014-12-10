@@ -90,10 +90,10 @@ int main(int argc, char* argv[]) {
 	sys->tutorial = new Tutorial();
 
 	sys->map = new Map();
-	
+
 	sys->effect = new Effect[MAX_EFFECT];
 
-	if (argc ==2 && strcmp(argv[1],"server")==0) {
+	if (argc == 2 && strcmp(argv[1], "server") == 0) {
 		sys->network = new NetClass(MODE_SERVER);
 		sys->Stage = -4;
 		SDL_Quit();
@@ -105,10 +105,10 @@ int main(int argc, char* argv[]) {
 	//Initialize System
 
 	//initialize my position
-	for(int c=0 ;c<4;c++){
-	sys->player[c].x = 2.0+c;
-	sys->player[c].y=0.5;
-	sys->player[c].z = 2.0+c;
+	for (int c = 0; c < 4; c++) {
+		sys->player[c].x = 2.0 + c;
+		sys->player[c].y = 0.5;
+		sys->player[c].z = 2.0 + c;
 	}
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
 	 wiimote.led.one  = 1;
@@ -131,15 +131,16 @@ int main(int argc, char* argv[]) {
 	//Initialize tutorial
 	//Init Map
 	//cout<<"Stage1 =  "<<sys->Stage<<endl;
-
 	cout << "Stage =  " << sys->Stage << endl;
 
 	while (1) {
 		sys->io->routine();
-		for(int i=0;i<4;i++){
+		for (int i = 0; i < 4; i++) {
 			sys->player[i].routine();
 		}
-
+		for (int i = 0; i < MAX_EFFECT; i++) {
+			sys->effect[i].routine();
+		}
 
 		//timeProc();
 		switch (sys->Stage) {

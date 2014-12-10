@@ -34,8 +34,8 @@ void* serverMain(void*) {
 		//sys->network->setServer();
 		while (1) {
 			//if (sys->network->cli.size() > 0) {
-				if (sys->network->routineServer() != 0)
-					break;
+			if (sys->network->routineServer() != 0)
+				break;
 			//}
 			usleep(1000); //wait 1ms
 		}
@@ -50,13 +50,14 @@ void* clientMain(void*) {
 	signal(SIGPIPE, SIG_IGN);
 	usleep(1000000); //stop 1s for safe
 	while (1) {
+
 		if (sys->network->setClient("127.0.0.1") == 0) {
 			cout << "client setConnect()==0" << endl;
 			while (1) {
 				if (sys->network->routineClient() != 0) {
 					break;
 				}
-				usleep(1000); //wait 1ms
+				usleep(10000); //wait 10ms
 			}
 
 		} else {
@@ -108,11 +109,10 @@ int NetClass::routineServer() {
 
 	char command;
 
-
-	for (int i = 0;i<CLIENT_MAX; i++) {
+	for (int i = 0; i < CLIENT_MAX; i++) {
 
 		//cout<<"routineServer() executed"<<i<<endl;
-		if(cli[i].socket==-1){
+		if (cli[i].socket == -1) {
 			//cout<<"routineServer() socket throughed"<<i<<endl;
 			continue;
 		}
@@ -120,48 +120,70 @@ int NetClass::routineServer() {
 		FD_ZERO(&fds);
 		FD_SET(cli[i].socket, &fds);
 
-		struct timeval tv;
-		tv.tv_sec=0;
-		tv.tv_usec=10;
 
-		int n = select(cli[i].socket+1, &fds, NULL, NULL, &tv);
+
+		struct timeval tv;
+		tv.tv_sec = 0;
+		tv.tv_usec = 10;
+
+		int n = select(cli[i].socket + 1, &fds, NULL, NULL, &tv);
 		if (n == 0) {
-			cout <<"cli["<<i<<"] routineServer timeout"<<endl;
+			//cout << "cli[" << i << "] routineServer timeout" << endl;
+			//cli[i].socket=-1;
 			//close(cli[i].socket);
-			//cli.erase(cli.begin()+i);
-			//usleep(1000000000);
-			//return 1;
-			//continue;
+		//cli.erase(cli.begin()+i);
+		//usleep(1000000000);
+		//return 1;
+			continue;
 		}
 		//cout <<"cli["<<i<<"] routineServer select passed"<<endl;
 
-
 		if (FD_ISSET(cli[i].socket, &fds)) {
-			command='N';
-			cout <<"cli["<<i<<"] routineServer FD"<<endl;
-			if(receive_data(i, &command, sizeof(char))<0 && command!='N'){
-				cout<<"command="<<command<< "  errno="<<errno<<endl;
+			command = 'N';
+
+			//cout << "cli[" << i << "] routineServer FD" << endl;
+			if (receive_data(i, &command, sizeof(char)) < 0 && command != 'N') {
+				cout << "command=" << command << "  errno=" << errno << endl;
 				return 1;
 			}
-			cout<<"get command "<<command<<endl;
+			if (command == 'N') {
+				cli[i].socket = -1;
+				return 1;
+			}
+			cout << "get command " << command << endl;
 			result = serverCommand(command, i);
 
 			if (result != 0) {
+				//cli[i].socket=-1;
 				return result;
 			}
 		}
-		serverCommand(SYNC_COMMAND,i);
+
+		//位置座標動機
+		if (sys->network->cli[i].socket > 0) {
+			if (serverCommand(SYNC_COMMAND, i) != 0){
+				cli[i].socket = -1;
+				return 1;
+			}
+		}
+
+		//if (sys->network->cli[i].socket > 0 && syncEEffectFlag==1) {
+
+		//第二引数意味なし
+		serverCommand(E_SYNC_COMMAND, 0) ;
+
+
 	}
 
 	return 0;
 }
 
 int NetClass::waitingClient() {
-	//if (cli.size() <= 4) {
-		int n = Accept(listenSocket);
-		return n;
-	//}
-	//return 1;
+//if (cli.size() <= 4) {
+	int n = Accept(listenSocket);
+	return n;
+//}
+//return 1;
 }
 
 int NetClass::setClient(char* serverName) {
@@ -177,7 +199,7 @@ int NetClass::setClient(char* serverName) {
 	server_addr.sin_port = htons(PORT);
 	server_addr.sin_addr.s_addr = inet_addr(serverName);
 
-	//memcpy( (char* )&server_address.sin_addr,(char *)server->h_addr_list, server->h_length);
+//memcpy( (char* )&server_address.sin_addr,(char *)server->h_addr_list, server->h_length);
 
 	if ((ser.socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 
@@ -189,15 +211,15 @@ int NetClass::setClient(char* serverName) {
 			sizeof(server_addr)) != 0) {
 		cout << "client:connect() is failed errno =" << errno << endl;
 		close(ser.socket);
-		ser.socket=-1;
+		ser.socket = -1;
 		return 1;
 	}
-	cout << "connect==0  ser.socket=" << ser.socket<<endl;
+	cout << "connect==0  ser.socket=" << ser.socket << endl;
 	usleep(100000);
 	if ((res = receive_data(TO_SERVER, &sys->myID, sizeof(int))) < 0) {
-		cout <<"receive_data() = "<<res<<"errno = "<<errno<<endl;
+		cout << "receive_data() = " << res << "errno = " << errno << endl;
 		close(ser.socket);
-		ser.socket=-1;
+		ser.socket = -1;
 		return 1;
 	}
 
@@ -211,27 +233,31 @@ int NetClass::routineClient() {
 
 	char buf[MAX_BUFFER_LENGTH];
 
-	//timeout
+//timeout
 	fd_set fds;
 	FD_ZERO(&fds);
-	FD_SET(ser.socket,&fds);
-/*
-	struct timeval tv;
-	tv.tv_sec=1;
-	tv.tv_usec=0;
-	if (select(ser.socket+1, &fds, NULL, NULL, &tv) ==0) {
-		cout << "client timeout" << endl;
-		return 0;
+	FD_SET(ser.socket, &fds);
+	/*
+	 struct timeval tv;
+	 tv.tv_sec=1;
+	 tv.tv_usec=0;
+	 if (select(ser.socket+1, &fds, NULL, NULL, &tv) ==0) {
+	 cout << "client timeout" << endl;
+	 return 0;
+	 }
+	 */
+//位置情報送信
+	if (clientCommand(POS_COMMAND, TO_SERVER) != 0) {
+		cout << "clientCommand !=0" << endl;
+		return 1;
 	}
-*/
-	//位置情報送信
-		if (clientCommand(POS_COMMAND, TO_SERVER) != 0) {
-			cout << "clientCommand !=0" << endl;
-			return 1;
-		}
 
+	if(syncEffectFlag>0){
+		clientCommand(EFFECT_COMMAND, TO_SERVER);
+		//syncEffectFlag=-;
+	}
 
-	//受信
+//受信
 	if (FD_ISSET(ser.socket, &fds)) {
 		memset(buf, '\0', MAX_BUFFER_LENGTH);
 		data_size = receive_data(TO_SERVER, buf, sizeof(char));
@@ -242,16 +268,10 @@ int NetClass::routineClient() {
 		}
 	}
 
-
-
 	return 0;
 }
 
 NetClass::NetClass(int mode) {
-	signal(SIGPIPE, SIG_IGN);
-
-
-
 	if (mode == MODE_SERVER) {
 		pthread_create(&ser_t, NULL, serverMain, NULL);
 		cout << " make serverMain thread" << endl;
@@ -268,5 +288,5 @@ NetClass::NetClass() {
 	cout << "error mode was not selected" << endl;
 }
 NetClass::~NetClass() {
-	// TODO Auto-generated destructor stub
+// TODO Auto-generated destructor stub
 }

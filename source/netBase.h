@@ -19,6 +19,7 @@ using namespace std;
 #include <errno.h>
 //#include <netdb.h>
 #include <assert.h>
+#include "Effect.h"
 
 
 #define POS_COMMAND 'P'
@@ -51,6 +52,13 @@ public:
 	client ser;
 
 	int listenSocket;
+
+	//sync effect etc
+	//for client
+	int syncEffectFlag;
+	//for server
+	int syncEEfectFlag[MAX_EFFECT];
+
 
 	netBase();
 	virtual ~netBase();

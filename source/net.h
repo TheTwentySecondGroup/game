@@ -29,6 +29,7 @@ private:
 public:
 	pthread_t ser_t, cli_t;
 
+
 	NetClass();
 	NetClass(int mode);
 	~NetClass();

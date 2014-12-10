@@ -23,10 +23,11 @@ Effect::Effect() {
 
 void Effect::routine() {
 	//if(fromPlayerID == sys->myID)
-	if (f > 0) {
+	if (f != 0) {
 		dir++;
 		count++;
-		if (count == 2000) {
+		if (count == 200) {
+			f=0;
 			count = 0;
 			//player[myID].attflag = 0;
 			x = -1;
