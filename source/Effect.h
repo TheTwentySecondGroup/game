@@ -20,6 +20,7 @@ public:
    void drawAttack3(double px, double pz);
    void drawAttack4(double px, double pz);
    void drawAttack5(double px, double pz);
+   void drawAttack6(double px, double pz);
    /*
    void drawAttack(double px, double pz);
    void drawAttack2(double px, double pz);

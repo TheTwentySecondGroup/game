@@ -9,7 +9,7 @@
 #define SOURCE_IO_H_
 
 
-#define KEY_MAX 10
+#define KEY_MAX 20
 #define KEY_MAX_COUNT 4000
 
 //keylist
@@ -23,7 +23,7 @@
 #define KEY_D 7
 #define KEY_E 8
 #define KEY_F 9
-
+#define KEY_G 10
 
 using namespace std;
 
