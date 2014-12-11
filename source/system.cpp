@@ -144,10 +144,11 @@ void System::moveChara() {
 			if (effect[serchEffect].f == 0) {
 				effect[serchEffect].f = 2;
 				effect[serchEffect].x = player[myID].x
-						+ sin(player[myID].dir) * 3;
-				effect[serchEffect].y = player[myID].y
-						+ cos(player[myID].dir) * 3;
+						+ sin(player[myID].dir) * 1;
+				effect[serchEffect].z = player[myID].z
+						+ cos(player[myID].dir) * 1;
 				effect[serchEffect].r = player[myID].dir;
+				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -159,11 +160,25 @@ void System::moveChara() {
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
 				effect[serchEffect].f = 3;
-				effect[serchEffect].x = player[myID].x
-						+ sin(player[myID].dir) * 3;
-				effect[serchEffect].y = player[myID].y
-						+ cos(player[myID].dir) * 3;
+				effect[serchEffect].x = player[myID].x + sin(player[myID].dir) * 1;
+				effect[serchEffect].z = player[myID].z + cos(player[myID].dir) * 1;
 				effect[serchEffect].r = player[myID].dir;
+				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				break;
+			}
+		}
+	}
+
+	if (io->key[KEY_E] == 1 && player[myID].attflag == 0) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 4;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 4;
+				effect[serchEffect].x = player[myID].x + sin(player[myID].dir) * 1;
+				effect[serchEffect].z = player[myID].z + cos(player[myID].dir) * 1;
+				effect[serchEffect].r = player[myID].dir * 10;
+				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -171,8 +186,6 @@ void System::moveChara() {
 
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 1) {
 		player[myID].attflag = 0;
-		//effect->x = -1;
-		//effect->z = -1;
 	}
 }
 

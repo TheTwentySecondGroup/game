@@ -15,10 +15,10 @@ public:
    void mp();
 
    void draw();
-   void drawAttack();
-   void drawAttack2();
-   void drawAttack3();
-   void drawAttack4();
+   void drawAttack(double px, double pz);
+   void drawAttack2(double px, double pz);
+   void drawAttack3(double px, double pz);
+   void drawAttack4(double px, double pz);
    /*
    void drawAttack(double px, double pz);
    void drawAttack2(double px, double pz);
