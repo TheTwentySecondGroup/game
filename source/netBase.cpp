@@ -157,9 +157,9 @@ int netBase::clientCommand(char command, int index) {
 				receive_data(TO_SERVER, &playertmp[i].y, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].z, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].dir, sizeof(double));
-				cout << "received player[" << i << "] position "
-						<< sys->player[i].x << sys->player[i].y
-						<< sys->player[i].z << sys->player[i].dir << endl;
+				//cout << "received player[" << i << "] position "
+				//		<< sys->player[i].x << sys->player[i].y
+				//		<< sys->player[i].z << sys->player[i].dir << endl;
 
 			}
 			for (int i = 0; i < CLIENT_MAX; i++) {
@@ -245,9 +245,9 @@ int netBase::serverCommand(char command, int index) {
 			res += send_data(index, &sys->player[i].y, sizeof(double));
 			res += send_data(index, &sys->player[i].z, sizeof(double));
 			res += send_data(index, &sys->player[i].dir, sizeof(double));
-			cout << "send player[" << i << "] position " << sys->player[i].x
-					<< sys->player[i].y << sys->player[i].z
-					<< sys->player[i].dir << endl;
+			//cout << "send player[" << i << "] position " << sys->player[i].x
+			//		<< sys->player[i].y << sys->player[i].z
+			//		<< sys->player[i].dir << endl;
 		}
 		return res;
 	} else if (command == EFFECT_COMMAND) {

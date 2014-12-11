@@ -170,7 +170,7 @@ int NetClass::routineServer() {
 		//if (sys->network->cli[i].socket > 0 && syncEEffectFlag==1) {
 
 		//第二引数意味なし
-		serverCommand(E_SYNC_COMMAND, 0) ;
+		if(syncEEfectFlag>0)serverCommand(E_SYNC_COMMAND, 0) ;
 
 
 	}
@@ -252,7 +252,7 @@ int NetClass::routineClient() {
 		return 1;
 	}
 
-	if(syncEffectFlag>0){
+	if(syncEffectFlag>-1){
 		clientCommand(EFFECT_COMMAND, TO_SERVER);
 		//syncEffectFlag=-;
 	}
