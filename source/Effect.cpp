@@ -22,6 +22,7 @@ Effect::Effect() {
 	effectImage[5] = sys->draw->initTexture("data/image/star2.bmp");
 	effectImage[6] = sys->draw->initTexture("data/image/star3.bmp");
 	effectImage[7] = sys->draw->initTexture("data/image/ice.bmp");
+	effectImage[8] = sys->draw->initTexture("data/image/star4.bmp");
 }
 
 void Effect::routine() {
@@ -30,7 +31,7 @@ void Effect::routine() {
 	if (f > 0) {
 		//dir+=0.1;
 		count++;
-		if (count == 600) {
+		if (count == 500) {
            		 sys->player[sys->myID].attflag = 0;
 			count = 0;
 			f = 0;
@@ -657,20 +658,20 @@ void Effect::drawAttack6(double px, double pz){
 	glRotated(dir*56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);
 
-	 glTranslatef(x, 0.5, 0);
+	glTranslatef(x, 0.6, 0);
 	glRotated(r, 0.0, 0.0, 1.0);
-	glTranslatef(-x, -0.5, 0);	
+	glTranslatef(-x, -0.6, 0);	
 	
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
 	{
 		GLfloat vertices2[4][3] = {
-		{ x + 0.5, 1.3, z + 4 },
-            	{ x - 0.5, 1.3, z + 4 },
-            	{ x - 0.5, 0.3, z + 4 },
-            	{ x + 0.5, 0.3, z + 4 },
-        	};
+			{ x + 0.5, 1.1, z + 3 },
+           	{ x - 0.5, 1.1, z + 3 },
+        	{ x - 0.5, 0.1, z + 3 },
+          	{ x + 0.5, 0.1, z + 3 },
+    	};
 
 		glColor4f(0.8, 0.5, 0.7, 0.5);
 		glBegin(GL_POLYGON);
@@ -686,14 +687,14 @@ void Effect::drawAttack6(double px, double pz){
 	}
 
 
-	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
+	glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
 	{
 		GLfloat vertices[4][3] = {
-		{ x + 0.5, 1.3, z + 2 },
-            	{ x - 0.5, 1.3, z + 2 },
-            	{ x - 0.5, 0.3, z + 2 },
-            	{ x + 0.5, 0.3, z + 2 },
-        	};
+			{ x + 0.5, 1.1, z + 2 },
+            { x - 0.5, 1.1, z + 2 },
+            { x - 0.5, 0.1, z + 2 },
+            { x + 0.5, 0.1, z + 2 },
+        };
 
 		glColor4f(0.8, 0.8, 0.8, 0.7);
 		glBegin(GL_POLYGON);
@@ -707,7 +708,7 @@ void Effect::drawAttack6(double px, double pz){
 		glVertex3fv(vertices[3]);
 		glEnd();
 	}
-	
+	if((r+=10) >= 360)	r = 0; 
 	glEnable(GL_DEPTH_TEST);
 }
 
