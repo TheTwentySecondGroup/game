@@ -167,23 +167,23 @@ int NetClass::routineServer() {
 			}
 		}
 
-		//if (sys->network->cli[i].socket > 0 && syncEEffectFlag==1) {
 
 		//第二引数意味なし
 		if(syncEEfectFlag>0)serverCommand(E_SYNC_COMMAND, 0) ;
 
-
+		for(int i=0;i<MAX_EFFECT;i++){
+			cout << sys->effect[i].f <<" "<< sys->effect[i].x <<" "<< sys->effect[i].y;
+			cout <<" "<< sys->effect[i].z<<" "<<sys->effect[i].dir <<" "<< sys->effect[i].count<<"\n";
+		}
 	}
 
 	return 0;
 }
 
 int NetClass::waitingClient() {
-//if (cli.size() <= 4) {
 	int n = Accept(listenSocket);
 	return n;
-//}
-//return 1;
+
 }
 
 int NetClass::setClient(char* serverName) {
@@ -199,7 +199,6 @@ int NetClass::setClient(char* serverName) {
 	server_addr.sin_port = htons(PORT);
 	server_addr.sin_addr.s_addr = inet_addr(serverName);
 
-//memcpy( (char* )&server_address.sin_addr,(char *)server->h_addr_list, server->h_length);
 
 	if ((ser.socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 

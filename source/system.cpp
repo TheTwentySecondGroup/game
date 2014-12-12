@@ -124,6 +124,7 @@ void System::moveChara() {
 		player[myID].attpatern = 1;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
 				effect[serchEffect].f = 1;
 				effect[serchEffect].x = player[myID].x
 						+ sin(player[myID].dir) * 1;
@@ -142,6 +143,7 @@ void System::moveChara() {
 		player[myID].attpatern = 2;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
 				effect[serchEffect].f = 2;
 				effect[serchEffect].x = player[myID].x
 						+ sin(player[myID].dir) * 1;
@@ -159,6 +161,8 @@ void System::moveChara() {
 		player[myID].attpatern = 3;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
+
+				effect[serchEffect].fromPlayerID = myID;
 				effect[serchEffect].f = 3;
 				effect[serchEffect].x = player[myID].x + sin(player[myID].dir) * 1;
 				effect[serchEffect].z = player[myID].z + cos(player[myID].dir) * 1;
@@ -174,6 +178,7 @@ void System::moveChara() {
 		player[myID].attpatern = 4;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
 			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
 				effect[serchEffect].f = 4;
 				effect[serchEffect].x = player[myID].x + sin(player[myID].dir) * 1;
 				effect[serchEffect].z = player[myID].z + cos(player[myID].dir) * 1;

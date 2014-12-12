@@ -234,7 +234,7 @@ int netBase::serverCommand(char command, int index) {
 				<< sys->player[Id].y << sys->player[Id].z << sys->player[Id].dir
 				<< endl;
 		return 0;
-	} else if (command == SYNC_COMMAND) {
+	}else if (command == SYNC_COMMAND) {
 		int res = 0;
 		res += send_data(index, &command, sizeof(char));
 		for (int i = 0; i < CLIENT_MAX; i++) {
