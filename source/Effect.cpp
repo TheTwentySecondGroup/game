@@ -15,7 +15,7 @@ Effect::Effect() {
 	fromPlayerID = 0;
 
 	effectImage[0] = sys->draw->initTexture("data/image/beam.bmp");
-	effectImage[1] = sys->draw->initTexture("data/image/star.bmp");
+	effectImage[1] = sys->draw->initTexture("data/image/star1.bmp");
 	effectImage[2] = sys->draw->initTexture("data/image/mist.bmp");
 	effectImage[3] = sys->draw->initTexture("data/image/fire.bmp");
 	effectImage[4] = sys->draw->initTexture("data/image/thunder.bmp");
@@ -373,7 +373,7 @@ void Effect::drawAttack3(double px, double pz) {
             glEnd();
         }
     }
-    glTranslatef(x, 0.5, 0);
+   	 glTranslatef(x, 0.5, 0);
 	glRotated(r, 0.0, 0.0, 1.0);
 	glTranslatef(-x, -0.5, 0);
 
@@ -648,6 +648,7 @@ void Effect::drawAttack5(double px, double pz){
 
 void Effect::drawAttack6(double px, double pz){
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
@@ -655,32 +656,60 @@ void Effect::drawAttack6(double px, double pz){
 	glTranslatef(x , 0.0, z );
 	glRotated(dir*56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);
-	
-	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
-	{
-		GLfloat vertices5[4][3] = {
-            { x + 2, 1.5, z + 2 },
-            { x - 2, 1.5, z + 2 },
-            { x - 2, 0.3, z + 2 },
-            { x + 2, 0.3, z + 2 },
-        };
 
+	 glTranslatef(x, 0.5, 0);
+	glRotated(r, 0.0, 0.0, 1.0);
+	glTranslatef(-x, -0.5, 0);	
+	
+	glDisable(GL_DEPTH_TEST);
+
+	glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
+	{
+		GLfloat vertices2[4][3] = {
+		{ x + 0.5, 1.3, z + 4 },
+            	{ x - 0.5, 1.3, z + 4 },
+            	{ x - 0.5, 0.3, z + 4 },
+            	{ x + 0.5, 0.3, z + 4 },
+        	};
+
+		glColor4f(0.8, 0.5, 0.7, 0.5);
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0,0);
-		glVertex3fv(vertices5[0]);
+		glVertex3fv(vertices2[0]);
 		glTexCoord2i(0, 1);
-		glVertex3fv(vertices5[1]);
+		glVertex3fv(vertices2[1]);
 		glTexCoord2i(1, 1);
-		glVertex3fv(vertices5[2]);
+		glVertex3fv(vertices2[2]);
 		glTexCoord2i(1, 0);
-		glVertex3fv(vertices5[3]);
+		glVertex3fv(vertices2[3]);
 		glEnd();
 	}
 
 
+	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
+	{
+		GLfloat vertices[4][3] = {
+		{ x + 0.5, 1.3, z + 2 },
+            	{ x - 0.5, 1.3, z + 2 },
+            	{ x - 0.5, 0.3, z + 2 },
+            	{ x + 0.5, 0.3, z + 2 },
+        	};
 
+		glColor4f(0.8, 0.8, 0.8, 0.7);
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
+	
+	glEnable(GL_DEPTH_TEST);
 }
-
 
 
 
