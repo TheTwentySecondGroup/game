@@ -15,8 +15,6 @@ Map::Map(){
 	MAP_FILE_NAME[3] = "data/map/stage4.data" ;
 
 	initMap(1);
-
-
 }
 
 
