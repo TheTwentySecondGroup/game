@@ -24,6 +24,9 @@
 #define KEY_E 8
 #define KEY_F 9
 #define KEY_G 10
+#define KEY_H 11
+#define KEY_I 12
+#define KEY_J 13
 
 using namespace std;
 

@@ -233,6 +233,22 @@ void System::moveChara() {
 			}
 		}
 	}
+	/*ATTACK7*/
+	if (io->key[KEY_H] == 1 && player[myID].attflag == 0) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 7;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 7;
+				effect[serchEffect].x = player[myID].x;
+				effect[serchEffect].z = player[myID].z;
+				effect[serchEffect].dir = player[myID].dir;
+				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				break;
+			}
+		}
+	}
+
 
 
 }

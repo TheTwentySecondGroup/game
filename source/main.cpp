@@ -66,6 +66,8 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 
+	glutInit(&argc, argv);
+
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);

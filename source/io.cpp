@@ -115,6 +115,15 @@ void GameIO::routine() {
 	else {
 		key[KEY_G] = 0;
 	}
+	if(SdlKey[SDLK_7] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+		if(key[KEY_H] < KEY_MAX_COUNT)
+			key[KEY_H]++;
+	}
+	else {
+		key[KEY_H] = 0;
+	}
+
+
 
 }
 

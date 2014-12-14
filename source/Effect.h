@@ -5,7 +5,7 @@
 class Effect{
 public:
    int f,count,fromPlayerID;
-	double x,y, z,dir,r;
+	double x,y,z,dx,dz,dir,r;
 
    GLuint *effectImage[15];
 
@@ -15,17 +15,13 @@ public:
    void mp();
 
    void draw();
-   void drawAttack(double px, double pz);
-   void drawAttack2(double px, double pz);
-   void drawAttack3(double px, double pz);
-   void drawAttack4(double px, double pz);
-   void drawAttack5(double px, double pz);
-   void drawAttack6(double px, double pz);
-   /*
-   void drawAttack(double px, double pz);
-   void drawAttack2(double px, double pz);
-   void drawAttack3(double px, double pz, double pr);
-   void drawAttack4(double px, double pz);*/
+   void drawAttack();
+   void drawAttack2();
+   void drawAttack3();
+   void drawAttack4();
+   void drawAttack5();
+   void drawAttack6();
+   void drawAttack7();
 };
 
 #endif
