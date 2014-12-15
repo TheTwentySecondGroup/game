@@ -153,7 +153,8 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND, TO_SERVER);
+				network->syncEffectFlag=serchEffect;
+				//network->clientCommand(EFFECT_COMMAND, TO_SERVER);
 				break;
 			}
 		}
@@ -170,7 +171,9 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+
+				network->syncEffectFlag = serchEffect;
+				//network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -187,7 +190,9 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+
+				network->syncEffectFlag=serchEffect;
+				//network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -203,7 +208,9 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+
+				network->syncEffectFlag=serchEffect;
+				//network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -218,7 +225,9 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+
+				network->syncEffectFlag=serchEffect;
+				//network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -233,7 +242,8 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x;
 				effect[serchEffect].z = player[myID].z;
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				network->syncEffectFlag=serchEffect;
+				//network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -260,13 +270,11 @@ void System::gameMain() {
 
 void System::detectCollision() {
 
-	cout<<"execute detectCollision()"<<endl;
+	//cout<<"execute detectCollision()"<<endl;
 	for (int i = 0; i < MAX_EFFECT; i++) {
 		//cout<<effect[i].f<<" "<<i<<endl;
 		if (effect[i].f>0) {
-
 			for (int c=0;c<4;c++){
-
 				cout<<"execute detectCollision()"<<i<<" "<<c<<" "<<player[c].avoidDamageCount<<endl;
 				if(player[c].avoidDamageCount==0 &&effect[i].fromPlayerID!=myID && judgeHit(effect[i].f,&player[c],&effect[i])>0){
 						cout <<"----hit player["<<c<<"] to effect["<<i<<"]"<<endl;

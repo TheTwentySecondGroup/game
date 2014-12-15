@@ -57,7 +57,7 @@ public:
 	//for client
 	int syncEffectFlag;
 	//for server
-	int syncEEfectFlag[MAX_EFFECT];
+	int syncEEffectFlag[MAX_EFFECT];
 
 
 	netBase();

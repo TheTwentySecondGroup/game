@@ -173,21 +173,28 @@ int netBase::clientCommand(char command, int index) {
 			return 0;
 		} else if (command == EFFECT_COMMAND) {
 			int res = 0;
+
+			int Id = syncEffectFlag;
+			syncEffectFlag=-1;
+
+			cout<<"Id = "<<Id<<endl;
+
+
 			res += send_data(TO_SERVER, &command, sizeof(command));
 			//for (int i = 0; i < MAX_EFFECT; i++) {
-			int i = syncEffectFlag;
-			syncEffectFlag=-1;
-			res += send_data(TO_SERVER, &i, sizeof(int));
-			res += send_data(TO_SERVER, &sys->effect[i].f, sizeof(int));
-			res += send_data(TO_SERVER, &sys->effect[i].fromPlayerID,
-					sizeof(int));
-			res += send_data(TO_SERVER, &sys->effect[i].count, sizeof(int));
-			res += send_data(TO_SERVER, &sys->effect[i].x, sizeof(double));
-			res += send_data(TO_SERVER, &sys->effect[i].y, sizeof(double));
-			res += send_data(TO_SERVER, &sys->effect[i].z, sizeof(double));
-			res += send_data(TO_SERVER, &sys->effect[i].r, sizeof(double));
-			res += send_data(TO_SERVER, &sys->effect[i].dir, sizeof(double));
-			//}
+
+			res += send_data(TO_SERVER, &Id, sizeof(int));
+			//res += send_data(TO_SERVER,sys->effect,sizeof(sys->effect));
+
+			res += send_data(TO_SERVER, &sys->effect[Id].f, sizeof(int));
+			res += send_data(TO_SERVER, &sys->effect[Id].fromPlayerID,sizeof(int));
+			res += send_data(TO_SERVER, &sys->effect[Id].count, sizeof(int));
+			res += send_data(TO_SERVER, &sys->effect[Id].x, sizeof(double));
+			res += send_data(TO_SERVER, &sys->effect[Id].y, sizeof(double));
+			res += send_data(TO_SERVER, &sys->effect[Id].z, sizeof(double));
+			res += send_data(TO_SERVER, &sys->effect[Id].r, sizeof(double));
+			res += send_data(TO_SERVER, &sys->effect[Id].dir, sizeof(double));
+
 
 			return res;
 
@@ -214,13 +221,7 @@ int netBase::clientCommand(char command, int index) {
 }
 
 int netBase::serverCommand(char command, int index) {
-	int data_size = 0;
 	int result = 0;
-
-	char received_data[MAX_BUFFER_LENGTH];
-	memset(received_data, '\0', MAX_BUFFER_LENGTH);
-	char sending_data[MAX_BUFFER_LENGTH];
-	memset(sending_data, '\0', MAX_BUFFER_LENGTH);
 
 	//receive the position data from client
 	if (command == POS_COMMAND) {
@@ -230,9 +231,10 @@ int netBase::serverCommand(char command, int index) {
 		receive_data(index, &sys->player[Id].y, sizeof(double));
 		receive_data(index, &sys->player[Id].z, sizeof(double));
 		receive_data(index, &sys->player[Id].dir, sizeof(double));
+		/*
 		cout << "receive player[" << Id << "] position " << sys->player[Id].x
 				<< sys->player[Id].y << sys->player[Id].z << sys->player[Id].dir
-				<< endl;
+				<< endl;*/
 		return 0;
 	}else if (command == SYNC_COMMAND) {
 		int res = 0;
@@ -251,24 +253,35 @@ int netBase::serverCommand(char command, int index) {
 		}
 		return res;
 	} else if (command == EFFECT_COMMAND) {
-		int i = 0;
-		receive_data(index, &i, sizeof(int));
-		receive_data(index, &sys->effect[i].f, sizeof(int));
-		receive_data(index, &sys->effect[i].fromPlayerID, sizeof(int));
-		receive_data(index, &sys->effect[i].count, sizeof(int));
-		receive_data(index, &sys->effect[i].x, sizeof(double));
-		receive_data(index, &sys->effect[i].y, sizeof(double));
-		receive_data(index, &sys->effect[i].z, sizeof(double));
-		receive_data(index, &sys->effect[i].r, sizeof(double));
-		receive_data(index, &sys->effect[i].dir, sizeof(double));
-		syncEEfectFlag[i] = 1;
+		int Id = 0,recvdint=0;
+
+
+		//for(int c=0;c<MAX_EFFECT;c++){
+		receive_data(index, &Id, sizeof(int));
+		receive_data(index, &sys->effect[Id].f, sizeof(int));
+		receive_data(index, &sys->effect[Id].fromPlayerID, sizeof(int));
+		receive_data(index, &sys->effect[Id].count, sizeof(int));
+		receive_data(index, &sys->effect[Id].x, sizeof(double));
+		receive_data(index, &sys->effect[Id].y, sizeof(double));
+		receive_data(index, &sys->effect[Id].z, sizeof(double));
+		receive_data(index, &sys->effect[Id].r, sizeof(double));
+		receive_data(index, &sys->effect[Id].dir, sizeof(double));
+
+		cout << "effect["<<Id<<"] "<<sys->effect[Id].f << " " << sys->effect[Id].x << " "
+				<< sys->effect[Id].y;
+		cout << " " << sys->effect[Id].z << " " << sys->effect[Id].dir << " "
+				<< sys->effect[Id].count << "\n";
+
+
+		syncEEffectFlag[Id] = 1;
+	//}
 		return 0;
 	} else if (command == E_SYNC_COMMAND) {
 		int res = 0;
 		for (int i = 0; i < MAX_EFFECT; i++) {
-			if (syncEEfectFlag[i] == 1) {
+			if (syncEEffectFlag[i] == 1) {
 				for (int c = 0; c < 4; c++) {
-					if (cli[i].socket > 0) {
+					if (cli[c].socket > 0) {
 						res += send_data(c, &command, sizeof(char));
 						res += send_data(c, &i, sizeof(int));
 						res += send_data(c, &sys->effect[i].f, sizeof(int));
@@ -283,7 +296,8 @@ int netBase::serverCommand(char command, int index) {
 								sizeof(double));
 					}
 				}
-				syncEEfectFlag[i] = 0;
+				syncEEffectFlag[i] = 0;
+				return 0;
 			}
 		}
 		return res;
@@ -298,7 +312,7 @@ int netBase::serverCommand(char command, int index) {
 netBase::netBase() {
 	syncEffectFlag=-1;
 	for(int i=0;i<MAX_EFFECT;i++){
-		syncEEfectFlag[i]=0;
+		syncEEffectFlag[i]=0;
 	}
 // TODO Auto-generated constructor stub
 }

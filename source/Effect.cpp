@@ -12,6 +12,7 @@ Effect::Effect() {
 	y = -1.0;
 	z = -1.0;
 	r = 0;
+	dir = 0;
 	fromPlayerID = 0;
 
 	effectImage[0] = sys->draw->initTexture("data/image/beam.bmp");

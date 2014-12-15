@@ -57,6 +57,7 @@ void* clientMain(void*) {
 				if (sys->network->routineClient() != 0) {
 					break;
 				}
+
 				usleep(10000); //wait 10ms
 			}
 
@@ -120,8 +121,6 @@ int NetClass::routineServer() {
 		FD_ZERO(&fds);
 		FD_SET(cli[i].socket, &fds);
 
-
-
 		struct timeval tv;
 		tv.tv_sec = 0;
 		tv.tv_usec = 10;
@@ -131,9 +130,9 @@ int NetClass::routineServer() {
 			//cout << "cli[" << i << "] routineServer timeout" << endl;
 			//cli[i].socket=-1;
 			//close(cli[i].socket);
-		//cli.erase(cli.begin()+i);
-		//usleep(1000000000);
-		//return 1;
+			//cli.erase(cli.begin()+i);
+			//usleep(1000000000);
+			//return 1;
 			continue;
 		}
 		//cout <<"cli["<<i<<"] routineServer select passed"<<endl;
@@ -161,20 +160,24 @@ int NetClass::routineServer() {
 
 		//位置座標動機
 		if (sys->network->cli[i].socket > 0) {
-			if (serverCommand(SYNC_COMMAND, i) != 0){
+			if (serverCommand(SYNC_COMMAND, i) != 0) {
 				cli[i].socket = -1;
 				return 1;
 			}
 		}
 
-
 		//第二引数意味なし
-		if(syncEEfectFlag>0)serverCommand(E_SYNC_COMMAND, 0) ;
+		//if (syncEffectFlag > 0)
+			serverCommand(E_SYNC_COMMAND, 0);
 
-		for(int i=0;i<MAX_EFFECT;i++){
-			cout << sys->effect[i].f <<" "<< sys->effect[i].x <<" "<< sys->effect[i].y;
-			cout <<" "<< sys->effect[i].z<<" "<<sys->effect[i].dir <<" "<< sys->effect[i].count<<"\n";
-		}
+
+
+		/*for (int i = 0; i < MAX_EFFECT; i++) {
+			cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
+					<< sys->effect[i].y;
+			cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
+					<< sys->effect[i].count << "\n";
+		}*/
 	}
 
 	return 0;
@@ -198,7 +201,6 @@ int NetClass::setClient(char* serverName) {
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(PORT);
 	server_addr.sin_addr.s_addr = inet_addr(serverName);
-
 
 	if ((ser.socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 
@@ -251,9 +253,14 @@ int NetClass::routineClient() {
 		return 1;
 	}
 
-	if(syncEffectFlag>-1){
+	if (syncEffectFlag != -1) {
 		clientCommand(EFFECT_COMMAND, TO_SERVER);
-		//syncEffectFlag=-;
+	}
+	for (int i = 0; i < MAX_EFFECT; i++) {
+		cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
+				<< sys->effect[i].y;
+		cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
+				<< sys->effect[i].count << "\n";
 	}
 
 //受信
@@ -266,6 +273,7 @@ int NetClass::routineClient() {
 			result = clientCommand(buf[0], TO_SERVER);
 		}
 	}
+
 
 	return 0;
 }
