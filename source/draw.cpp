@@ -4,8 +4,6 @@
 static double px, pz, pdir;
 GLuint *texHandle[10];
 
-//TTF_Font* font;
-
 void Draw::routine() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -43,15 +41,14 @@ void Draw::routine() {
 
 		glEnable(GL_LIGHT0);
 
-		sys->map->drawMap(); //
+		sys->map->drawMap();
 
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
 				sys->model[sys->player[i].chara].Draw(sys->player[i].x,
-						sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+				sys->player[i].y, sys->player[i].z, sys->player[i].dir);
 			}
 		}
-
 
 		for (int i = 0; i < MAX_EFFECT; i++) {
 			if (sys->effect[i].f > 0) {
@@ -62,15 +59,8 @@ void Draw::routine() {
 
 	init2D();
 	{
-
-
 		drawHP(WINDOW_X - 150, 100, 100, 50);
 		if(sys->player[sys->myID].hp<=0)drawGameOver(100,100 , 800, 300);
-
-		//drawTime(WINDOW_X-150,100,150,100);
-		//procEffect();
-		//drawItemStatus();
-
 	}
 	glFlush();
 	SDL_GL_SwapBuffers();        //reflect swap
@@ -149,9 +139,6 @@ Draw::Draw() {
 	texHandle[0] = initTexture("data/image/zimen.bmp");
 	texHandle[1] = initTexture("data/image/sky2.bmp");
 	texHandle[2] = initTexture("data/image/block.bmp");
-//Initialize ttf
-//TTF_Init();
-//font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
 
 	lightpos[0] = 0;
 	lightpos[1] = 0;
@@ -504,7 +491,7 @@ void Draw::drawFloor(int x, int y) {
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_FOG);
 }
-
+/*
 void Draw::drawSky(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
@@ -537,7 +524,7 @@ void Draw::drawSky(int x, int y) {
 
 	glDisable(GL_CULL_FACE);
 }
-
+*/
 void Draw::drawFloor2(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);

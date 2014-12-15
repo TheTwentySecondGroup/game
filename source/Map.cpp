@@ -62,8 +62,7 @@ void Map::drawMap() {
 	int max_y = (int) sys->player[sys->myID].z + 30;
 	if (max_y > MAP_Y_MAX)
 		max_y = MAP_Y_MAX;
-	sys->draw->drawSky(1, 1);
-	//sys->draw->drawFloor(1, 1);
+
 	for (i = min_x; i < max_x; i++) {
 		for (c = min_y; c < max_y; c++) {
 			//block
@@ -74,25 +73,11 @@ void Map::drawMap() {
 			//road and start position
 			if (data[i][c] == 0) {
 				sys->draw->drawFloor(i, c);
-				//drawSky(i,c);
 			}
 
 			if (data[i][c] == 2) {
 				sys->draw->drawFloor(i, c);
-				//drawSky(i,c);
 			}
-			//falling
-			if (data[i][c] == 3) {
-				//sys->draw->drawFloor2(i, c);
-				//drawSky(i,c);
-				//drawA(i,c);
-			}
-
-			/*if(Map[i][c]==4){//goal
-			 drawFloor(i,c);
-			 drawCelling(i,c);
-			 }
-			 */
 		}
 	}
 }
