@@ -52,100 +52,21 @@ void Draw::routine() {
 			}
 		}
 
-		// sys->model[0].Draw();
 
 		for (int i = 0; i < MAX_EFFECT; i++) {
 			if (sys->effect[i].f > 0) {
 				sys->effect->draw();
 			}
 		}
-
-		//px = sys->player[sys->myID].x;
-		//pz = sys->player[sys->myID].z;
-		//pdir = sys->player[sys->myID].dir;
-		/*ATTACK1*/
-		/*
-		 if (sys->player[sys->myID].attflag == 1
-		 && sys->player[sys->myID].attpatern == 1) {
-		 if (pdir >= 0 && pdir < 1.5 || pdir < 0 && pdir > -1.5) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 5),
-		 pz + (cos(pdir) * 4));
-		 } else if (pdir >= 1.5 && pdir < 2 || pdir <= -1.5 && pdir > -2) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 6),
-		 pz + (cos(pdir) * 7.5));
-		 } else if (pdir >= 2 && pdir < 4.5 || pdir <= -2 && pdir > -4.5) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 5),
-		 pz + (cos(pdir) * 6.25));
-		 } else if (pdir >= 4.5 && pdir <= 6.03
-		 || pdir <= -4.5 && pdir > -6.03) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 5),
-		 pz + (cos(pdir) * 4));
-		 }
-		 }*/
-
-		/*ATTACK2*/
-		/*if (sys->player[sys->myID].attflag == 1
-		 && sys->player[sys->myID].attpatern == 2) {
-		 if (pdir >= 0 && pdir < 1.59 || pdir <= 0 && pdir > -1.59) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 6,
-		 pz + cos(pdir) * 5);
-		 }
-
-		 else if (pdir >= 1.59 && pdir < 1.8
-		 || pdir <= -1.59 && pdir > -1.8) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 16);
-		 cout << "attack2" << endl;
-		 }
-
-		 else if (pdir >= 1.8 && pdir < 3.4 || pdir <= -1.8 && pdir > -3.4) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 11);
-		 }
-
-		 else if (pdir >= 3.4 && pdir < 4.53
-		 || pdir <= -3.4 && pdir > -4.53) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 11);
-		 }
-
-		 else if (pdir >= 4.53 && pdir < 4.74
-		 || pdir <= -4.53 && pdir > -4.74) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 16);
-		 }
-
-		 else if (pdir >= 4.74 && pdir <= 6.03
-		 || pdir <= -4.74 && pdir >= -6.03) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 5,
-		 pz + cos(pdir) * 5);
-		 }
-		 }
-		 */
-		/*ATTACK3*/
-		/*
-		 if (sys->player[sys->myID].attflag == 1
-		 && sys->player[sys->myID].attpatern == 3) {
-		 //if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
-		 sys->effect->drawAttack3(px + sin(pdir) * 5, pz + cos(pdir) * 5,
-		 pdir);
-		 //}
-		 /*else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
-		 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-		 cout << "attack3" << endl;
-		 }
-		 else if(pdir >=3.0 && pdir < 5.0 || pdir <=- 3.0 && pdir > -5.0){
-		 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-		 }
-		 */
-		//}
-		//hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
 	}
 
 	init2D();
 	{
 
+
 		drawHP(WINDOW_X - 150, 100, 100, 50);
+		if(sys->player[sys->myID].hp<=0)drawGameOver(100,100 , 800, 300);
+
 		//drawTime(WINDOW_X-150,100,150,100);
 		//procEffect();
 		//drawItemStatus();
@@ -154,7 +75,27 @@ void Draw::routine() {
 	glFlush();
 	SDL_GL_SwapBuffers();        //reflect swap
 }
+void Draw::drawGameOver(int x, int y, int w, int h) {
+	SDL_Color color = { 0, 0, 0 };
+	SDL_Surface *tmp;
+	string tmpstring= "GAME OVER";
+	tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
 
+	GLuint *tmpimage = sys->draw->timeTexture(tmp);
+	glBindTexture( GL_TEXTURE_2D, *tmpimage);
+	glBegin( GL_QUADS);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glTexCoord2i(0, 0);
+	glVertex3f(x , y  , 0);
+	glTexCoord2i(1, 0);
+	glVertex3f(x + w , y  , 0);
+	glTexCoord2i(1, 1);
+	glVertex3f(x + w , y + h , 0);
+	glTexCoord2i(0, 1);
+	glVertex3f(x, y + h, 0);
+	glEnd();
+	glDeleteTextures(1, tmpimage);
+}
 void Draw::drawHP(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;

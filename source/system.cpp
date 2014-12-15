@@ -11,7 +11,7 @@ using namespace std;
 
 System::System() {
 	TTF_Init();
-	font = TTF_OpenFont("data/Koruri-20140904/Koruri-Bold.ttf", 20);
+	font = TTF_OpenFont("data/Koruri-20140904/Koruri-Bold.ttf", 100);
 	//if(!font)cout<<TTF_GetError()<<endl;
 	dx = 0;
 	dy = 0;
@@ -284,7 +284,7 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
 
-	moveChara();
+	if(player[myID].hp>0)moveChara();
 	draw->routine();
 }
 
@@ -295,6 +295,7 @@ void System::detectCollision() {
 
 		if (effect[i].f>0) {
 			for (int c=0;c<4;c++){
+				if(player[c].hp<=0)continue;
 				if(player[c].avoidDamageCount==0 &&effect[i].fromPlayerID!=myID && judgeHit(effect[i].f,&player[c],&effect[i])>0){
 						player[c].avoidDamageCount=30;
 						player[c].hp-=10;
