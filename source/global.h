@@ -38,6 +38,7 @@
 #define FPS_RATE 30
 
 #define STAGE_MAX 4
+#define PI 3.141592
 
 using namespace std;
 
