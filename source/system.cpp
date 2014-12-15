@@ -272,8 +272,9 @@ void System::moveChara() {
 }
 
 int System::judgeHit(int mode, Player *pl, Effect *ef) {
-	if (mode == 1) {
-		if ((abs(pl->x - ef->x) <= 10) && (abs(pl->z - ef->z) <= 10)) {
+	if (mode >= 1) {
+		//cout<<"-----------judge  distance "<<abs(pl->x - ef->x)* abs(pl->z - ef->z)<<endl;
+		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
 			return 1;
 		}
 	}
@@ -291,14 +292,14 @@ void System::detectCollision() {
 
 	//cout<<"execute detectCollision()"<<endl;
 	for (int i = 0; i < MAX_EFFECT; i++) {
-		//cout<<effect[i].f<<" "<<i<<endl;
+
 		if (effect[i].f>0) {
 			for (int c=0;c<4;c++){
-				cout<<"execute detectCollision()"<<i<<" "<<c<<" "<<player[c].avoidDamageCount<<endl;
 				if(player[c].avoidDamageCount==0 &&effect[i].fromPlayerID!=myID && judgeHit(effect[i].f,&player[c],&effect[i])>0){
-						cout <<"----hit player["<<c<<"] to effect["<<i<<"]"<<endl;
 						player[c].avoidDamageCount=30;
 						player[c].hp-=10;
+
+
 				}
 			}
 

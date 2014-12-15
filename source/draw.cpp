@@ -159,9 +159,11 @@ void Draw::drawHP(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
 	for (int i = 0; i < 4; i++) {
-		string tmpstring = "P";
+		string tmpstring;
+		if(sys->myID == i)tmpstring += "†P";
+		else tmpstring += "　P";
 		char tmpi[10];
-		sprintf(tmpi,"%d",i);
+		sprintf(tmpi,"%d",i+1);
 		tmpstring+= tmpi;
 		tmpstring+= " ";
 		sprintf(tmpi,"%d",sys->player[i].hp);

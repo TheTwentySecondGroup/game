@@ -157,17 +157,22 @@ int netBase::clientCommand(char command, int index) {
 				receive_data(TO_SERVER, &playertmp[i].y, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].z, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].dir, sizeof(double));
-				//cout << "received player[" << i << "] position "
-				//		<< sys->player[i].x << sys->player[i].y
-				//		<< sys->player[i].z << sys->player[i].dir << endl;
+				cout << "received player[" << i << "] position "
+						<< sys->player[i].x << sys->player[i].y
+						<< sys->player[i].z << sys->player[i].dir << endl;
 
 			}
 			for (int i = 0; i < CLIENT_MAX; i++) {
 				if (i != sys->myID) {
+					sys->player[i].hp = playertmp[i].hp;
+					sys->player[i].mp = playertmp[i].mp;
 					sys->player[i].x = playertmp[i].x;
 					sys->player[i].y = playertmp[i].y;
 					sys->player[i].z = playertmp[i].z;
 					sys->player[i].dir = playertmp[i].dir;
+				}else {
+					sys->player[i].hp = playertmp[i].hp;
+					sys->player[i].mp = playertmp[i].mp;
 				}
 			}
 			return 0;
@@ -247,9 +252,9 @@ int netBase::serverCommand(char command, int index) {
 			res += send_data(index, &sys->player[i].y, sizeof(double));
 			res += send_data(index, &sys->player[i].z, sizeof(double));
 			res += send_data(index, &sys->player[i].dir, sizeof(double));
-			//cout << "send player[" << i << "] position " << sys->player[i].x
-			//		<< sys->player[i].y << sys->player[i].z
-			//		<< sys->player[i].dir << endl;
+			cout << "send player[" << i << "] position " << sys->player[i].x
+					<< sys->player[i].y << sys->player[i].z
+					<< sys->player[i].dir << endl;
 		}
 		return res;
 	} else if (command == EFFECT_COMMAND) {
@@ -267,10 +272,6 @@ int netBase::serverCommand(char command, int index) {
 		receive_data(index, &sys->effect[Id].r, sizeof(double));
 		receive_data(index, &sys->effect[Id].dir, sizeof(double));
 
-		cout << "effect["<<Id<<"] "<<sys->effect[Id].f << " " << sys->effect[Id].x << " "
-				<< sys->effect[Id].y;
-		cout << " " << sys->effect[Id].z << " " << sys->effect[Id].dir << " "
-				<< sys->effect[Id].count << "\n";
 
 
 		syncEEffectFlag[Id] = 1;
@@ -285,15 +286,13 @@ int netBase::serverCommand(char command, int index) {
 						res += send_data(c, &command, sizeof(char));
 						res += send_data(c, &i, sizeof(int));
 						res += send_data(c, &sys->effect[i].f, sizeof(int));
-						res += send_data(c, &sys->effect[i].fromPlayerID,
-								sizeof(int));
+						res += send_data(c, &sys->effect[i].fromPlayerID,sizeof(int));
 						res += send_data(c, &sys->effect[i].count, sizeof(int));
 						res += send_data(c, &sys->effect[i].x, sizeof(double));
 						res += send_data(c, &sys->effect[i].y, sizeof(double));
 						res += send_data(c, &sys->effect[i].z, sizeof(double));
 						res += send_data(c, &sys->effect[i].r, sizeof(double));
-						res += send_data(c, &sys->effect[i].dir,
-								sizeof(double));
+						res += send_data(c, &sys->effect[i].dir,sizeof(double));
 					}
 				}
 				syncEEffectFlag[i] = 0;
