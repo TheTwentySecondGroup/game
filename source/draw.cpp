@@ -4,8 +4,6 @@
 static double px, pz, pdir;
 GLuint *texHandle[10];
 
-//TTF_Font* font;
-
 void Draw::routine() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -43,113 +41,25 @@ void Draw::routine() {
 
 		glEnable(GL_LIGHT0);
 
-		sys->map->drawMap(); //
+		sys->map->drawMap();
 
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
 				sys->model[sys->player[i].chara].Draw(sys->player[i].x,
-						sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+				sys->player[i].y, sys->player[i].z, sys->player[i].dir);
 			}
 		}
-
-		// sys->model[0].Draw();
 
 		for (int i = 0; i < MAX_EFFECT; i++) {
 			if (sys->effect[i].f > 0) {
 				sys->effect->draw();
 			}
 		}
-
-		//px = sys->player[sys->myID].x;
-		//pz = sys->player[sys->myID].z;
-		//pdir = sys->player[sys->myID].dir;
-		/*ATTACK1*/
-		/*
-		 if (sys->player[sys->myID].attflag == 1
-		 && sys->player[sys->myID].attpatern == 1) {
-		 if (pdir >= 0 && pdir < 1.5 || pdir < 0 && pdir > -1.5) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 5),
-		 pz + (cos(pdir) * 4));
-		 } else if (pdir >= 1.5 && pdir < 2 || pdir <= -1.5 && pdir > -2) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 6),
-		 pz + (cos(pdir) * 7.5));
-		 } else if (pdir >= 2 && pdir < 4.5 || pdir <= -2 && pdir > -4.5) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 5),
-		 pz + (cos(pdir) * 6.25));
-		 } else if (pdir >= 4.5 && pdir <= 6.03
-		 || pdir <= -4.5 && pdir > -6.03) {
-		 sys->effect->drawAttack(px + (sin(pdir) * 5),
-		 pz + (cos(pdir) * 4));
-		 }
-		 }*/
-
-		/*ATTACK2*/
-		/*if (sys->player[sys->myID].attflag == 1
-		 && sys->player[sys->myID].attpatern == 2) {
-		 if (pdir >= 0 && pdir < 1.59 || pdir <= 0 && pdir > -1.59) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 6,
-		 pz + cos(pdir) * 5);
-		 }
-
-		 else if (pdir >= 1.59 && pdir < 1.8
-		 || pdir <= -1.59 && pdir > -1.8) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 16);
-		 cout << "attack2" << endl;
-		 }
-
-		 else if (pdir >= 1.8 && pdir < 3.4 || pdir <= -1.8 && pdir > -3.4) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 11);
-		 }
-
-		 else if (pdir >= 3.4 && pdir < 4.53
-		 || pdir <= -3.4 && pdir > -4.53) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 11);
-		 }
-
-		 else if (pdir >= 4.53 && pdir < 4.74
-		 || pdir <= -4.53 && pdir > -4.74) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 8,
-		 pz + cos(pdir) * 16);
-		 }
-
-		 else if (pdir >= 4.74 && pdir <= 6.03
-		 || pdir <= -4.74 && pdir >= -6.03) {
-		 sys->effect->drawAttack2(px + sin(pdir) * 5,
-		 pz + cos(pdir) * 5);
-		 }
-		 }
-		 */
-		/*ATTACK3*/
-		/*
-		 if (sys->player[sys->myID].attflag == 1
-		 && sys->player[sys->myID].attpatern == 3) {
-		 //if(pdir >=0 && pdir < 1.6 || pdir <=0 && pdir > -1.6){
-		 sys->effect->drawAttack3(px + sin(pdir) * 5, pz + cos(pdir) * 5,
-		 pdir);
-		 //}
-		 /*else if(pdir >=1.6 && pdir < 3.0 || pdir <= -1.6 && pdir > -3.0){
-		 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-		 cout << "attack3" << endl;
-		 }
-		 else if(pdir >=3.0 && pdir < 5.0 || pdir <=- 3.0 && pdir > -5.0){
-		 sys->effect->drawAttack3(px+sin(pdir)*5, pz+cos(pdir)*5, pdir);
-		 }
-		 */
-		//}
-		//hp(sys->player[sys->myID].x, sys->player[sys->myID].y);
 	}
 
 	init2D();
 	{
-
 		drawHP(WINDOW_X - 150, 100, 100, 50);
-		//drawTime(WINDOW_X-150,100,150,100);
-		//procEffect();
-		//drawItemStatus();
-
 	}
 	glFlush();
 	SDL_GL_SwapBuffers();        //reflect swap
@@ -208,9 +118,6 @@ Draw::Draw() {
 	texHandle[0] = initTexture("data/image/zimen.bmp");
 	texHandle[1] = initTexture("data/image/sky2.bmp");
 	texHandle[2] = initTexture("data/image/block.bmp");
-//Initialize ttf
-//TTF_Init();
-//font = TTF_OpenFont("data/Koruri-20140524/Koruri-Regular.ttf",200);
 
 	lightpos[0] = 0;
 	lightpos[1] = 0;
@@ -563,7 +470,7 @@ void Draw::drawFloor(int x, int y) {
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_FOG);
 }
-
+/*
 void Draw::drawSky(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
@@ -596,7 +503,7 @@ void Draw::drawSky(int x, int y) {
 
 	glDisable(GL_CULL_FACE);
 }
-
+*/
 void Draw::drawFloor2(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
