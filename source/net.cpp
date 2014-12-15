@@ -256,12 +256,13 @@ int NetClass::routineClient() {
 	if (syncEffectFlag != -1) {
 		clientCommand(EFFECT_COMMAND, TO_SERVER);
 	}
-	for (int i = 0; i < MAX_EFFECT; i++) {
+
+	/*for (int i = 0; i < MAX_EFFECT; i++) {
 		cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
 				<< sys->effect[i].y;
 		cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
 				<< sys->effect[i].count << "\n";
-	}
+	}*/
 
 //受信
 	if (FD_ISSET(ser.socket, &fds)) {
