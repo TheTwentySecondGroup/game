@@ -55,7 +55,7 @@ void Draw::routine() {
 
 		for (int i = 0; i < MAX_EFFECT; i++) {
 			if (sys->effect[i].f > 0) {
-				sys->effect->draw();
+				sys->effect[i].draw();
 			}
 		}
 	}
