@@ -23,7 +23,7 @@ void Draw::routine() {
 				0, 1.0f, 0);
 
 		//Light
-		lightpos[0] = 12; //sys->player[sys->myID].x;
+		lightpos[0] = 17; //sys->player[sys->myID].x;
 		lightpos[1] = 1; //sys->player[sys->myID].y;
 		lightpos[2] = 28; //sys->player[sys->myID].z;
 		lightpos[3] = 1;
@@ -472,79 +472,24 @@ void Draw::drawFloor(int x, int y) {
 			+ x, 0.0, 0 + y }, { 1 + x, 0.0, 0 + y }, };
 
 	glBegin(GL_POLYGON);
-	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
+	//glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices[0]);
 
-	glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
+	//glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
 	glTexCoord2i(0, 1);
 	glVertex3fv(vertices[1]);
 
-	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
+	//glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices[2]);
 
-	glNormal3f(vertices[3][0], vertices[3][1], vertices[3][2]);
+	//glNormal3f(vertices[3][0], vertices[3][1], vertices[3][2]);
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices[3]);
 	glEnd();
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_FOG);
-}
-/*
-void Draw::drawSky(int x, int y) {
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
-	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
-//glDisable(GL_FOG);
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glBindTexture(GL_TEXTURE_2D, *texHandle[1]);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	GLfloat vertices[4][3] = { { 26, 3.0, 80 }, { -5, 3.0, 80 },
-			{ -5, 3.0, -2.0 }, { 26, 3.0, -2.0 }, };
-	glBegin(GL_POLYGON);
-	glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
-	glTexCoord2i(0, 0);
-	glVertex3fv(vertices[0]);
-
-	glNormal3f(vertices[1][0], vertices[1][1], vertices[1][2]);
-	glTexCoord2i(0, 1);
-	glVertex3fv(vertices[1]);
-
-	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
-	glTexCoord2i(1, 1);
-	glVertex3fv(vertices[2]);
-
-	glNormal3f(vertices[2][0], vertices[2][1], vertices[2][2]);
-	glTexCoord2i(1, 0);
-	glVertex3fv(vertices[3]);
-	glEnd();
-
-	glDisable(GL_CULL_FACE);
-}
-*/
-void Draw::drawFloor2(int x, int y) {
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
-	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
-
-	glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
-
-	GLfloat vertices[4][3] = { { 1 + x, 0.0, 1 + y }, { 0 + x, 0.0, 1 + y }, { 0
-			+ x, 0.0, 0 + y }, { 1 + x, 0.0, 0 + y }, };
-	glBegin(GL_POLYGON);
-	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
-	glTexCoord2i(0, 0);
-	glVertex3fv(vertices[0]);
-	glTexCoord2i(0, 1);
-	glVertex3fv(vertices[1]);
-	glTexCoord2i(1, 1);
-	glVertex3fv(vertices[2]);
-	glTexCoord2i(1, 0);
-	glVertex3fv(vertices[3]);
-	glEnd();
 }
 
 void Draw::drawWall(int x, int y) {
@@ -559,19 +504,19 @@ void Draw::drawWall(int x, int y) {
 	GLfloat vertices1[4][3] = { { 1 + x, 1.5, y }, { 0 + x, 1.5, y }, { 0 + x,
 			0, y }, { 1 + x, 0, y }, };
 	glBegin(GL_POLYGON);
-	glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
+	//glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices1[0]);
 
-	glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
+	//glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
 	glTexCoord2i(0, 1);
 	glVertex3fv(vertices1[1]);
 
-	glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
+	//glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices1[2]);
 
-	glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
+	//glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices1[3]);
 	glEnd();
@@ -581,19 +526,19 @@ void Draw::drawWall(int x, int y) {
 	GLfloat vertices2[4][3] = { { 1 + x, 1.5, y + 1 }, { 0 + x, 1.5, y + 1 }, {
 			0 + x, 0, y + 1 }, { 1 + x, 0, y + 1 }, };
 	glBegin(GL_POLYGON);
-	glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
+	//glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices2[0]);
 
-	glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
+	//glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
 	glTexCoord2i(0, 1);
 	glVertex3fv(vertices2[1]);
 
-	glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
+	//glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices2[2]);
 
-	glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
+	//glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices2[3]);
 	glEnd();
@@ -603,19 +548,19 @@ void Draw::drawWall(int x, int y) {
 	GLfloat vertices3[4][3] = { { x, 1.5, y + 1 }, { x, 1.5, 0 + y }, { x, 0, 0
 			+ y }, { x, 0, 1 + y }, };
 	glBegin(GL_POLYGON);
-	glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
+	//glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices3[0]);
 
-	glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
+	//glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
 	glTexCoord2i(0, 1);
 	glVertex3fv(vertices3[1]);
 
-	glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
+	//glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices3[2]);
 
-	glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
+	//glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices3[3]);
 	glEnd();
@@ -629,15 +574,15 @@ void Draw::drawWall(int x, int y) {
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices4[0]);
 
-	glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
+	//glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
 	glTexCoord2i(0, 1);
 	glVertex3fv(vertices4[1]);
 
-	glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
+	//glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices4[2]);
 
-	glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
+	//glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices4[3]);
 	glEnd();

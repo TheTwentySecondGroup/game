@@ -70,7 +70,6 @@ void Map::drawMap() {
 				sys->draw->drawWall(i, c);
 			}
 
-			//road and start position
 			if (data[i][c] == 0) {
 				sys->draw->drawFloor(i, c);
 			}

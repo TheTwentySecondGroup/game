@@ -35,7 +35,7 @@ void Effect::routine() {
 	if (f > 0) {
 		//dir+=0.1;
 		count++;
-		if (count >= 500) {
+		if (count >= 400) {
 			cout << sys->player[sys->myID].x << endl;
 			cout << sys->player[sys->myID].z << endl;
 			cout << x << endl;
@@ -182,21 +182,18 @@ void Effect::drawAttack2() {
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
-/*
-	glTranslatef(x , 0.0, z );
-	glRotated(dir*56.5, 0.0, 1.0, 0.0);
-	glTranslatef(-x, 0.0, -z);
-*/
+
 	if(count >= 20){
 		glBindTexture(GL_TEXTURE_2D, *effectImage[3]);
 		{
 			glPushMatrix();
-			glTranslatef(x, 0.5, z+2.5);
+			glTranslatef(x, 0.5, z);
 			glRotated(90, 0.0, 1.0, 0.0);
-			glutSolidSphere(0.1, 20, 10);
+			glutSolidSphere(0.3, 20, 10);
 			glPopMatrix();
 		}
 	}
+	/*
 	if(count >= 30){
 		glBindTexture(GL_TEXTURE_2D, *effectImage[3]);
 		{
@@ -217,7 +214,8 @@ void Effect::drawAttack2() {
 			glPopMatrix();
 		}
 	}
-glTranslatef(x , 0.0, z );
+	*/
+	glTranslatef(x , 0.0, z );
 	glRotated(dir*56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);
 
@@ -256,7 +254,7 @@ glTranslatef(x , 0.0, z );
 		cout <<"x = " << x <<" z = " << z << endl;
 	}
 	if(x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y){
-		count = 500;
+		count = 400;
 	}
 
 }
@@ -396,7 +394,7 @@ void Effect::drawAttack4(){
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
 
-       if(count >= 200 && count%2 == 0){
+       if(count >= 150 && count%2 == 0){
         glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
         {
             GLfloat vertices1[4][3] = {
@@ -512,13 +510,7 @@ void Effect::drawAttack4(){
 }
 
 void Effect::drawAttack5(){
-/*
-    if(x == -1 && z == -1){
-           // x = px;
-            //z = pz;
-            //r = dir*60;
-    }
-*/
+
     glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
@@ -639,11 +631,6 @@ void Effect::drawAttack6(){
 	glRotated(dir*56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);
 
-/*
-	glTranslatef(x, 0.6, 0);
-	glRotated(r, 0.0, 0.0, 1.0);
-	glTranslatef(-x, -0.6, 0);
-*/
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
@@ -738,7 +725,7 @@ void Effect::drawAttack7(){
 		x+=sin(dir)/2;
 	}
 
-	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y)	count = 500;
+	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y)	count = 400;
 }
 
 
