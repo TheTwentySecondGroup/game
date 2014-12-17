@@ -35,7 +35,7 @@
 #define WINDOW_Y 800
 
 //FPS
-#define FPS_RATE 15
+#define FPS_RATE 30
 
 #define STAGE_MAX 4
 #define PI 3.141592
