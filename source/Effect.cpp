@@ -18,7 +18,7 @@ Effect::Effect() {
 	fromPlayerID = 0;
 
 	effectImage[0] = sys->draw->initTexture("data/image/beam.bmp");
-	effectImage[1] = sys->draw->initTexture("data/image/star1.bmp");
+	effectImage[1] = sys->draw->initTexture("data/image/star5.bmp");
 	effectImage[2] = sys->draw->initTexture("data/image/mist.bmp");
 	effectImage[3] = sys->draw->initTexture("data/image/fire.bmp");
 	effectImage[4] = sys->draw->initTexture("data/image/thunder.bmp");
@@ -48,6 +48,8 @@ void Effect::routine() {
 			y = -1;
 			z = -1;
 			dir=0;
+			dx = 0;
+			dz = 0;
 			return;
 		}
 	}
@@ -61,6 +63,7 @@ void Effect::draw(){
 	else if(f==5)drawAttack5();
 	else if(f==6)drawAttack6();
 	else if(f==7)drawAttack7();
+	cout << "x = " << x << " z = " << z << endl;
 
 }
 
@@ -179,10 +182,11 @@ void Effect::drawAttack2() {
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
-
+/*
 	glTranslatef(x , 0.0, z );
 	glRotated(dir*56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);
+*/
 	if(count >= 20){
 		glBindTexture(GL_TEXTURE_2D, *effectImage[3]);
 		{
@@ -212,7 +216,11 @@ void Effect::drawAttack2() {
 			glutSolidSphere(0.1, 20, 10);
 			glPopMatrix();
 		}
-	}	
+	}
+glTranslatef(x , 0.0, z );
+	glRotated(dir*56.5, 0.0, 1.0, 0.0);
+	glTranslatef(-x, 0.0, -z);
+
 	if(count <= 50){
 		glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
 		{
@@ -222,7 +230,7 @@ void Effect::drawAttack2() {
 			    { x - 0.5, 0.0, z },
 			    { x + 0.5, 0.0, z },
 			};
-    
+
 			glBegin(GL_POLYGON);
 			glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
 			glTexCoord2i(0, 0);
@@ -245,6 +253,10 @@ void Effect::drawAttack2() {
 	if(count >= 50){
 		z+=cos(dir)/3;
 		x+=sin(dir)/3;
+		cout <<"x = " << x <<" z = " << z << endl;
+	}
+	if(x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y){
+		count = 500;
 	}
 
 }
@@ -254,19 +266,15 @@ void Effect::drawAttack3() {
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
-	
-	glTranslatef(x , 0.0, z );
-	glRotated(dir*56.5, 0.0, 1.0, 0.0);
-	glTranslatef(-x, 0.0, -z);
 
-    if(count >= 200){
+    if(count >= 100){
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices2[4][3] = {
-                { x, 1.1, z + 15 },
-                { x + 0.6, 0.5, z + 15 },
-                { x + 0.6, 0.5, z + 2 },
-                { x, 1.1, z + 2 },
+                { x+dx, 1.1, z+dz },
+                { x+dx+0.6, 0.5, z+dz },
+                { x+dx+0.6, 0.5, z },
+                { x+dx, 1.1, z },
             };
 
             glBegin(GL_POLYGON);
@@ -284,10 +292,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices3[4][3] = {
-                { x, 1.1, z + 15 },
-                { x - 0.6, 0.5, z + 15 },
-                { x - 0.6, 0.5, z + 2 },
-                { x, 1.1, z + 2 },
+                { x+dx, 1.1, z + dz },
+                { x+dx-0.6, 0.5, z + dz },
+                { x+dx-0.6, 0.5, z },
+                { x+dx, 1.1, z },
             };
 
             glBegin(GL_POLYGON);
@@ -305,10 +313,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices4[4][3] = {
-                { x + 0.6, 0.5, z + 15 },
-                { x, 0, z + 15 },
-                { x, 0, z + 2 },
-                { x + 0.6, 0.5, z + 2 },
+                { x+dx+0.6, 0.5, z + dz },
+                { x+dx, 0, z + dz },
+                { x+dx, 0, z },
+                { x+dx+0.6, 0.5, z },
             };
 
             glBegin(GL_POLYGON);
@@ -326,10 +334,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices5[4][3] = {
-                { x - 0.6, 0.5, z + 15 },
-                { x, 0, z + 15 },
-                { x, 0, z + 2 },
-                { x - 0.6, 0.5, z + 2 },
+                { x+dx-0.6, 0.5, z + dz },
+                { x+dx, 0, z + dz },
+                { x+dx, 0, z },
+                { x+dx-0.6, 0.5, z },
             };
 
             glBegin(GL_POLYGON);
@@ -343,6 +351,14 @@ void Effect::drawAttack3() {
             glVertex3fv(vertices5[3]);
             glEnd();
         }
+		if(dir < 1.59){
+			dx+=sin(dir)/3;
+			dz+=cos(dir)/3;
+		}
+		else if(dir >= 1.59){
+			dx+=sin(dir)/3;
+			dz-=cos(dir)/3;
+		}
     }
    	glTranslatef(x, 0.5, 0);
 	glRotated(r, 0.0, 0.0, 1.0);
@@ -373,7 +389,6 @@ void Effect::drawAttack3() {
 	glDisable(GL_BLEND);
 //r=0;
 	if ((r+=15) >= 360) r = 0;
-
 }
 
 void Effect::drawAttack4(){
@@ -627,8 +642,8 @@ void Effect::drawAttack6(){
 /*
 	glTranslatef(x, 0.6, 0);
 	glRotated(r, 0.0, 0.0, 1.0);
-	glTranslatef(-x, -0.6, 0);	
-*/	
+	glTranslatef(-x, -0.6, 0);
+*/
 	glDisable(GL_DEPTH_TEST);
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
@@ -672,7 +687,7 @@ void Effect::drawAttack6(){
 		glVertex3fv(vertices[3]);
 		glEnd();
 	}
-	if((r+=10) >= 360)	r = 0; 
+	if((r+=10) >= 360)	r = 0;
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -683,7 +698,7 @@ void Effect::drawAttack7(){
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
-		
+
 	glTranslatef(x , 0.0, z );
 	glRotated(dir*56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);

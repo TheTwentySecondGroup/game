@@ -74,14 +74,14 @@ void System::moveChara() {
 		if ((player[myID].dir -= 0.03) <= -6.03) {
 			player[myID].dir = 0;
 		}
-		cout << player[myID].dir*56.5 << endl;
+		cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
 		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
-		cout << player[myID].dir*56.5 << endl;
+		cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_UP] > 0) {
@@ -101,18 +101,8 @@ void System::moveChara() {
             if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
                 player[myID] = old;
             }
-	    //}
-	    /*テスト*/
-	    /*if(player[myID].attflag == 1){
-            for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-                if(effect[serchEffect].f == player[myID].attpatern){
-                    effect[serchEffect].x += sin(player[myID].dir) / 5;
-                    effect[serchEffect].z += cos(player[myID].dir) / 5;
-                    break;
-                }
-            }
-        }*/
-	}
+		cout << "px = " << player[myID].x << " pz = " << player[myID].z << endl; 
+		}
 
 	if (io->key[KEY_DOWN] > 0) {
 	    //if(player[myID].attflag == 0){
