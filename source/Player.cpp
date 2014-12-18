@@ -6,16 +6,42 @@
  */
 
 #include "Player.h"
+#include "Map.h"
+#include "system.h"
+#include "global.h"
 
 
 Player::Player() {
 
 
+	x = 2.0;
+	y = 0;
+	z = 2.0;
+
+	dir=0.8;	//移動方向
+
+	for(int i=0;i<MAP_X_MAX;i++){
+		int breakflag=0;
+		for(int c=0;c<MAP_Y_MAX;c++){
+			if(sys->map->data[i][c]==2){
+				sys->map->data[i][c]=0;
+				x=i+0.5;
+				z=c+0.5;
+				if(i>6 &&c>6){
+					dir= 0.8+3.14;
+				}else if(i>6){
+					dir = 0.8+3.14+1.52;
+				}else if(c>6){
+					dir = 0.8+1.52;
+				}
+				breakflag=1;
+				break;
+			}
+		}
+		if(breakflag==1)break;
+	}
+
 	chara=-1;
-	x=5;	//キャラのx座標
-	y=5;	//y座標
-	z=0.5;	//z座標
-	dir=0;	//移動方向
 	xd=0;	//x方向の移動距離
 	yd=0;	//y方向の移動距離
 	hp=100;	//キャラのHP
