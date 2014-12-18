@@ -35,7 +35,7 @@ void Effect::routine() {
 	if (f > 0) {
 		//dir+=0.1;
 		count++;
-		if (count >= 400) {
+		if (count >= 300) {
 			cout << sys->player[sys->myID].x << endl;
 			cout << sys->player[sys->myID].z << endl;
 			cout << x << endl;
@@ -253,10 +253,10 @@ void Effect::drawAttack2() {
 	if(count >= 50){
 		z+=cos(dir)/3;
 		x+=sin(dir)/3;
-		cout <<"x = " << x <<" z = " << z << endl;
+		//cout <<"x = " << x <<" z = " << z << endl;
 	}
 	if(x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y){
-		count = 400;
+		count = 300;
 	}
     glPopMatrix();
 }
@@ -399,7 +399,7 @@ void Effect::drawAttack4(){
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
 
-       if(count >= 150 && count%2 == 0){
+       if(count%2 == 0){
         glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
         {
             GLfloat vertices1[4][3] = {
@@ -704,7 +704,7 @@ void Effect::drawAttack6(){
 	if((r+=10) >= 360)	r = 0;
 
 	glEnable(GL_DEPTH_TEST);
-
+/*
 	double ox = sys->player[sys->myID].x;
 	double oz = sys->player[sys->myID].z;
 
@@ -715,6 +715,7 @@ void Effect::drawAttack6(){
             sys->player[sys->myID].x=ox;
             sys->player[sys->myID].z=oz;
     }
+*/
     glPopMatrix();
 }
 
@@ -766,7 +767,7 @@ void Effect::drawAttack7(){
 		x+=sin(dir)/2;
 	}
 
-	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y)	count = 400;
+	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y)	count = 300;
 
 }
 
