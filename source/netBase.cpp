@@ -137,7 +137,7 @@ int netBase::clientCommand(char command, int index) {
 			int res = 0;
 			res += send_data(TO_SERVER, &command, sizeof(command));
 			res += send_data(TO_SERVER, &sys->myID, sizeof(sys->myID));
-			res += send_data(TO_SERVER, &sys->player[sys->myID].chara,sizeof(sys->player[sys->myID].chara));
+			res += send_data(TO_SERVER, &sys->selChara,sizeof(int));
 			res += send_data(TO_SERVER, &sys->player[sys->myID].x,
 					sizeof(sys->player[sys->myID].x));
 			res += send_data(TO_SERVER, &sys->player[sys->myID].y,
@@ -168,6 +168,7 @@ int netBase::clientCommand(char command, int index) {
 				if (i != sys->myID) {
 					sys->player[i].hp = playertmp[i].hp;
 					sys->player[i].mp = playertmp[i].mp;
+					sys->player[i].chara = playertmp[i].chara;
 					sys->player[i].x = playertmp[i].x;
 					sys->player[i].y = playertmp[i].y;
 					sys->player[i].z = playertmp[i].z;
@@ -175,6 +176,7 @@ int netBase::clientCommand(char command, int index) {
 				}else {
 					sys->player[i].hp = playertmp[i].hp;
 					sys->player[i].mp = playertmp[i].mp;
+					sys->player[i].chara = sys->selChara;
 				}
 			}
 			return 0;
@@ -258,7 +260,7 @@ int netBase::serverCommand(char command, int index) {
 			res += send_data(index, &sys->player[i].dir, sizeof(double));
 			cout << "send player[" << i << "] position " << sys->player[i].x
 					<< sys->player[i].y << sys->player[i].z
-					<< sys->player[i].dir << endl;
+					<< sys->player[i].dir  <<" chara="<<sys->player[i].chara<< endl;
 		}
 		return res;
 	} else if (command == EFFECT_COMMAND) {

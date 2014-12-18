@@ -148,7 +148,7 @@ int Model::getMesh(FbxNode* node) {
 				temp.y = (float) vec[indexes[i]].mData[1];
 				temp.z = (float) vec[indexes[i]].mData[2];
 				mattemp.ver.push_back(temp);
-				cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
+				//cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
 			}
 
 			//mesh->GetPolygonVertexNormal()

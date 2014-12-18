@@ -287,7 +287,7 @@ void System::detectCollision() {
 		if (effect[i].f>0) {
 			for (int c=0;c<4;c++){
 				if(player[c].hp<=0)continue;
-				if(player[c].avoidDamageCount==0 &&effect[i].fromPlayerID!=c && judgeHit(effect[i].f,&player[c],&effect[i])>0){
+				if(player[c].chara!=-1 && player[c].avoidDamageCount==0 &&effect[i].fromPlayerID!=c && judgeHit(effect[i].f,&player[c],&effect[i])>0){
 						player[c].avoidDamageCount=30;
 						player[c].hp-=10;
 

@@ -36,17 +36,15 @@ void Init() {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
-	//Model modeltmp0("UnityChan/Models/unitychan.fbx");
-	//sys->model.push_back(modeltmp0);
 	Model modeltmp0("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp0);
-	Model modeltmp1("data/fbx/n.fbx");
+	Model modeltmp1("UnityChan/Models/unitychan.fbx");
 	sys->model.push_back(modeltmp1);
 
-	//Model modeltmp2("UnityChan/Models/unitychan.fbx");
-	//sys->model.push_back(modeltmp2);
-	//Model modeltmp3("UnityChan/Models/unitychan.fbx");
-	//sys->model.push_back(modeltmp3);
+	Model modeltmp2("UnityChan/Models/unitychan.fbx");
+	sys->model.push_back(modeltmp2);
+	Model modeltmp3("UnityChan/Models/unitychan.fbx");
+	sys->model.push_back(modeltmp3);
 
 
 
@@ -95,13 +93,15 @@ int main(int argc, char* argv[]) {
 
 	sys->draw = new Draw();
 
+	//load map before player
+	sys->map = new Map();
+
 	sys->player = new Player[4];
 
 	sys->title = new Title();
 
 	sys->tutorial = new Tutorial();
 
-	sys->map = new Map();
 
 	sys->effect = new Effect[MAX_EFFECT];
 
@@ -118,10 +118,10 @@ int main(int argc, char* argv[]) {
 
 	//initialize my position
 	for (int c = 0; c < 4; c++) {
-		sys->player[c].x = 2.0 + c;
-		sys->player[c].y = 0.5;
-		sys->player[c].z = 2.0 + c;
-	}
+			sys->player[c].x = 2.0 + c;
+			sys->player[c].y = 0.5;
+			sys->player[c].z = 2.0 + c;
+		}
 	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
 	 wiimote.led.one  = 1;
 	 wiimote.mode.ir = 1;
