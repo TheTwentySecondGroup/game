@@ -35,7 +35,7 @@ void Effect::routine() {
 	if (f > 0) {
 		//dir+=0.1;
 		count++;
-		if (count >= 400) {
+		if (count >= 300) {
 			cout << sys->player[sys->myID].x << endl;
 			cout << sys->player[sys->myID].z << endl;
 			cout << x << endl;
@@ -176,11 +176,12 @@ void Effect::drawAttack() {
 	glVertex3fv(vertices5[3]);
 	glEnd();
 
+	glPopMatrix();
 	if ((r += 20) >= 360)   r = 0;
 }
 
 void Effect::drawAttack2() {
-
+    glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
@@ -217,11 +218,11 @@ void Effect::drawAttack2() {
 		}
 	}
 	*/
-	glTranslatef(x , 0.0, z );
-	glRotated(dir*56.5, 0.0, 1.0, 0.0);
-	glTranslatef(-x, 0.0, -z);
 
 	if(count <= 50){
+        glTranslatef(x , 0.0, z );
+	glRotated(dir*56.5, 0.0, 1.0, 0.0);
+	glTranslatef(-x, 0.0, -z);
 		glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
 		{
 			GLfloat vertices1[4][3] = {
@@ -253,15 +254,16 @@ void Effect::drawAttack2() {
 	if(count >= 50){
 		z+=cos(dir)/3;
 		x+=sin(dir)/3;
-		cout <<"x = " << x <<" z = " << z << endl;
+		//cout <<"x = " << x <<" z = " << z << endl;
 	}
 	if(x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y){
-		count = 400;
+		count = 300;
 	}
-
+    glPopMatrix();
 }
 
 void Effect::drawAttack3() {
+    glPushMatrix();
 	glEnable(GL_BLEND);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
@@ -271,10 +273,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices2[4][3] = {
-                { x+dx, 1.1, z+dz },
-                { x+dx+0.6, 0.5, z+dz },
-                { x+dx+0.6, 0.5, z },
-                { x+dx, 1.1, z },
+                { x+dx+0.6, 1.1, z+dz+0.6 },
+                { x+dx+0.6, 0.1, z+dz+0.6 },
+                { x+0.6, 0.1, z-0.6 },
+                { x+0.6, 1.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -292,10 +294,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices3[4][3] = {
-                { x+dx, 1.1, z + dz },
-                { x+dx-0.6, 0.5, z + dz },
-                { x+dx-0.6, 0.5, z },
-                { x+dx, 1.1, z },
+                { x+dx-0.6, 1.1, z+dz+0.6 },
+                { x+dx-0.6, 0.1, z+dz+0.6 },
+                { x-0.6, 0.1, z-0.6 },
+                { x-0.6, 1.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -313,10 +315,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices4[4][3] = {
-                { x+dx+0.6, 0.5, z + dz },
-                { x+dx, 0, z + dz },
-                { x+dx, 0, z },
-                { x+dx+0.6, 0.5, z },
+                { x+dx-0.6, 0.1, z+dz+0.6 },
+                { x+dx+0.6, 0.1, z+dz+0.6 },
+                { x+0.6, 0.1, z-0.6 },
+                { x-0.6, 0.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -334,10 +336,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices5[4][3] = {
-                { x+dx-0.6, 0.5, z + dz },
-                { x+dx, 0, z + dz },
-                { x+dx, 0, z },
-                { x+dx-0.6, 0.5, z },
+                { x+dx-0.6, 1.1, z+dz+0.6 },
+                { x+dx+0.6, 1.1, z+dz+0.6 },
+                { x+0.6, 1.1, z-0.6 },
+                { x-0.6, 1.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -351,15 +353,15 @@ void Effect::drawAttack3() {
             glVertex3fv(vertices5[3]);
             glEnd();
         }
-		if(dir < 1.59){
-			dx+=sin(dir)/3;
-			dz+=cos(dir)/3;
-		}
-		else if(dir >= 1.59){
-			dx+=sin(dir)/3;
-			dz-=cos(dir)/3;
-		}
-    }
+
+		dx+=sin(dir)/3;
+		dz+=cos(dir)/3;
+	 }
+
+	glTranslatef(x, 0, z);
+	glRotated(dir*56.5, 0.0, 1.0, 0.0);
+	glTranslatef(-x, 0, -z);
+
    	glTranslatef(x, 0.5, 0);
 	glRotated(r, 0.0, 0.0, 1.0);
 	glTranslatef(-x, -0.5, 0);
@@ -389,14 +391,16 @@ void Effect::drawAttack3() {
 	glDisable(GL_BLEND);
 //r=0;
 	if ((r+=15) >= 360) r = 0;
+	glPopMatrix();
 }
 
 void Effect::drawAttack4(){
+    glPushMatrix();
     glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
 
-       if(count >= 150 && count%2 == 0){
+       if(count%2 == 0){
         glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
         {
             GLfloat vertices1[4][3] = {
@@ -506,13 +510,13 @@ void Effect::drawAttack4(){
 	}
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-
+    glPopMatrix();
 
     if((r += 15) >= 360)   r = 0;
 }
 
 void Effect::drawAttack5(){
-
+    glPushMatrix();
     glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
@@ -619,10 +623,11 @@ void Effect::drawAttack5(){
 	}
 
 	if((r += 10) >= 360)   r = 0;
-
+    glPopMatrix();
 }
 
 void Effect::drawAttack6(){
+    glPushMatrix();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
@@ -676,11 +681,47 @@ void Effect::drawAttack6(){
 		glVertex3fv(vertices[3]);
 		glEnd();
 	}
+
+	glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
+	{
+		GLfloat vertices[4][3] = {
+			{ x + 0.5, 1.1, z+2 },
+            { x - 0.5, 1.1, z+2 },
+            { x - 0.5, 0.1, z+2 },
+            { x + 0.5, 0.1, z+2 },
+        };
+		glColor4f(1.0, 0.8, 0.8, 0.7);
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
 	if((r+=10) >= 360)	r = 0;
+
 	glEnable(GL_DEPTH_TEST);
+/*
+	double ox = sys->player[sys->myID].x;
+	double oz = sys->player[sys->myID].z;
+
+	sys->player[sys->myID].x+=sin(sys->player[sys->myID].dir)/4;
+	sys->player[sys->myID].z+=cos(sys->player[sys->myID].dir)/4;
+
+	if (sys->map->data[(int) sys->player[sys->myID].x][(int) sys->player[sys->myID].z] == 1) {
+            sys->player[sys->myID].x=ox;
+            sys->player[sys->myID].z=oz;
+    }
+*/
+    glPopMatrix();
 }
 
 void Effect::drawAttack7(){
+    glPushMatrix();
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -721,13 +762,14 @@ void Effect::drawAttack7(){
 	glDisable(GL_BLEND);
 
 	if((r+=25) >= 360)	r = 0;
-
+    glPopMatrix();
 	if(count >= 20){
 		z+=cos(dir)/2;
 		x+=sin(dir)/2;
 	}
 
-	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y)	count = 400;
+	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y)	count = 300;
+
 }
 
 
