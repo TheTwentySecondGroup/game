@@ -46,10 +46,14 @@ void Draw::routine() {
 
 		sys->map->drawMap();
 
+
+		cout<<endl;
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
-				sys->model[sys->player[i].chara].Draw(sys->player[i].x,
+				if(sys->player[i].chara<=4 && sys->player[i].chara>0){
+				sys->model[sys->player[i].chara-1].Draw(sys->player[i].x,
 				sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+				}
 			}
 		}
 

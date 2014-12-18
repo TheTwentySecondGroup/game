@@ -140,6 +140,7 @@ int Model::getMesh(FbxNode* node) {
 			int VerticesCount = mesh->GetControlPointsCount();
 			cout << VerticesCount << "\n";
 			FbxVector4* vec = mesh->GetControlPoints();
+			cout<<indexcounttmp<<endl;
 			for (int i = 0; i < indexcounttmp; i++) {
 				//位置情報格納
 				vec3f temp;
@@ -147,7 +148,7 @@ int Model::getMesh(FbxNode* node) {
 				temp.y = (float) vec[indexes[i]].mData[1];
 				temp.z = (float) vec[indexes[i]].mData[2];
 				mattemp.ver.push_back(temp);
-				//cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
+				cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
 			}
 
 			//mesh->GetPolygonVertexNormal()
@@ -202,6 +203,8 @@ int Model::getMesh(FbxNode* node) {
 			mat.push_back(mattemp);
 
 			cout << "mat.push_back complated\n";
+		}else{
+			cout<<attr->GetAttributeType()<<endl;
 		}
 	}
 

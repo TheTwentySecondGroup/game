@@ -137,6 +137,7 @@ int netBase::clientCommand(char command, int index) {
 			int res = 0;
 			res += send_data(TO_SERVER, &command, sizeof(command));
 			res += send_data(TO_SERVER, &sys->myID, sizeof(sys->myID));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].chara,sizeof(sys->player[sys->myID].chara));
 			res += send_data(TO_SERVER, &sys->player[sys->myID].x,
 					sizeof(sys->player[sys->myID].x));
 			res += send_data(TO_SERVER, &sys->player[sys->myID].y,
@@ -153,6 +154,7 @@ int netBase::clientCommand(char command, int index) {
 			for (int i = 0; i < CLIENT_MAX; i++) {
 				receive_data(TO_SERVER, &playertmp[i].hp, sizeof(int));
 				receive_data(TO_SERVER, &playertmp[i].mp, sizeof(int));
+				receive_data(TO_SERVER, &playertmp[i].chara, sizeof(int));
 				receive_data(TO_SERVER, &playertmp[i].x, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].y, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].z, sizeof(double));
@@ -232,6 +234,7 @@ int netBase::serverCommand(char command, int index) {
 	if (command == POS_COMMAND) {
 		int Id = 0;
 		receive_data(index, &Id, sizeof(int));
+		receive_data(index, &sys->player[Id].chara, sizeof(int));
 		receive_data(index, &sys->player[Id].x, sizeof(double));
 		receive_data(index, &sys->player[Id].y, sizeof(double));
 		receive_data(index, &sys->player[Id].z, sizeof(double));
@@ -248,6 +251,7 @@ int netBase::serverCommand(char command, int index) {
 
 			res += send_data(index, &sys->player[i].hp, sizeof(int));
 			res += send_data(index, &sys->player[i].mp, sizeof(int));
+			res += send_data(index, &sys->player[i].chara, sizeof(int));
 			res += send_data(index, &sys->player[i].x, sizeof(double));
 			res += send_data(index, &sys->player[i].y, sizeof(double));
 			res += send_data(index, &sys->player[i].z, sizeof(double));

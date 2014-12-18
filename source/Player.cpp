@@ -9,7 +9,7 @@
 
 
 Player::Player() {
-	chara=0;
+	chara=2;
 	x=5;	//キャラのx座標
 	y=5;	//y座標
 	z=0.5;	//z座標

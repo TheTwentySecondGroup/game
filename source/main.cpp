@@ -36,9 +36,19 @@ void Init() {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
-	Model modeltmp("UnityChan/Models/unitychan.fbx");
+	//Model modeltmp0("UnityChan/Models/unitychan.fbx");
+	//sys->model.push_back(modeltmp0);
+	Model modeltmp0("data/fbx/n.fbx");
+	sys->model.push_back(modeltmp0);
+	Model modeltmp1("data/fbx/n.fbx");
+	sys->model.push_back(modeltmp1);
 
-	sys->model.push_back(modeltmp);
+	//Model modeltmp2("UnityChan/Models/unitychan.fbx");
+	//sys->model.push_back(modeltmp2);
+	//Model modeltmp3("UnityChan/Models/unitychan.fbx");
+	//sys->model.push_back(modeltmp3);
+
+
 
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";

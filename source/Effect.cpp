@@ -18,7 +18,7 @@ Effect::Effect() {
 	fromPlayerID = 0;
 
 	effectImage[0] = sys->draw->initTexture("data/image/beam.bmp");
-	effectImage[1] = sys->draw->initTexture("data/image/star5.bmp");
+	effectImage[1] = sys->draw->initTexture("data/image/star2.bmp");
 	effectImage[2] = sys->draw->initTexture("data/image/mist.bmp");
 	effectImage[3] = sys->draw->initTexture("data/image/fire.bmp");
 	effectImage[4] = sys->draw->initTexture("data/image/thunder.bmp");
@@ -68,6 +68,7 @@ void Effect::draw(){
 }
 
 void Effect::drawAttack() {
+	glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
@@ -93,6 +94,7 @@ void Effect::drawAttack() {
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices[3]);
 	glEnd();
+	glPopMatrix();
 
     glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	{

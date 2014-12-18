@@ -55,6 +55,7 @@ int System::selectChara() {
 	}
 	if (io->key[KEY_A] == 1) {
 		charatype = selChara;
+		player[0].chara=selChara;
 		Stage = 1;
 	}
 	draw->drawCharaSelect();

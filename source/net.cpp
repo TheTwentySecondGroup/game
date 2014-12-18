@@ -236,6 +236,7 @@ int NetClass::setClient(char* serverName) {
 	}
 
 	cout << "get myID =" << sys->myID << endl;
+	sys->player[sys->myID].chara=sys->charatype;
 	return 0;
 }
 int NetClass::routineClient() {
