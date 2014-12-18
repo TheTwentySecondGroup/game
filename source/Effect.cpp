@@ -674,8 +674,41 @@ void Effect::drawAttack6(){
 		glVertex3fv(vertices[3]);
 		glEnd();
 	}
+
+	glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
+	{
+		GLfloat vertices[4][3] = {
+			{ x + 0.5, 1.1, z+2 },
+            { x - 0.5, 1.1, z+2 },
+            { x - 0.5, 0.1, z+2 },
+            { x + 0.5, 0.1, z+2 },
+        };
+		glColor4f(1.0, 0.8, 0.8, 0.7);
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
 	if((r+=10) >= 360)	r = 0;
+
 	glEnable(GL_DEPTH_TEST);
+
+	double ox = sys->player[sys->myID].x;
+	double oz = sys->player[sys->myID].z;
+
+	sys->player[sys->myID].x+=sin(sys->player[sys->myID].dir)/4;
+	sys->player[sys->myID].z+=cos(sys->player[sys->myID].dir)/4;
+
+	if (sys->map->data[(int) sys->player[sys->myID].x][(int) sys->player[sys->myID].z] == 1) {
+            sys->player[sys->myID].x=ox;
+            sys->player[sys->myID].z=oz;
+    }
 }
 
 void Effect::drawAttack7(){
