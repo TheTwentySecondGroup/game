@@ -269,10 +269,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices2[4][3] = {
-                { x+dx, 1.1, z+dz },
-                { x+dx+0.6, 0.5, z+dz },
-                { x+dx+0.6, 0.5, z },
-                { x+dx, 1.1, z },
+                { x+dx+0.6, 1.1, z+dz+0.6 },
+                { x+dx+0.6, 0.1, z+dz+0.6 },
+                { x+0.6, 0.1, z-0.6 },
+                { x+0.6, 1.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -290,10 +290,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices3[4][3] = {
-                { x+dx, 1.1, z + dz },
-                { x+dx-0.6, 0.5, z + dz },
-                { x+dx-0.6, 0.5, z },
-                { x+dx, 1.1, z },
+                { x+dx-0.6, 1.1, z+dz+0.6 },
+                { x+dx-0.6, 0.1, z+dz+0.6 },
+                { x-0.6, 0.1, z-0.6 },
+                { x-0.6, 1.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -311,10 +311,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices4[4][3] = {
-                { x+dx+0.6, 0.5, z + dz },
-                { x+dx, 0, z + dz },
-                { x+dx, 0, z },
-                { x+dx+0.6, 0.5, z },
+                { x+dx-0.6, 0.1, z+dz+0.6 },
+                { x+dx+0.6, 0.1, z+dz+0.6 },
+                { x+0.6, 0.1, z-0.6 },
+                { x-0.6, 0.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -332,10 +332,10 @@ void Effect::drawAttack3() {
         glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
         {
             GLfloat vertices5[4][3] = {
-                { x+dx-0.6, 0.5, z + dz },
-                { x+dx, 0, z + dz },
-                { x+dx, 0, z },
-                { x+dx-0.6, 0.5, z },
+                { x+dx-0.6, 1.1, z+dz+0.6 },
+                { x+dx+0.6, 1.1, z+dz+0.6 },
+                { x+0.6, 1.1, z-0.6 },
+                { x-0.6, 1.1, z-0.6 },
             };
 
             glBegin(GL_POLYGON);
@@ -349,15 +349,15 @@ void Effect::drawAttack3() {
             glVertex3fv(vertices5[3]);
             glEnd();
         }
-		if(dir < 1.59){
-			dx+=sin(dir)/3;
-			dz+=cos(dir)/3;
-		}
-		else if(dir >= 1.59){
-			dx+=sin(dir)/3;
-			dz-=cos(dir)/3;
-		}
-    }
+
+		dx+=sin(dir)/3;
+		dz+=cos(dir)/3;
+	 }
+
+	glTranslatef(x, 0, z);
+	glRotated(dir*56.5, 0.0, 1.0, 0.0);
+	glTranslatef(-x, 0, -z);
+
    	glTranslatef(x, 0.5, 0);
 	glRotated(r, 0.0, 0.0, 1.0);
 	glTranslatef(-x, -0.5, 0);
