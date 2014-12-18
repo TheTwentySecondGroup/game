@@ -26,6 +26,8 @@ void* serverMain(void*) {
 
 	signal(SIGPIPE, SIG_IGN);
 	usleep(500000); //stop 0.5s for safe
+
+
 	sys->network->setServer();
 	pthread_t wa;
 	pthread_create(&wa, NULL, waitingClient, NULL);
@@ -49,9 +51,18 @@ void* serverMain(void*) {
 void* clientMain(void*) {
 	signal(SIGPIPE, SIG_IGN);
 	usleep(1000000); //stop 1s for safe
+
+	cout<<sys->network->IP<<endl;
+	FILE *fp;
+	fp=fopen("data/ip.txt", "r");
+	if (fp != NULL){
+		fgets(sys->network->IP, 16, fp);
+		fclose(fp);
+	}
+
 	while (1) {
 
-		if (sys->network->setClient("127.0.0.1") == 0) {
+		if (sys->network->setClient(sys->network->IP) == 0) {
 			cout << "client setConnect()==0" << endl;
 			while (1) {
 				if (sys->network->routineClient() != 0) {
@@ -62,7 +73,7 @@ void* clientMain(void*) {
 			}
 
 		} else {
-			cout << "setClient() is faild" << endl;
+			cout << "setClient() is faild.     connected to " << sys->network->IP <<endl;
 
 		}
 		usleep(1000000); //stop 1s
@@ -292,7 +303,8 @@ NetClass::NetClass(int mode) {
 }
 
 NetClass::NetClass() {
-
+	memset(IP,'\0',16);
+	strcpy(IP,"127.0.0.1");
 	cout << "error mode was not selected" << endl;
 }
 NetClass::~NetClass() {

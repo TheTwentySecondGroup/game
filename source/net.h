@@ -28,7 +28,7 @@ private:
 
 public:
 	pthread_t ser_t, cli_t;
-
+	char IP[16];
 
 	NetClass();
 	NetClass(int mode);
