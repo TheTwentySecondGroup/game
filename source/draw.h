@@ -58,7 +58,8 @@ public:
 	void drawHP(int x,int y ,int w,int h);
 //draw 2D GameOver Message
 	void drawGameOver(int x,int y ,int w,int h);
-
+//draw 2D Win Message
+		void drawWin(int x,int y ,int w,int h);
 //calculate and setting glNormal3f
 	GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]);
 

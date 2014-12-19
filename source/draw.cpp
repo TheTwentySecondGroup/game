@@ -68,6 +68,20 @@ void Draw::routine() {
 	{
 		drawHP(WINDOW_X - 150, 100, 100, 50);
 		if(sys->player[sys->myID].hp<=0)drawGameOver(100,100 , 800, 300);
+
+		int judgeWin=0;
+		for(int i=0;i<4;i++){
+			if(i==sys->myID)continue;
+			if(sys->player[i].chara!=-1 && sys->player[i].hp>0 )judgeWin++;
+		}
+		if(judgeWin==0){
+			int count=0;
+			for(int i=0;i<4;i++){
+				if(sys->player[i].chara==-1)count++;
+			}
+			if(count!=3)drawWin(100,100,800,300);
+
+		}
 	}
 	glFlush();
 	SDL_GL_SwapBuffers();        //reflect swap
@@ -76,6 +90,28 @@ void Draw::drawGameOver(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
 	string tmpstring= "GAME OVER";
+	tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
+
+	GLuint *tmpimage = sys->draw->timeTexture(tmp);
+	glBindTexture( GL_TEXTURE_2D, *tmpimage);
+	glBegin( GL_QUADS);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glTexCoord2i(0, 0);
+	glVertex3f(x , y  , 0);
+	glTexCoord2i(1, 0);
+	glVertex3f(x + w , y  , 0);
+	glTexCoord2i(1, 1);
+	glVertex3f(x + w , y + h , 0);
+	glTexCoord2i(0, 1);
+	glVertex3f(x, y + h, 0);
+	glEnd();
+	glDeleteTextures(1, tmpimage);
+}
+
+void Draw::drawWin(int x, int y, int w, int h) {
+	SDL_Color color = { 0, 0, 0 };
+	SDL_Surface *tmp;
+	string tmpstring= "YOU WIN!";
 	tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
 
 	GLuint *tmpimage = sys->draw->timeTexture(tmp);
