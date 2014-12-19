@@ -23,7 +23,7 @@ int  Map::initMap(int stage) {
 	FILE* fp = fopen(MAP_FILE_NAME[stage - 1], "r");
 	if (fp == NULL) {
 		puts("Can't open map data.");
-		exit -1;
+		exit(EXIT_FAILURE);
 	}
 
 	for (i = 0; i < MAP_X_MAX; i++) {

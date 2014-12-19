@@ -8,6 +8,12 @@ using namespace std;
 
 Title::Title(){
 
+	menuString[0]="START";
+
+	menuString[1]="CONFIG";
+
+	menuString[2]="EXIT";
+
 	sel = 1;
 	KeyFlag=0;
 
@@ -49,6 +55,26 @@ Title::~Title(){
     glDeleteTextures(6,*titleImage);
 
 }
+void Title::drawMenu(int x, int y, int w, int h,string mes) {
+	SDL_Color color = { 155, 155, 155 };
+	SDL_Surface *tmp;
+	tmp = TTF_RenderUTF8_Blended(sys->font, mes.c_str(), color);
+
+	GLuint *tmpimage = sys->draw->timeTexture(tmp);
+	glBindTexture( GL_TEXTURE_2D, *tmpimage);
+	glBegin( GL_QUADS);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glTexCoord2i(0, 0);
+	glVertex3f(x , y  , 0);
+	glTexCoord2i(1, 0);
+	glVertex3f(x + w , y  , 0);
+	glTexCoord2i(1, 1);
+	glVertex3f(x + w , y + h , 0);
+	glTexCoord2i(0, 1);
+	glVertex3f(x, y + h, 0);
+	glEnd();
+	glDeleteTextures(1, tmpimage);
+}
 
 void Title::drawMenuCube(int x,int y,GLuint *texture,double sw){
     glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,sys->draw->WhiteMaterial);
@@ -89,8 +115,12 @@ void Title::routine(){
     }
 	//cout<<sys->io->key[KEY_A]<<"----------------------------------------------------------------------"<<endl;
     if(sys->io->key[KEY_A] >= 1){
+    	if(sel==3){
+    		exit(EXIT_FAILURE);
+    	}else{
     	//Tutorial();
 		sys->Stage = -2;
+    	}
 	}
 	cout<<"execute title routine() 1"<<endl;
 
@@ -118,7 +148,6 @@ void Title::drawTitle(){
         gluLookAt(sys->player[0].x - xd/20 ,sys->player[0].y - yd/20,sys->player[0].z, // position of camera
         		sys->player[0].x  , sys->player[0].y ,sys->player[0].z, //look-at point
                 0.0,0.0,1.0);
-    	cout<<"execute title drawTitle() 1"<<endl;
 
 
         //Light
@@ -137,8 +166,7 @@ void Title::drawTitle(){
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE); 
 
-    	cout<<"execute title drawTitle() 2"<<endl;
-
+/*
         //draw wall
         glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,sys->draw->WhiteMaterial);
         glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,sys->draw->WhiteMaterial);
@@ -162,20 +190,26 @@ void Title::drawTitle(){
         glTexCoord2i(1,0);
         glVertex3fv(vertices[3]);
 		glEnd();
+	*/
 		
-		cout<<"execute title drawTitle() 3"<<endl;
+        sys->map->drawMap();
+	}
+	sys->draw->init2D();{
+		drawMenu(100,200, 800,100,"testprogram");
 
-		//draw menu
 		int c;
 		for(c=1;c<=CHOICE_MAX;c++){
-			//draw on button
-			if(sel == c)drawMenuCube(c, 7,  titleImage[c],0);
-			//draw off button
-			else drawMenuCube(c, 7,  titleImage[c+3],1.5);
+		//draw on button
+			string tmp;
+			if(sel == c)tmp+="->";
+			else tmp+="    ";
+
+			tmp += menuString[c-1];
+
+			drawMenu(700,300+c*100, 200,80,tmp);
 		}
+
 	}
-	//init2D();
-	cout<<"execute title drawTitle() 4"<<endl;
 
 	glFlush();
 	SDL_GL_SwapBuffers();

@@ -14,7 +14,7 @@ public:
 	int sel;
 	int KeyFlag;
 	GLuint *titleImage[7];
-
+	string menuString[CHOICE_MAX];
 	Title();
 
 	~Title();
@@ -22,6 +22,7 @@ public:
 	void drawTitle();
 	//void delTitle();
 	void drawMenuCube(int x, int y, GLuint *texture, double sw);
+	void drawMenu(int x, int y, int w, int h,string mes) ;
 };
 }
 #endif

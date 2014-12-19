@@ -31,7 +31,6 @@ void Tutorial::routine() {
 		Slide++;
 	}
 
-	cout<<"execute tutorial routine() 1"<<endl;
 	//if(key[SDLK_BACKSPACE] == SDL_PRESSED) {
 		//Button2++;
 	//} else {
@@ -66,22 +65,19 @@ void Tutorial::routine() {
 
 	if(Slide<=0)Slide=0;
 
-	cout<<"execute tutorial routine() 2"<<endl;
 	draw(Slide);
 
-	cout<<"execute tutorial routine() 3"<<endl;
 }
 void Tutorial::draw(int n) {
 
-	cout<<"execute tutorial draw()"<<endl;
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	sys->draw->init3D();
 	{
+		sys->map->drawMap();
 	}
 	sys->draw->init2D();
 	{
 
-		cout<<"execute tutorial draw() 1"<<endl;
 
 		glBindTexture( GL_TEXTURE_2D, *TutorialImage[n]);
 		glBegin( GL_QUADS );
@@ -95,11 +91,8 @@ void Tutorial::draw(int n) {
 		glVertex3f( 0, WINDOW_Y, 0 );
 		glEnd();
 
-		cout<<"execute tutorial draw() 2"<<endl;
+		sys->title->drawMenu(100,100,800,100,"its tutorial sample");
 
-		drawText();
-
-		cout<<"execute tutorial draw() 3"<<endl;
 
 	}
 
@@ -108,41 +101,4 @@ void Tutorial::draw(int n) {
 	glFlush();
 	SDL_GL_SwapBuffers();
 }
-
-void Tutorial::drawText() {
-
-	cout<<"execute tutorial drawText()"<<endl;
-
-	char *buf="    If you use cross-key, you can move.   ";
-	cout<<"execute tutorial drawText() 1"<<endl;
-
-	SDL_Color white = {255, 255, 5,100};
-	SDL_Surface* TextImage;
-
-
-	TextImage=TTF_RenderUTF8_Blended(sys->font,buf,white);
-
-	GLuint *texText;
-	texText = sys->draw->timeTexture(TextImage);
-
-	cout<<"execute tutorial drawText()2"<<endl;
-
-
-	glBindTexture( GL_TEXTURE_2D, *texText);
-	glBegin( GL_QUADS );
-	glColor4f(1.0,1.0,1.0,1.0);
-	glTexCoord2i( 0, 0 );
-	glVertex3f( 0, WINDOW_Y-100, 0 );
-	glTexCoord2i( 1, 0 );
-	glVertex3f( WINDOW_X, WINDOW_Y-100,0 );
-	glTexCoord2i( 1, 1 );
-	glVertex3f( WINDOW_X,WINDOW_Y, 0 );
-	glTexCoord2i( 0, 1 );
-	glVertex3f( 0,WINDOW_Y, 0 );
-	glEnd();
-	glDeleteTextures(1,texText);
-	cout<<"execute tutorial drawText() 3"<<endl;
-
-}
-
 
