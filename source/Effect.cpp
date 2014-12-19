@@ -18,7 +18,7 @@ Effect::Effect() {
 	fromPlayerID = 0;
 
 	effectImage[0] = sys->draw->initTexture("data/image/beam.bmp");
-	effectImage[1] = sys->draw->initTexture("data/image/star2.bmp");
+	effectImage[1] = sys->draw->initTexture("data/image/star5.bmp");
 	effectImage[2] = sys->draw->initTexture("data/image/mist.bmp");
 	effectImage[3] = sys->draw->initTexture("data/image/fire.bmp");
 	effectImage[4] = sys->draw->initTexture("data/image/thunder.bmp");
