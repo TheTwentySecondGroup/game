@@ -36,11 +36,6 @@ void Effect::routine() {
 		//dir+=0.1;
 		count++;
 		if (count >= 300) {
-			cout << sys->player[sys->myID].x << endl;
-			cout << sys->player[sys->myID].z << endl;
-			cout << x << endl;
-			cout << z << endl;
-			cout << dir*56.5 << endl;
 			sys->player[sys->myID].attflag = 0;
 			count = 0;
 			f = 0;
@@ -68,6 +63,8 @@ void Effect::draw(){
 }
 
 void Effect::drawAttack() {
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
@@ -177,10 +174,14 @@ void Effect::drawAttack() {
 	glEnd();
 
 	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 	if ((r += 20) >= 360)   r = 0;
 }
 
 void Effect::drawAttack2() {
+	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
     glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
@@ -260,9 +261,12 @@ void Effect::drawAttack2() {
 		count = 300;
 	}
     glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 void Effect::drawAttack3() {
+	glDisable(GL_DEPTH_TEST);
     glPushMatrix();
 	glEnable(GL_BLEND);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
@@ -392,9 +396,11 @@ void Effect::drawAttack3() {
 //r=0;
 	if ((r+=15) >= 360) r = 0;
 	glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Effect::drawAttack4(){
+	glDisable(GL_DEPTH_TEST);
     glPushMatrix();
     glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
@@ -513,9 +519,12 @@ void Effect::drawAttack4(){
     glPopMatrix();
 
     if((r += 15) >= 360)   r = 0;
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Effect::drawAttack5(){
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
     glPushMatrix();
     glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
@@ -624,6 +633,8 @@ void Effect::drawAttack5(){
 
 	if((r += 10) >= 360)   r = 0;
     glPopMatrix();
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 void Effect::drawAttack6(){
@@ -705,6 +716,7 @@ void Effect::drawAttack6(){
 	if((r+=10) >= 360)	r = 0;
 
 	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 /*
 	double ox = sys->player[sys->myID].x;
 	double oz = sys->player[sys->myID].z;
