@@ -87,13 +87,13 @@ void System::moveChara() {
 
 	if (io->key[KEY_UP] > 0) {
 	    //if(player[myID].attflag == 0){
-            player[myID].x += sin(player[myID].dir) / 5;
+            player[myID].x += sin(player[myID].dir) / 6;
             if (player[myID].x > STAGE_X)
                 player[myID].x = STAGE_X;
             if (player[myID].x < 1.5)
                 player[myID].x = 1.5;
 
-            player[myID].z += cos(player[myID].dir) / 5;
+            player[myID].z += cos(player[myID].dir) / 6;
             if (player[myID].z < 1.5)
                 player[myID].z = 1.5;
             if (player[myID].z > STAGE_Y)
@@ -258,7 +258,21 @@ void System::moveChara() {
 		}
 	}
 
-
+	/*ATTACK8*/
+	if(io->key[KEY_I] == 1 && player[myID].attflag == 0){
+		player[myID].attflag = 1;
+		player[myID].attpatern = 8;
+		for(int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++){
+			if(effect[serchEffect].f == 0){
+				effect[serchEffect].f = 8;
+				effect[serchEffect].x = player[myID].x + 4*sin(rad);
+				effect[serchEffect].z = player[myID].z + 4*cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				break;
+			}
+		}
+	}
 
 }
 

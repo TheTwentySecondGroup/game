@@ -2,10 +2,11 @@
 #define __EFFECT_H__
 
 #define MAX_EFFECT 20
+#define COUNT 500
 class Effect{
 public:
    int f,count,fromPlayerID;
-	double x,y,z,dx,dz,dir,r;
+	double x,y,z,dx,dy,dz,dir,r;
 
    GLuint *effectImage[15];
 
@@ -22,6 +23,7 @@ public:
    void drawAttack5();
    void drawAttack6();
    void drawAttack7();
+   void drawAttack8();
 };
 
 #endif
