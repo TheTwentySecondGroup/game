@@ -39,30 +39,23 @@ Model::~Model() {
 	cout << "A model has been destroied!\n";
 }
 
-void Model::Draw(double x,double y,double z,double dir) {
+void Model::Draw(double x, double y, double z, double dir) {
 	//cout<<"--Model """<<x<<y<<z<<dir<<endl;
 
 	//int i,j;
 	//cout<<"numIndices="<< numIndices<<"\n";
 	//cout<<mat.size()<<"\n";
 
-
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glEnableClientState(GL_NORMAL_ARRAY);
 
-
 	for (int i = 0; i < mat.size(); i++) {
 		glPushMatrix();
 
-
-		glTranslatef(x,0,z);
+		glTranslatef(x, 0, z);
 		glScalef(0.003f, 0.003f, 0.003f);
-		glRotatef(dir*360/6.28,0.0f,1.0f,0.0f);
-
-
-
-
+		glRotatef(dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
 
 		//material
 		GLfloat WhiteMaterial[] = { 0.8, 0.8, 0.8, 1 };
@@ -75,7 +68,6 @@ void Model::Draw(double x,double y,double z,double dir) {
 
 		glNormalPointer(GL_FLOAT, sizeof(vec3f), &mat[i].nor[0].x);
 		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
-
 
 		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
 
@@ -140,7 +132,7 @@ int Model::getMesh(FbxNode* node) {
 			int VerticesCount = mesh->GetControlPointsCount();
 			cout << VerticesCount << "\n";
 			FbxVector4* vec = mesh->GetControlPoints();
-			cout<<indexcounttmp<<endl;
+			cout << indexcounttmp << endl;
 			for (int i = 0; i < indexcounttmp; i++) {
 				//位置情報格納
 				vec3f temp;
@@ -200,11 +192,172 @@ int Model::getMesh(FbxNode* node) {
 
 			}
 
+			//テクスチャー座標読み込み
+			FbxLayerElementUV* pUV = mesh->GetLayer(0)->GetUVs();
+			int uvsize =
+					pUV->GetDirectArray().GetCount()
+							> pUV->GetIndexArray().GetCount() ?
+							pUV->GetDirectArray().GetCount() :
+							pUV->GetIndexArray().GetCount();
+
+			if (pUV->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
+				if (pUV->GetReferenceMode() == FbxLayerElement::eDirect) {
+					// 直接取得
+					for (int i = 0; i < uvsize; ++i) {
+						UV uvtemp;
+						uvtemp.u = (float) pUV->GetDirectArray().GetAt(i)[0];
+						uvtemp.v = 1.0f
+								- (float) pUV->GetDirectArray().GetAt(i)[1];
+						mattemp.uv.push_back(uvtemp);
+					}
+				} else if (pUV->GetReferenceMode()
+						== FbxLayerElement::eIndexToDirect) {
+					// インデックスから取得
+					for (int i = 0; i < uvsize; ++i) {
+						UV uvtemp;
+						int index = pUV->GetIndexArray().GetAt(i);
+						uvtemp.u =
+								(float) pUV->GetDirectArray().GetAt(index)[0];
+						uvtemp.v = 1.0f
+								- (float) pUV->GetDirectArray().GetAt(index)[1];
+						mattemp.uv.push_back(uvtemp);
+					}
+				}
+			}
+
+			//マテリアル読み込み
+			FbxNode* pNode = mesh->GetNode();
+			cout << "--====--------====================="
+					<< pNode->GetMaterialCount() << endl;
+			for (int i = 0; i < pNode->GetMaterialCount(); i++) {
+
+				//フォンモデルを想定
+				FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+				FbxClassId classid = pMaterial->GetClassId();
+				if (classid.Is(FbxSurfacePhong::ClassId)) {
+					FbxSurfacePhong* pPhong = (FbxSurfacePhong*) pMaterial;
+					if (!pPhong)
+						continue;
+					cout << "a" << endl;
+					//環境光
+					mattemp.color.ambient.r = (float) pPhong->Ambient.Get()[0];
+
+					cout << "a" << endl;
+					mattemp.color.ambient.g = (float) pPhong->Ambient.Get()[1];
+					mattemp.color.ambient.b = (float) pPhong->Ambient.Get()[2];
+					mattemp.color.ambient.a = 1.0f;
+					cout << "amb [" << mattemp.color.ambient.r << "]["
+							<< mattemp.color.ambient.g << "]["
+							<< mattemp.color.ambient.b << "]";
+					//拡散反射光
+					mattemp.color.diffuse.r = (float) pPhong->Diffuse.Get()[0];
+					mattemp.color.diffuse.g = (float) pPhong->Diffuse.Get()[1];
+					mattemp.color.diffuse.b = (float) pPhong->Diffuse.Get()[2];
+					mattemp.color.diffuse.a = 1.0f;
+					cout << "diff [" << mattemp.color.diffuse.r << "]["
+							<< mattemp.color.diffuse.g << "]["
+							<< mattemp.color.diffuse.b << "]";
+					//emissive
+					mattemp.color.emission.r =
+							(float) pPhong->Emissive.Get()[0];
+					mattemp.color.emission.g =
+							(float) pPhong->Emissive.Get()[1];
+					mattemp.color.emission.b =
+							(float) pPhong->Emissive.Get()[2];
+					mattemp.color.emission.a = 1.0f;
+					cout << "emi [" << mattemp.color.emission.r << "]["
+							<< mattemp.color.emission.g << "]["
+							<< mattemp.color.emission.b << "]";
+
+					//鏡面反射光
+					mattemp.color.specular.r =
+							(float) pPhong->Specular.Get()[0];
+					mattemp.color.specular.g =
+							(float) pPhong->Specular.Get()[1];
+					mattemp.color.specular.b =
+							(float) pPhong->Specular.Get()[2];
+					mattemp.color.specular.a = 1.0f;
+
+					cout << "spe [" << mattemp.color.specular.r << "]["
+							<< mattemp.color.specular.g << "]["
+							<< mattemp.color.specular.b << "]";
+					mattemp.shininess = (float) pPhong->Shininess;
+					cout << "shininess" << mattemp.shininess << endl;
+				} else if (classid.Is(FbxSurfaceLambert::ClassId)) {
+					FbxSurfaceLambert * lambert =
+							static_cast<FbxSurfaceLambert *>(pMaterial);
+					if (!lambert)
+						continue;
+					mattemp.color.ambient.r = (float) lambert->Ambient.Get()[0];
+					mattemp.color.ambient.g = (float) lambert->Ambient.Get()[1];
+					mattemp.color.ambient.b = (float) lambert->Ambient.Get()[2];
+					mattemp.color.ambient.a = 1.0f;
+					cout << "amb [" << mattemp.color.ambient.r << "]["
+							<< mattemp.color.ambient.g << "]["
+							<< mattemp.color.ambient.b << "]";
+					//拡散反射光
+					mattemp.color.diffuse.r = (float) lambert->Diffuse.Get()[0];
+					mattemp.color.diffuse.g = (float) lambert->Diffuse.Get()[1];
+					mattemp.color.diffuse.b = (float) lambert->Diffuse.Get()[2];
+					mattemp.color.diffuse.a = 1.0f;
+					cout << "diff [" << mattemp.color.diffuse.r << "]["
+							<< mattemp.color.diffuse.g << "]["
+							<< mattemp.color.diffuse.b << "]";
+					//emissive
+					mattemp.color.emission.r =
+							(float) lambert->Emissive.Get()[0];
+					mattemp.color.emission.g =
+							(float) lambert->Emissive.Get()[1];
+					mattemp.color.emission.b =
+							(float) lambert->Emissive.Get()[2];
+					mattemp.color.emission.a = 1.0f;
+					cout << "emi [" << mattemp.color.emission.r << "]["
+							<< mattemp.color.emission.g << "]["
+							<< mattemp.color.emission.b << "]" << endl;
+				}
+
+				/*
+				 //テクスチャ
+				 FbxProperty lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
+				 FbxTexture* ktex = FbxCast <FbxTexture> (lProperty.GetSrcObject(FbxTexture::ClassId, 0));
+				 if (ktex) {
+				 cout<<"texture name is "<<ktex->GetFileName();
+				 //テクスチャを作成
+				 TexData.push_back(tex);
+				 TexData[TexData.size() - 1] = new TEXTURE(
+				 mtl.TextureName.c_str());
+				 ;
+				 mtl.TexNo = TexData.size();
+				 TexID.push_back(TexID2);
+				 glGenTextures(1, (GLuint *) &TexID[TexData.size() - 1]);
+				 glBindTexture(GL_TEXTURE_2D, TexID[TexData.size() - 1]);
+				 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+				 GL_NEAREST);
+				 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+				 GL_NEAREST);
+				 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+				 GL_REPEAT);
+				 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+				 GL_REPEAT);
+
+				 glEnable(GL_TEXTURE_2D);
+				 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+				 TexData[TexData.size() - 1]->Width,
+				 TexData[TexData.size() - 1]->Height, 0, GL_RGBA,
+				 GL_UNSIGNED_BYTE,
+				 TexData[TexData.size() - 1]->image);
+				 glDisable(GL_TEXTURE_2D);
+				 }
+				 Material.push_back(mtl);
+				 }
+				 */
+			}
+
 			mat.push_back(mattemp);
 
 			cout << "mat.push_back complated\n";
-		}else{
-			cout<<attr->GetAttributeType()<<endl;
+		} else {
+			cout << attr->GetAttributeType() << endl;
 		}
 	}
 
@@ -229,9 +382,9 @@ void Model::GetAnimation(const char* filename) {
 
 	importer->Import(scene);
 
-	// アニメーションフレーム数取得
+// アニメーションフレーム数取得
 	int animStackCount = importer->GetAnimStackCount();
-	//assert(animStackCount == 1);
+//assert(animStackCount == 1);
 	FbxTakeInfo* takeInfo = importer->GetTakeInfo(0);
 
 	FbxTime importOffset = takeInfo->mImportOffset;
@@ -243,7 +396,7 @@ void Model::GetAnimation(const char* filename) {
 	animationEndFrame = (importOffset.Get() + stopTime.Get())
 			/ FbxTime::GetOneFrameValue(FbxTime::eFrames60);
 	importer->Destroy();
-	//EvaluateGlobalTransform()
+//EvaluateGlobalTransform()
 
 	FbxAnimEvaluator* mySceneEvaluator = scene->GetEvaluator();
 

@@ -72,7 +72,7 @@ class material{
         vector <vec3f> nor;//法線座標
         vector <UV> uv;//UV座標
         vector <int> index;//インデックスバッファ
-
+        double shininess;
         int textureID;//テクスチャー番号
 };
 
