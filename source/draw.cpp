@@ -506,6 +506,7 @@ void Draw::init3D() {
 void Draw::drawFloor(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
@@ -539,6 +540,7 @@ void Draw::drawWall(int x, int y) {
 	int i;
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 	glDisable(GL_CULL_FACE);
