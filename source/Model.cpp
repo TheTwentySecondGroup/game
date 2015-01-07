@@ -210,25 +210,15 @@ int Model::getMesh(FbxNode* node) {
 
 			}
 
-			cout << "a" << endl;
 			//テクスチャー座標読み込み
-
 			for (int n = 0; n < mesh->GetLayerCount(); n++) {
 
 				FbxLayerElementUV* pUV = mesh->GetLayer(n)->GetUVs();
-
-				cout << "a" << endl;
 				int uvsize =
 						pUV->GetDirectArray().GetCount() > pUV->GetIndexArray().GetCount() ?
 								pUV->GetDirectArray().GetCount() : pUV->GetIndexArray().GetCount();
-
-				cout << "as" << endl;
 				if (pUV->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
-
-					cout << "asd" << endl;
 					if (pUV->GetReferenceMode() == FbxLayerElement::eDirect) {
-
-						cout << "a" << endl;
 						// 直接取得
 						for (int i = 0; i < uvsize; ++i) {
 							UV uvtemp;
@@ -237,8 +227,6 @@ int Model::getMesh(FbxNode* node) {
 							mattemp.uv.push_back(uvtemp);
 						}
 					} else if (pUV->GetReferenceMode() == FbxLayerElement::eIndexToDirect) {
-
-						cout << "c" << endl;
 						// インデックスから取得
 						for (int i = 0; i < uvsize; ++i) {
 							UV uvtemp;
@@ -257,10 +245,10 @@ int Model::getMesh(FbxNode* node) {
 			for (int i = 0; i < pNode->GetMaterialCount(); i++) {
 
 				//フォンモデルを想定
-				FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
-				FbxClassId classid = pMaterial->GetClassId();
+				FbxSurfaceMaterial* material = pNode->GetMaterial(i);
+				FbxClassId classid = material->GetClassId();
 				if (classid.Is(FbxSurfacePhong::ClassId)) {
-					FbxSurfacePhong* pPhong = (FbxSurfacePhong*) pMaterial;
+					FbxSurfacePhong* pPhong = (FbxSurfacePhong*) material;
 					if (!pPhong) {
 						cout << "pPhongisnull\n";
 						continue;
@@ -298,7 +286,7 @@ int Model::getMesh(FbxNode* node) {
 					mattemp.shininess = (float) pPhong->Shininess;
 					cout << "shininess" << mattemp.shininess << endl;
 				} else if (classid.Is(FbxSurfaceLambert::ClassId)) {
-					FbxSurfaceLambert * lambert = static_cast<FbxSurfaceLambert *>(pMaterial);
+					FbxSurfaceLambert * lambert = static_cast<FbxSurfaceLambert *>(material);
 					if (!lambert) {
 						cout << "lambert is null\n";
 						continue;
@@ -326,42 +314,38 @@ int Model::getMesh(FbxNode* node) {
 				} else {
 					cout << "unknownclassid" << endl;
 				}
-			}
-			/*
-			 //テクスチャ
-			 FbxProperty lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
-			 FbxTexture* ktex = FbxCast <FbxTexture> (lProperty.GetSrcObject(FbxTexture::ClassId, 0));
-			 if (ktex) {
-			 cout<<"texture name is "<<ktex->GetFileName();
-			 //テクスチャを作成
-			 TexData.push_back(tex);
-			 TexData[TexData.size() - 1] = new TEXTURE(
-			 mtl.TextureName.c_str());
-			 ;
-			 mtl.TexNo = TexData.size();
-			 TexID.push_back(TexID2);
-			 glGenTextures(1, (GLuint *) &TexID[TexData.size() - 1]);
-			 glBindTexture(GL_TEXTURE_2D, TexID[TexData.size() - 1]);
-			 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-			 GL_NEAREST);
-			 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-			 GL_NEAREST);
-			 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-			 GL_REPEAT);
-			 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-			 GL_REPEAT);
 
-			 glEnable(GL_TEXTURE_2D);
-			 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-			 TexData[TexData.size() - 1]->Width,
-			 TexData[TexData.size() - 1]->Height, 0, GL_RGBA,
-			 GL_UNSIGNED_BYTE,
-			 TexData[TexData.size() - 1]->image);
-			 glDisable(GL_TEXTURE_2D);
-			 }
-			 Material.push_back(mtl);
-			 }
-			 */
+				//テクスチャ
+				FbxProperty lProperty = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+				FbxTexture* ktex = FbxCast<FbxTexture>(lProperty.GetSrcObject(FbxTexture::ClassId, 0));
+				if (ktex) {
+					cout << "texture name is " << FbxCast<FbxFileTexture>(ktex)->GetFileName() << endl;
+					/*
+					 //テクスチャを作成
+					 TexData.push_back(tex);
+					 TexData[TexData.size() - 1] = new TEXTURE(mtl.TextureName.c_str());
+					 ;
+					 mtl.TexNo = TexData.size();
+					 TexID.push_back(TexID2);
+					 glGenTextures(1, (GLuint *) &TexID[TexData.size() - 1]);
+					 glBindTexture(GL_TEXTURE_2D, TexID[TexData.size() - 1]);
+					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+					 GL_NEAREST);
+					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+					 GL_NEAREST);
+					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+					 GL_REPEAT);
+					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+					 GL_REPEAT);
+
+					 glEnable(GL_TEXTURE_2D);
+					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, TexData[TexData.size() - 1]->Width,
+					 TexData[TexData.size() - 1]->Height, 0, GL_RGBA,
+					 GL_UNSIGNED_BYTE, TexData[TexData.size() - 1]->image);
+					 glDisable(GL_TEXTURE_2D);
+					 */
+				}
+			}
 
 			mat.push_back(mattemp);
 
