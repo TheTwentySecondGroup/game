@@ -252,7 +252,8 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x + 2.5*sin(rad);
 				effect[serchEffect].z = player[myID].z + 2.5*cos(rad);
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				network->syncEffectFlag=serchEffect;
+				//network->clientCommand(EFFECT_COMMAND,TO_SERVER);
 				break;
 			}
 		}
@@ -268,7 +269,7 @@ void System::moveChara() {
 				effect[serchEffect].x = player[myID].x + 4*sin(rad);
 				effect[serchEffect].z = player[myID].z + 4*cos(rad);
 				effect[serchEffect].dir = player[myID].dir;
-				network->clientCommand(EFFECT_COMMAND,TO_SERVER);
+				network->syncEffectFlag=serchEffect;
 				break;
 			}
 		}

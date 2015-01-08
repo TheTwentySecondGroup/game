@@ -26,8 +26,8 @@
 //#include "system.h"
 
 
-#define STAGE_X 33
-#define STAGE_Y 56
+#define STAGE_X 22
+#define STAGE_Y 44
 
 //width of window
 #define WINDOW_X 1000
