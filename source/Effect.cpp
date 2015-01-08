@@ -70,6 +70,7 @@ void Effect::draw(){
 
 void Effect::drawAttack(){
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
@@ -187,6 +188,7 @@ void Effect::drawAttack(){
 
 void Effect::drawAttack2(){
 	glEnable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
@@ -272,6 +274,7 @@ void Effect::drawAttack2(){
 }
 
 void Effect::drawAttack3(){
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
     glPushMatrix();
 	glEnable(GL_BLEND);
@@ -406,6 +409,7 @@ void Effect::drawAttack3(){
 }
 
 void Effect::drawAttack4(){
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
     glPushMatrix();
     glTranslatef(x, 0, z);
@@ -529,6 +533,7 @@ void Effect::drawAttack4(){
 }
 
 void Effect::drawAttack5(){
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
     glPushMatrix();
@@ -643,6 +648,7 @@ void Effect::drawAttack5(){
 }
 
 void Effect::drawAttack6(){
+	glDisable(GL_CULL_FACE);
     glPushMatrix();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -738,6 +744,7 @@ void Effect::drawAttack6(){
 }
 
 void Effect::drawAttack7(){
+	glDisable(GL_CULL_FACE);
 	glPushMatrix();
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
