@@ -56,6 +56,7 @@ void Effect::routine() {
 }
 
 void Effect::draw(){
+	glDisable(GL_FOG);
 	if(f==1)drawAttack();
 	else if(f==2)drawAttack2();
 	else if(f==3)drawAttack3();
@@ -64,6 +65,7 @@ void Effect::draw(){
 	else if(f==6)drawAttack6();
 	else if(f==7)drawAttack7();
 	else if(f==8)drawAttack8();
+	glEnable(GL_FOG);
 	cout << "x = " << x << " z = " << z << endl;
 
 }

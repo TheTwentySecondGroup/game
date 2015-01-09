@@ -5,7 +5,7 @@ static double px, pz, pdir;
 GLuint *texHandle[10];
 
 void Draw::routine() {
-	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClearColor(0, 0, 0, 1.0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	init3D();
@@ -15,27 +15,29 @@ void Draw::routine() {
 		glLoadIdentity();
 		double xd = sin(sys->player[sys->myID].dir);
 		double zd = cos(sys->player[sys->myID].dir);
-		double cameraPosZ=1;
-		if(sys->map->data[(int)(sys->player[sys->myID].x - xd * 2)][(int)(sys->player[sys->myID].z - zd * 2)]!=0)cameraPosZ+=4;
-		gluLookAt(sys->player[sys->myID].x - xd * 2,
-				sys->player[sys->myID].y + cameraPosZ,
+		double cameraPosZ = 1;
+		if (sys->map->data[(int) (sys->player[sys->myID].x - xd * 2)][(int) (sys->player[sys->myID].z - zd * 2)] != 0)
+			cameraPosZ += 4;
+		gluLookAt(sys->player[sys->myID].x - xd * 2, sys->player[sys->myID].y + cameraPosZ,
 				sys->player[sys->myID].z - zd * 2, // position of camera
-				sys->player[sys->myID].x, sys->player[sys->myID].y+0.5,
-				sys->player[sys->myID].z, //look-at point
+				sys->player[sys->myID].x, sys->player[sys->myID].y + 0.5, sys->player[sys->myID].z, //look-at point
 				0, 1.0f, 0);
 
-
 		//Light
-		lightpos[0] = 17; //sys->player[sys->myID].x;
-		lightpos[1] = 1; //sys->player[sys->myID].y;
-		lightpos[2] = 28; //sys->player[sys->myID].z;
+		//lightpos[0] = 17; //sys->player[sys->myID].x;
+		//lightpos[1] = 1; //sys->player[sys->myID].y;
+		//lightpos[2] = 28; //sys->player[sys->myID].z;
+		lightpos[0] = sys->player[sys->myID].x - 2*sin(sys->player[sys->myID].dir);
+		lightpos[1] = sys->player[sys->myID].y + 0.5;
+		lightpos[2] = sys->player[sys->myID].z - 2*cos(sys->player[sys->myID].dir);
+
 		lightpos[3] = 1;
 
 		glLightfv(GL_LIGHT0, GL_POSITION, lightpos); // position of light0
-		GLfloat Light0Dir[] = { 0, 0, 1 };
+		GLfloat Light0Dir[] = { sin(sys->player[sys->myID].dir), 0, cos(sys->player[sys->myID].dir) };
 		glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light0Dir);
-		glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 180.0f);
-		glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 1.0f);
+		glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 40.0f);
+		glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 40.0f);
 		glLightfv(GL_LIGHT0, GL_AMBIENT, WhiteLight);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, DifLight);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, SpecularLight);
@@ -46,13 +48,12 @@ void Draw::routine() {
 
 		sys->map->drawMap();
 
-
-		cout<<endl;
+		cout << endl;
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
-				if(sys->player[i].chara<=4 && sys->player[i].chara>0){
-				sys->model[sys->player[i].chara-1].Draw(sys->player[i].x,
-				sys->player[i].y, sys->player[i].z, sys->player[i].dir);
+				if (sys->player[i].chara <= 4 && sys->player[i].chara > 0) {
+					sys->model[sys->player[i].chara - 1].Draw(sys->player[i].x, sys->player[i].y, sys->player[i].z,
+							sys->player[i].dir);
 				}
 			}
 		}
@@ -67,19 +68,24 @@ void Draw::routine() {
 	init2D();
 	{
 		drawHP(WINDOW_X - 150, 100, 100, 50);
-		if(sys->player[sys->myID].hp<=0)drawGameOver(100,100 , 800, 300);
+		if (sys->player[sys->myID].hp <= 0)
+			drawGameOver(100, 100, 800, 300);
 
-		int judgeWin=0;
-		for(int i=0;i<4;i++){
-			if(i==sys->myID)continue;
-			if(sys->player[i].chara!=-1 && sys->player[i].hp>0 )judgeWin++;
+		int judgeWin = 0;
+		for (int i = 0; i < 4; i++) {
+			if (i == sys->myID)
+				continue;
+			if (sys->player[i].chara != -1 && sys->player[i].hp > 0)
+				judgeWin++;
 		}
-		if(judgeWin==0){
-			int count=0;
-			for(int i=0;i<4;i++){
-				if(sys->player[i].chara==-1)count++;
+		if (judgeWin == 0) {
+			int count = 0;
+			for (int i = 0; i < 4; i++) {
+				if (sys->player[i].chara == -1)
+					count++;
 			}
-			if(count!=3)drawWin(100,100,800,300);
+			if (count != 3)
+				drawWin(100, 100, 800, 300);
 
 		}
 	}
@@ -89,7 +95,7 @@ void Draw::routine() {
 void Draw::drawGameOver(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
-	string tmpstring= "GAME OVER";
+	string tmpstring = "GAME OVER";
 	tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
 
 	GLuint *tmpimage = sys->draw->timeTexture(tmp);
@@ -97,11 +103,11 @@ void Draw::drawGameOver(int x, int y, int w, int h) {
 	glBegin( GL_QUADS);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glTexCoord2i(0, 0);
-	glVertex3f(x , y  , 0);
+	glVertex3f(x, y, 0);
 	glTexCoord2i(1, 0);
-	glVertex3f(x + w , y  , 0);
+	glVertex3f(x + w, y, 0);
 	glTexCoord2i(1, 1);
-	glVertex3f(x + w , y + h , 0);
+	glVertex3f(x + w, y + h, 0);
 	glTexCoord2i(0, 1);
 	glVertex3f(x, y + h, 0);
 	glEnd();
@@ -111,7 +117,7 @@ void Draw::drawGameOver(int x, int y, int w, int h) {
 void Draw::drawWin(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
-	string tmpstring= "YOU WIN!";
+	string tmpstring = "YOU WIN!";
 	tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
 
 	GLuint *tmpimage = sys->draw->timeTexture(tmp);
@@ -119,11 +125,11 @@ void Draw::drawWin(int x, int y, int w, int h) {
 	glBegin( GL_QUADS);
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	glTexCoord2i(0, 0);
-	glVertex3f(x , y  , 0);
+	glVertex3f(x, y, 0);
 	glTexCoord2i(1, 0);
-	glVertex3f(x + w , y  , 0);
+	glVertex3f(x + w, y, 0);
 	glTexCoord2i(1, 1);
-	glVertex3f(x + w , y + h , 0);
+	glVertex3f(x + w, y + h, 0);
 	glTexCoord2i(0, 1);
 	glVertex3f(x, y + h, 0);
 	glEnd();
@@ -134,25 +140,27 @@ void Draw::drawHP(int x, int y, int w, int h) {
 	SDL_Surface *tmp;
 	for (int i = 0; i < 4; i++) {
 		string tmpstring;
-		if(sys->myID == i)tmpstring += "†P";
-		else tmpstring += "　P";
+		if (sys->myID == i)
+			tmpstring += "†P";
+		else
+			tmpstring += "　P";
 		char tmpi[10];
-		sprintf(tmpi,"%d",i+1);
-		tmpstring+= tmpi;
-		tmpstring+= " ";
-		sprintf(tmpi,"%d",sys->player[i].hp);
-		tmpstring+= tmpi;
+		sprintf(tmpi, "%d", i + 1);
+		tmpstring += tmpi;
+		tmpstring += " ";
+		sprintf(tmpi, "%d", sys->player[i].hp);
+		tmpstring += tmpi;
 		tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
 		GLuint *tmpimage = sys->draw->timeTexture(tmp);
 		glBindTexture( GL_TEXTURE_2D, *tmpimage);
 		glBegin( GL_QUADS);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		glTexCoord2i(0, 0);
-		glVertex3f(x , y + (h * i), 0);
+		glVertex3f(x, y + (h * i), 0);
 		glTexCoord2i(1, 0);
-		glVertex3f(x + w , y +( h * i), 0);
+		glVertex3f(x + w, y + (h * i), 0);
 		glTexCoord2i(1, 1);
-		glVertex3f(x + w , y + h * (i + 1), 0);
+		glVertex3f(x + w, y + h * (i + 1), 0);
 		glTexCoord2i(0, 1);
 		glVertex3f(x, y + h * (i + 1), 0);
 		glEnd();
@@ -208,19 +216,19 @@ Draw::Draw() {
 	SpecularLight[2] = 1;
 	SpecularLight[3] = 1;
 
-	GrayLight[0] = 0.3;
-	GrayLight[1] = 0.3;
-	GrayLight[2] = 0.3;
+	GrayLight[0] = 0.6;
+	GrayLight[1] = 0.6;
+	GrayLight[2] = 0.6;
 	GrayLight[3] = 1;
 
-	WhiteLight[0] = 0.7;
-	WhiteLight[1] = 0.7;
-	WhiteLight[2] = 0.7;
+	WhiteLight[0] = 1;
+	WhiteLight[1] = 1;
+	WhiteLight[2] = 1;
 	WhiteLight[3] = 1.0;
 
-	FogColor[0] = 1.0;
-	FogColor[1] = 1.0;
-	FogColor[2] = 1.0;
+	FogColor[0] = 0;
+	FogColor[1] = 0;
+	FogColor[2] = 0;
 	FogColor[3] = 1;
 
 }
@@ -286,9 +294,8 @@ GLuint * Draw::timeTexture(SDL_Surface * surface) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexImage2D( GL_TEXTURE_2D, 0, texColor, surface->w, surface->h, 0,
-			texFormat,
-			GL_UNSIGNED_BYTE, surface->pixels);
+	glTexImage2D( GL_TEXTURE_2D, 0, texColor, surface->w, surface->h, 0, texFormat,
+	GL_UNSIGNED_BYTE, surface->pixels);
 	if (surface) {
 		SDL_FreeSurface(surface);
 	}
@@ -328,9 +335,8 @@ GLuint *Draw::initTexture(string name) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	glTexImage2D( GL_TEXTURE_2D, 0, texColor, surface->w, surface->h, 0,
-			texFormat,
-			GL_UNSIGNED_BYTE, surface->pixels);
+	glTexImage2D( GL_TEXTURE_2D, 0, texColor, surface->w, surface->h, 0, texFormat,
+	GL_UNSIGNED_BYTE, surface->pixels);
 	if (surface) {
 		SDL_FreeSurface(surface);
 	}
@@ -393,9 +399,9 @@ void Draw::drawCube(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
-	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1
-			+ x, 1.0, 1 + y }, { 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0
-			+ x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1 + y } };
+	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1 + x, 1.0, 1 + y },
+			{ 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0 + x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1
+					+ y } };
 
 // 右
 	glBegin(GL_POLYGON);
@@ -481,8 +487,7 @@ void Draw::init3D() {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01,
-			150.0);
+	gluPerspective(30.0, (GLdouble) WINDOW_X / (GLdouble) WINDOW_Y, 0.01, 210.0);
 
 //fog
 	glFogi(GL_FOG_MODE, GL_LINEAR);
@@ -490,7 +495,7 @@ void Draw::init3D() {
 	glFogf(GL_FOG_DENSITY, 0.5);
 	glHint(GL_FOG_HINT, GL_DONT_CARE);
 	glFogf(GL_FOG_START, 6);
-	glFogf(GL_FOG_END, 14);
+	glFogf(GL_FOG_END, 22);
 	glEnable(GL_FOG);
 
 //z buffer
@@ -512,8 +517,8 @@ void Draw::drawFloor(int x, int y) {
 	glCullFace(GL_FRONT);
 	glBindTexture(GL_TEXTURE_2D, *texHandle[0]);
 
-	GLfloat vertices[4][3] = { { 1 + x, 0.0, 1 + y }, { 0 + x, 0.0, 1 + y }, { 0
-			+ x, 0.0, 0 + y }, { 1 + x, 0.0, 0 + y }, };
+	GLfloat vertices[4][3] = { { 1 + x, 0.0, 1 + y }, { 0 + x, 0.0, 1 + y }, { 0 + x, 0.0, 0 + y },
+			{ 1 + x, 0.0, 0 + y }, };
 
 	glBegin(GL_POLYGON);
 	//glNormal3f(vertices[0][0], vertices[0][1], vertices[0][2]);
@@ -546,8 +551,7 @@ void Draw::drawWall(int x, int y) {
 	glDisable(GL_CULL_FACE);
 //前
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
-	GLfloat vertices1[4][3] = { { 1 + x, 1.5, y }, { 0 + x, 1.5, y }, { 0 + x,
-			0, y }, { 1 + x, 0, y }, };
+	GLfloat vertices1[4][3] = { { 1 + x, 1.5, y }, { 0 + x, 1.5, y }, { 0 + x, 0, y }, { 1 + x, 0, y }, };
 	glBegin(GL_POLYGON);
 	//glNormal3f(vertices1[0][0], vertices1[0][1], vertices1[0][2]);
 	glTexCoord2i(0, 0);
@@ -568,8 +572,8 @@ void Draw::drawWall(int x, int y) {
 
 //後ろ
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
-	GLfloat vertices2[4][3] = { { 1 + x, 1.5, y + 1 }, { 0 + x, 1.5, y + 1 }, {
-			0 + x, 0, y + 1 }, { 1 + x, 0, y + 1 }, };
+	GLfloat vertices2[4][3] =
+			{ { 1 + x, 1.5, y + 1 }, { 0 + x, 1.5, y + 1 }, { 0 + x, 0, y + 1 }, { 1 + x, 0, y + 1 }, };
 	glBegin(GL_POLYGON);
 	//glNormal3f(vertices2[0][0], vertices2[0][1], vertices2[0][2]);
 	glTexCoord2i(0, 0);
@@ -590,8 +594,7 @@ void Draw::drawWall(int x, int y) {
 
 //左
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
-	GLfloat vertices3[4][3] = { { x, 1.5, y + 1 }, { x, 1.5, 0 + y }, { x, 0, 0
-			+ y }, { x, 0, 1 + y }, };
+	GLfloat vertices3[4][3] = { { x, 1.5, y + 1 }, { x, 1.5, 0 + y }, { x, 0, 0 + y }, { x, 0, 1 + y }, };
 	glBegin(GL_POLYGON);
 	//glNormal3f(vertices3[0][0], vertices3[0][1], vertices3[0][2]);
 	glTexCoord2i(0, 0);
@@ -612,8 +615,8 @@ void Draw::drawWall(int x, int y) {
 
 //右
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
-	GLfloat vertices4[4][3] = { { 1 + x, 1.5, 1 + y }, { 1 + x, 1.5, 0 + y }, {
-			1 + x, 0, 0 + y }, { 1 + x, 0, 1 + y }, };
+	GLfloat vertices4[4][3] =
+			{ { 1 + x, 1.5, 1 + y }, { 1 + x, 1.5, 0 + y }, { 1 + x, 0, 0 + y }, { 1 + x, 0, 1 + y }, };
 	glBegin(GL_POLYGON);
 	glNormal3f(vertices4[0][0], vertices4[0][1], vertices4[0][2]);
 	glTexCoord2i(0, 0);
@@ -636,12 +639,8 @@ void Draw::drawWall(int x, int y) {
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
-	GLfloat vertices5[4][3] = { 
-		{ 0 + x, 1.5, 1 + y }, 
-		{ 1 + x, 1.5, 1 + y }, 
-		{1 + x, 1.5, 0 + y }, 
-		{ 0 + x, 1.5, 0 + y }, 
-	};
+	GLfloat vertices5[4][3] = { { 0 + x, 1.5, 1 + y }, { 1 + x, 1.5, 1 + y }, { 1 + x, 1.5, 0 + y },
+			{ 0 + x, 1.5, 0 + y }, };
 	glBegin(GL_POLYGON);
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices5[0]);
@@ -656,11 +655,5 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices5[3]);
 	glEnd();
 
-
 }
-
-
-
-
-
 
