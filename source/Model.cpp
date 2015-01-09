@@ -1,4 +1,5 @@
 #include "global.h"
+#include "system.h"
 #include "Model.h"
 
 Model::Model(const char* filename) {
@@ -210,30 +211,41 @@ int Model::getMesh(FbxNode* node) {
 
 			}
 
-			//テクスチャー座標読み込み
+			//UV読み込み
+
 			for (int n = 0; n < mesh->GetLayerCount(); n++) {
 
 				FbxLayerElementUV* pUV = mesh->GetLayer(n)->GetUVs();
-				int uvsize =
-						pUV->GetDirectArray().GetCount() > pUV->GetIndexArray().GetCount() ?
-								pUV->GetDirectArray().GetCount() : pUV->GetIndexArray().GetCount();
-				if (pUV->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
-					if (pUV->GetReferenceMode() == FbxLayerElement::eDirect) {
-						// 直接取得
-						for (int i = 0; i < uvsize; ++i) {
-							UV uvtemp;
-							uvtemp.u = (float) pUV->GetDirectArray().GetAt(i)[0];
-							uvtemp.v = 1.0f - (float) pUV->GetDirectArray().GetAt(i)[1];
-							mattemp.uv.push_back(uvtemp);
-						}
-					} else if (pUV->GetReferenceMode() == FbxLayerElement::eIndexToDirect) {
-						// インデックスから取得
-						for (int i = 0; i < uvsize; ++i) {
-							UV uvtemp;
-							int index = pUV->GetIndexArray().GetAt(i);
-							uvtemp.u = (float) pUV->GetDirectArray().GetAt(index)[0];
-							uvtemp.v = 1.0f - (float) pUV->GetDirectArray().GetAt(index)[1];
-							mattemp.uv.push_back(uvtemp);
+				if (pUV) {
+
+					int uvsize =
+							pUV->GetDirectArray().GetCount() > pUV->GetIndexArray().GetCount() ?
+									pUV->GetDirectArray().GetCount() : pUV->GetIndexArray().GetCount();
+
+					if (pUV->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
+
+						cout << "a" << endl;
+						if (pUV->GetReferenceMode() == FbxLayerElement::eDirect) {
+							// 直接取得
+
+							cout << "b" << endl;
+							for (int i = 0; i < uvsize; ++i) {
+								UV uvtemp;
+								uvtemp.u = (float) pUV->GetDirectArray().GetAt(i)[0];
+								uvtemp.v = 1.0f - (float) pUV->GetDirectArray().GetAt(i)[1];
+								mattemp.uv.push_back(uvtemp);
+							}
+						} else if (pUV->GetReferenceMode() == FbxLayerElement::eIndexToDirect) {
+							// インデックスから取得
+
+							cout << "c" << endl;
+							for (int i = 0; i < uvsize; ++i) {
+								UV uvtemp;
+								int index = pUV->GetIndexArray().GetAt(i);
+								uvtemp.u = (float) pUV->GetDirectArray().GetAt(index)[0];
+								uvtemp.v = 1.0f - (float) pUV->GetDirectArray().GetAt(index)[1];
+								mattemp.uv.push_back(uvtemp);
+							}
 						}
 					}
 				}
@@ -319,7 +331,13 @@ int Model::getMesh(FbxNode* node) {
 				FbxProperty lProperty = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
 				FbxTexture* ktex = FbxCast<FbxTexture>(lProperty.GetSrcObject(FbxTexture::ClassId, 0));
 				if (ktex) {
-					cout << "texture name is " << FbxCast<FbxFileTexture>(ktex)->GetFileName() << endl;
+					mattemp.textureName = FbxCast<FbxFileTexture>(ktex)->GetFileName();
+					cout << "texture name is " << mattemp.textureName << endl;
+					if (FILE * file = fopen(mattemp.textureName.c_str(), "r")) {
+						fclose(file);
+
+						mattemp.texture = sys->draw->pngTexture(mattemp.textureName);
+					}
 					/*
 					 //テクスチャを作成
 					 TexData.push_back(tex);
@@ -344,6 +362,8 @@ int Model::getMesh(FbxNode* node) {
 					 GL_UNSIGNED_BYTE, TexData[TexData.size() - 1]->image);
 					 glDisable(GL_TEXTURE_2D);
 					 */
+				}else{
+					cout<<"no texture\n";
 				}
 			}
 

@@ -33,7 +33,7 @@ class col4f{
     public:
         float r,g,b,a;
         col4f(){
-            r=1;g=1;b=1;a=1;
+            r=0.5;g=0.5;b=0.5;a=1;
         }
 };
 
@@ -67,13 +67,17 @@ class TEXTURE{
 
 class material{
     public:
+		string textureName;
         reflect color;//反射
         vector <vec3f> ver;//頂点座標
         vector <vec3f> nor;//法線座標
         vector <UV> uv;//UV座標
         vector <int> index;//インデックスバッファ
         double shininess;
-        int textureID;//テクスチャー番号
+        GLuint *texture;
+        material(){
+        	shininess = 60;
+        }
 };
 
 

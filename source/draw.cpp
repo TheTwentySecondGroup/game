@@ -201,7 +201,7 @@ Draw::Draw() {
 	WhiteMaterial[0] = 0.8;
 	WhiteMaterial[1] = 0.8;
 	WhiteMaterial[2] = 0.8;
-	WhiteMaterial[3] = 1;
+	WhiteMaterial[3] = 0.5;
 
 	SpecularLight[0] = 1;
 	SpecularLight[1] = 1;
@@ -389,7 +389,7 @@ void Draw::drawCharaSelect() {
 
 void Draw::drawCube(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, WhiteMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
