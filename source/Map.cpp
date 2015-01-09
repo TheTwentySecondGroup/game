@@ -50,10 +50,10 @@ int  Map::initMap(int stage) {
 void Map::drawMap() {
 	//cout<<"execute map drawMap() "<<endl;
 	int i, c;
-	int min_x = (int) sys->player[sys->myID].x - 30;
+	int min_x = (int) sys->player[sys->myID].x - 22;
 	if (min_x < 0)
 		min_x = 0;
-	int max_x = (int) sys->player[sys->myID].x + 30;
+	int max_x = (int) sys->player[sys->myID].x + 22;
 	if (max_x > MAP_X_MAX)
 		max_x = MAP_X_MAX;
 	int min_y = (int) sys->player[sys->myID].z - 30;
@@ -71,10 +71,6 @@ void Map::drawMap() {
 			}
 
 			if (data[i][c] == 0) {
-				sys->draw->drawFloor(i, c);
-			}
-
-			if (data[i][c] == 2) {
 				sys->draw->drawFloor(i, c);
 			}
 		}

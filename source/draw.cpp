@@ -631,4 +631,36 @@ void Draw::drawWall(int x, int y) {
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices4[3]);
 	glEnd();
+
+	//上
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glBindTexture(GL_TEXTURE_2D, *texHandle[2]);
+	GLfloat vertices5[4][3] = { 
+		{ 0 + x, 1.5, 1 + y }, 
+		{ 1 + x, 1.5, 1 + y }, 
+		{1 + x, 1.5, 0 + y }, 
+		{ 0 + x, 1.5, 0 + y }, 
+	};
+	glBegin(GL_POLYGON);
+	glTexCoord2i(0, 0);
+	glVertex3fv(vertices5[0]);
+
+	glTexCoord2i(0, 1);
+	glVertex3fv(vertices5[1]);
+
+	glTexCoord2i(1, 1);
+	glVertex3fv(vertices5[2]);
+
+	glTexCoord2i(1, 0);
+	glVertex3fv(vertices5[3]);
+	glEnd();
+
+
 }
+
+
+
+
+
+
