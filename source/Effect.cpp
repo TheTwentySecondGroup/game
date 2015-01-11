@@ -57,6 +57,14 @@ void Effect::routine() {
 
 void Effect::draw(){
 	glDisable(GL_FOG);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (const GLfloat *) &sys->draw->WhiteLight);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (const GLfloat *) &sys->draw->WhiteLight);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (const GLfloat *) &sys->draw->WhiteLight);
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, (const GLfloat *) &sys->draw->GrayLight);
+
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 10);
+
 	if(f==1)drawAttack();
 	else if(f==2)drawAttack2();
 	else if(f==3)drawAttack3();
@@ -68,6 +76,7 @@ void Effect::draw(){
 	glEnable(GL_FOG);
 	cout << "x = " << x << " z = " << z << endl;
 
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, (const GLfloat *) &sys->draw->FogColor);
 }
 
 void Effect::drawAttack(){
@@ -170,6 +179,7 @@ void Effect::drawAttack(){
         { x + 2, 0.3, z - 2},
         { x + 2, 0.3, z + 2 },
     };
+
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	glTexCoord2i(0, 0);
