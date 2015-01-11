@@ -41,7 +41,9 @@ OBJS        = \
     ./source/Player.o\
     ./source/io.o\
     ./source/net.o\
-    ./source/netBase.o
+    ./source/netBase.o\
+    ./source/lightEffect.o
+    
 OBJSFINAL   = \
 	$(OBJDIR)/main.o\
 	$(OBJDIR)/draw.o\
@@ -54,7 +56,8 @@ OBJSFINAL   = \
     $(OBJDIR)/Player.o\
     $(OBJDIR)/io.o\
     $(OBJDIR)/net.o\
-    $(OBJDIR)/netBase.o
+    $(OBJDIR)/netBase.o\
+    $(OBJDIR)/lightEffect.o
 
 CC          = g++
 LD          = g++

@@ -46,8 +46,6 @@ void Init() {
 	Model modeltmp3("UnityChan/Models/unitychan.fbx");
 	sys->model.push_back(modeltmp3);
 
-
-
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";
 }
@@ -102,8 +100,13 @@ int main(int argc, char* argv[]) {
 
 	sys->tutorial = new Tutorial();
 
-
 	sys->effect = new Effect[MAX_EFFECT];
+
+	sys->lighteffect = new lightEffect[NUM_LIGHT_EFFECT];
+
+	sys->lighteffect[0].f=1;
+	sys->lighteffect[0].posX=5;
+	sys->lighteffect[0].posY=5;
 
 	if (argc == 2 && strcmp(argv[1], "server") == 0) {
 		sys->network = new NetClass(MODE_SERVER);
@@ -146,6 +149,11 @@ int main(int argc, char* argv[]) {
 		}
 		for (int i = 0; i < MAX_EFFECT; i++) {
 			sys->effect[i].routine();
+		}
+		for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
+			if (sys->lighteffect[i].f > 0) {
+				sys->lighteffect[i].routine();
+			}
 		}
 
 		//timeProc();

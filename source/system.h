@@ -11,6 +11,8 @@
 #include "Map.h"
 #include "net.h"
 #include "Effect.h"
+#include "lightEffect.h"
+
 
 using namespace std;
 
@@ -35,6 +37,7 @@ public:
 	
 	Effect *effect;
 
+	lightEffect *lighteffect;
 
 	int myID;
 	//int myChara;

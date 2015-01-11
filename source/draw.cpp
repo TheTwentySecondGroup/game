@@ -63,6 +63,11 @@ void Draw::routine() {
 				sys->effect[i].draw();
 			}
 		}
+		for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
+			if (sys->lighteffect[i].f > 0) {
+				sys->lighteffect[i].draw();
+			}
+		}
 	}
 
 	init2D();

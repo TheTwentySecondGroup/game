@@ -76,7 +76,7 @@ class material{
         double shininess;
         GLuint *texture;
         material(){
-        	shininess = 60;
+        	shininess = 128;
         }
 };
 
