@@ -24,9 +24,12 @@ void Draw::routine() {
 				0, 1.0f, 0);
 
 		//Light
-		//lightpos[0] = 17; //sys->player[sys->myID].x;
-		//lightpos[1] = 1; //sys->player[sys->myID].y;
-		//lightpos[2] = 28; //sys->player[sys->myID].z;
+		glEnable(GL_LIGHTING);
+		glEnable(GL_NORMALIZE);
+
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
+
 		lightpos[0] = sys->player[sys->myID].x - 2*sin(sys->player[sys->myID].dir);
 		lightpos[1] = sys->player[sys->myID].y + 0.5;
 		lightpos[2] = sys->player[sys->myID].z - 2*cos(sys->player[sys->myID].dir);
@@ -37,14 +40,31 @@ void Draw::routine() {
 		GLfloat Light0Dir[] = { sin(sys->player[sys->myID].dir), 0, cos(sys->player[sys->myID].dir) };
 		glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light0Dir);
 		glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 40.0f);
-		glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 40.0f);
+		glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 80.0f);
 		glLightfv(GL_LIGHT0, GL_AMBIENT, WhiteLight);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, DifLight);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, SpecularLight);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_NORMALIZE);
 
-		glEnable(GL_LIGHT0);
+
+
+		lightpos[0] = 5;
+		lightpos[1] = 10;
+		lightpos[2] = 5;
+		lightpos[3] = 1;
+
+		glDisable(GL_FOG);
+
+		glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
+		GLfloat Light1Dir[] = {0, -1, 0 };
+		glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
+		glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
+		glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
+		glLightfv(GL_LIGHT1, GL_AMBIENT, WhiteLight);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, DifLight);
+		glLightfv(GL_LIGHT1, GL_SPECULAR, SpecularLight);
+
+		glEnable(GL_FOG);
+
 
 		sys->map->drawMap();
 
