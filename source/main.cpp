@@ -38,13 +38,11 @@ void Init() {
 
 	Model modeltmp0("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp0);
-	Model modeltmp1("UnityChan/Models/unitychan.fbx");
+	Model modeltmp1("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp1);
-
-	Model modeltmp2("UnityChan/Models/unitychan.fbx");
+	Model modeltmp2("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp2);
-	Model modeltmp3("UnityChan/Models/unitychan.fbx");
-	sys->model.push_back(modeltmp3);
+
 
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";
@@ -104,9 +102,9 @@ int main(int argc, char* argv[]) {
 
 	sys->lighteffect = new lightEffect[NUM_LIGHT_EFFECT];
 
-	sys->lighteffect[0].f=1;
-	sys->lighteffect[0].posX=5;
-	sys->lighteffect[0].posY=5;
+	sys->lighteffect[0].f = 1;
+	sys->lighteffect[0].posX = 15;
+	sys->lighteffect[0].posY = 15;
 
 	if (argc == 2 && strcmp(argv[1], "server") == 0) {
 		sys->network = new NetClass(MODE_SERVER);
@@ -132,14 +130,6 @@ int main(int argc, char* argv[]) {
 	 }
 	 */
 
-	//Initialize openGL  etc
-	//sys->draw = new Draw();
-	//Initialize title
-	//sys->title =
-	//sys->title = new Title(sys);
-	//Initialize tutorial
-	//Init Map
-	//cout<<"Stage1 =  "<<sys->Stage<<endl;
 	cout << "Stage =  " << sys->Stage << endl;
 
 	while (1) {

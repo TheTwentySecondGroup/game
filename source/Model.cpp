@@ -23,6 +23,7 @@ Model::Model(const char* filename) {
 	FbxGeometryConverter geometryConverter(manager);
 	geometryConverter.Triangulate(scene, true);
 	geometryConverter.SplitMeshesPerMaterial(scene, true);
+
 	importer->Destroy();
 
 	//scene->SetEvaluator();
@@ -55,9 +56,11 @@ void Model::Draw(double x, double y, double z, double dir) {
 		glPushMatrix();
 
 		glTranslatef(x, 0, z);
-		glScalef(0.003f, 0.003f, 0.003f);
+		glScalef(0.3f, 0.3f, 0.3f);
 		glRotatef(dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
+		glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 
+		//glRotatef();
 		//material
 		GLfloat WhiteMaterial[] = { 0.8, 0.8, 0.8, 1 };
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (const GLfloat *) &mat[i].color.ambient);
@@ -132,9 +135,11 @@ int Model::getMesh(FbxNode* node) {
 			material mattemp;
 
 			//頂点情報
+
 			int* indexes = mesh->GetPolygonVertices();
 			int indexcounttmp = mesh->GetPolygonVertexCount();
 			int VerticesCount = mesh->GetControlPointsCount();
+
 			//cout << VerticesCount << "\n";
 			FbxVector4* vec = mesh->GetControlPoints();
 			//cout << indexcounttmp << endl;
@@ -362,8 +367,8 @@ int Model::getMesh(FbxNode* node) {
 					 GL_UNSIGNED_BYTE, TexData[TexData.size() - 1]->image);
 					 glDisable(GL_TEXTURE_2D);
 					 */
-				}else{
-					cout<<"no texture\n";
+				} else {
+					cout << "no texture\n";
 				}
 			}
 

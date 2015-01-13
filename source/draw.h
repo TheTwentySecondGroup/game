@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class Draw{
+class Draw {
 public:
 	GLuint *texHandle[10];
 
@@ -55,14 +55,16 @@ public:
 	void drawCube(int x, int y);
 
 //draw 2D HP
-	void drawHP(int x,int y ,int w,int h);
+	void drawHP(int x, int y, int w, int h);
 //draw 2D GameOver Message
-	void drawGameOver(int x,int y ,int w,int h);
+	void drawGameOver(int x, int y, int w, int h);
 //draw 2D Win Message
-		void drawWin(int x,int y ,int w,int h);
+	void drawWin(int x, int y, int w, int h);
 //calculate and setting glNormal3f
 	GLvoid Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]);
 
+//draw cylinder
+	void drawCylinder(int div, float r, float h);
 //for font
 	TTF_Font* font;
 };
