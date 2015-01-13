@@ -27,28 +27,28 @@ void GameIO::routine() {
 		axis1 = SDL_JoystickGetAxis(joystick, 1);
 	}
 
-	if (SdlKey[SDLK_UP] == SDL_PRESSED) {
+	if (SdlKey[SDLK_UP] == SDL_PRESSED || axis1 < -30) {
 		if (key[KEY_UP] < KEY_MAX_COUNT)
 			key[KEY_UP]++;
 	} else {
 		key[KEY_UP] = 0;
 	}
 
-	if (SdlKey[SDLK_DOWN] == SDL_PRESSED) {
+	if (SdlKey[SDLK_DOWN] == SDL_PRESSED || axis1 > 30) {
 		if (key[KEY_DOWN] < KEY_MAX_COUNT)
 			key[KEY_DOWN]++;
 	} else {
 		key[KEY_DOWN] = 0;
 	}
 
-	if (SdlKey[SDLK_RIGHT] == SDL_PRESSED) {
+	if (SdlKey[SDLK_RIGHT] == SDL_PRESSED || axis0 > 30) {
 		if (key[KEY_RIGHT] < KEY_MAX_COUNT)
 			key[KEY_RIGHT]++;
 	} else {
 		key[KEY_RIGHT] = 0;
 	}
 
-	if (SdlKey[SDLK_LEFT] == SDL_PRESSED) {
+	if (SdlKey[SDLK_LEFT] == SDL_PRESSED || axis0 < -30) {
 		if (key[KEY_LEFT] < KEY_MAX_COUNT)
 			key[KEY_LEFT]++;
 	} else {
@@ -57,10 +57,10 @@ void GameIO::routine() {
 
 	Uint8 jbutton[4];
 	for (int i = 0; i < 4; i++) {
-		jbutton[i] = SDL_JoystickGetButton(joystick, i + 1);
+		jbutton[i] = SDL_JoystickGetButton(joystick, i);
 	}
 
-	if (SdlKey[SDLK_RETURN] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED|| jbutton[2] == 1) {
+	if (SdlKey[SDLK_RETURN] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED|| jbutton[3] == 1) {
 		if (key[KEY_A] < KEY_MAX_COUNT)
 			key[KEY_A]++;
 	}
@@ -68,7 +68,7 @@ void GameIO::routine() {
 		key[KEY_A] = 0;
 	}
 
-	if(SdlKey[SDLK_1] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_1] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[0] == 1){
 		if(key[KEY_B] < KEY_MAX_COUNT)
 			key[KEY_B]++;
 	}
@@ -76,7 +76,7 @@ void GameIO::routine() {
 		key[KEY_B] = 0;
 	}
 
-    if(SdlKey[SDLK_2] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+    if(SdlKey[SDLK_2] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[1] == 1){
 		if(key[KEY_C] < KEY_MAX_COUNT)
 			key[KEY_C]++;
 	}
@@ -92,7 +92,7 @@ void GameIO::routine() {
 		key[KEY_D] = 0;
 	}
 
-	if(SdlKey[SDLK_4] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_4] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[3] == 1){
 		if(key[KEY_E] < KEY_MAX_COUNT)
 			key[KEY_E]++;
 	}
