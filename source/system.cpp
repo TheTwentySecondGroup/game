@@ -140,107 +140,107 @@ void System::moveChara() {
 	}
 	rad = (player[myID].dir * 56.5) * (PI / 180.0);
 
-	if(player[myID].chara == 1){
-		if (io->key[KEY_B] == 1 && player[myID].attflag == 0) {
-			player[myID].attflag = 1;
-			player[myID].attpatern = 1;
-			for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-				if (effect[serchEffect].f == 0) {
-					effect[serchEffect].fromPlayerID = myID;
-					effect[serchEffect].f = 1;
-					effect[serchEffect].x = player[myID].x + 4 * sin(rad);
-					effect[serchEffect].z = player[myID].z + 4 * cos(rad);
-					effect[serchEffect].dir = player[myID].dir;
-					network->syncEffectFlag = serchEffect;
-					break;
-				}
+
+	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 1;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
+				effect[serchEffect].f = 1;
+				effect[serchEffect].x = player[myID].x + 4 * sin(rad);
+				effect[serchEffect].z = player[myID].z + 4 * cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->syncEffectFlag = serchEffect;
+				break;
 			}
 		}
+	}
 	
-		if (io->key[KEY_C] == 1 && player[myID].attflag == 0) {
-			player[myID].attflag = 1;
-			player[myID].attpatern = 2;
-			for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-				if (effect[serchEffect].f == 0) {
-					effect[serchEffect].fromPlayerID = myID;
-					effect[serchEffect].f = 2;
-					effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-					effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-					effect[serchEffect].dir = player[myID].dir;
-					network->syncEffectFlag = serchEffect;
-					break;
-				}
+	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 2;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
+				effect[serchEffect].f = 2;
+				effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
+				effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->syncEffectFlag = serchEffect;
+				break;
 			}
 		}
 	}
-	if(player[myID].chara == 2){
-		/*ATTACK3(仮)*/
-		if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
-			player[myID].attflag = 1;
-			player[myID].attpatern = 3;
-			for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-				if (effect[serchEffect].f == 0) {
-					effect[serchEffect].fromPlayerID = myID;
-					effect[serchEffect].f = 3;
-					effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-					effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-					effect[serchEffect].dir = player[myID].dir;
-					network->syncEffectFlag = serchEffect;
-					break;
-				}
+	
+
+	/*ATTACK3(仮)*/
+	if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 3;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
+				effect[serchEffect].f = 3;
+				effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
+				effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->syncEffectFlag = serchEffect;
+				break;
 			}
 		}
-		/*ATTACK4*/
-		if (io->key[KEY_E] == 1 && player[myID].attflag == 0) {
-			player[myID].attflag = 1;
-			player[myID].attpatern = 4;
-			for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-				if (effect[serchEffect].f == 0) {
-					effect[serchEffect].fromPlayerID = myID;
-					effect[serchEffect].f = 4;
-					effect[serchEffect].x = player[myID].x + 4 * sin(rad);
-					effect[serchEffect].z = player[myID].z + 4 * cos(rad);
-					effect[serchEffect].dir = player[myID].dir;
-					network->syncEffectFlag = serchEffect;
-					break;
-				}
-			}
-		}	
 	}
-	if(player[myID].chara == 3){
-		/*ATTACK5*/
-		if (io->key[KEY_F] == 1 && player[myID].attflag == 0) {
-			player[myID].attflag = 1;
-			player[myID].attpatern = 5;
-			for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-				if (effect[serchEffect].f == 0) {
-					effect[serchEffect].f = 5;
-					effect[serchEffect].x = player[myID].x + 4 * sin(rad);
-					effect[serchEffect].z = player[myID].z + 4 * cos(rad);
-					effect[serchEffect].dir = player[myID].dir;
-					network->syncEffectFlag = serchEffect;
-					break;
-				}
+	/*ATTACK4*/
+	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 4;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].fromPlayerID = myID;
+				effect[serchEffect].f = 4;
+				effect[serchEffect].x = player[myID].x + 4 * sin(rad);
+				effect[serchEffect].z = player[myID].z + 4 * cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->syncEffectFlag = serchEffect;
+				break;
 			}
 		}
-		/*ATTACK6*/
-		if (io->key[KEY_G] == 1 && player[myID].attflag == 0) {
-			player[myID].attflag = 1;
-			player[myID].attpatern = 6;
-			for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-				if (effect[serchEffect].f == 0) {
-					effect[serchEffect].f = 6;
-					effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-					effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-					effect[serchEffect].dir = player[myID].dir;
-					network->syncEffectFlag = serchEffect;
-					break;
-				}
+	}	
+	
+
+	/*ATTACK5*/
+	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 3) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 5;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 5;
+				effect[serchEffect].x = player[myID].x + 4 * sin(rad);
+				effect[serchEffect].z = player[myID].z + 4 * cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->syncEffectFlag = serchEffect;
+				break;
 			}
 		}
+	}
+	/*ATTACK6*/
+	if (io->key[KEY_G] == 1 && player[myID].attflag == 0) {
+		player[myID].attflag = 1;
+		player[myID].attpatern = 6;
+		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+			if (effect[serchEffect].f == 0) {
+				effect[serchEffect].f = 6;
+				effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
+				effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
+				effect[serchEffect].dir = player[myID].dir;
+				network->syncEffectFlag = serchEffect;
+				break;
+			}
+		}
+	}
 	
 	/*ATTACK7*/
-	if (io->key[KEY_H] == 1 && player[myID].attflag == 0) {
+	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 7;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -257,7 +257,7 @@ void System::moveChara() {
 	}
 
 	/*ATTACK8*/
-	if (io->key[KEY_I] == 1 && player[myID].attflag == 0) {
+	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 3) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 8;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -273,7 +273,7 @@ void System::moveChara() {
 	}
 
 }
-}
+
 int System::judgeHit(int mode, Player *pl, Effect *ef) {
 	if (mode >= 1) {
 		//cout<<"-----------judge  distance "<<abs(pl->x - ef->x)* abs(pl->z - ef->z)<<endl;

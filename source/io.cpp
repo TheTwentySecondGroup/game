@@ -60,7 +60,7 @@ void GameIO::routine() {
 		jbutton[i] = SDL_JoystickGetButton(joystick, i);
 	}
 
-	if (SdlKey[SDLK_RETURN] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED|| jbutton[3] == 1) {
+	if (SdlKey[SDLK_RETURN] == SDL_PRESSED || jbutton[3] == 1) {
 		if (key[KEY_A] < KEY_MAX_COUNT)
 			key[KEY_A]++;
 	}
@@ -68,7 +68,7 @@ void GameIO::routine() {
 		key[KEY_A] = 0;
 	}
 
-	if(SdlKey[SDLK_1] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[0] == 1){
+	if(SdlKey[SDLK_1] == SDL_PRESSED || jbutton[0] == 1){
 		if(key[KEY_B] < KEY_MAX_COUNT)
 			key[KEY_B]++;
 	}
@@ -76,7 +76,7 @@ void GameIO::routine() {
 		key[KEY_B] = 0;
 	}
 
-    if(SdlKey[SDLK_2] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[1] == 1){
+    if(SdlKey[SDLK_2] == SDL_PRESSED || jbutton[1] == 1){
 		if(key[KEY_C] < KEY_MAX_COUNT)
 			key[KEY_C]++;
 	}
@@ -84,7 +84,7 @@ void GameIO::routine() {
 		key[KEY_C] = 0;
 	}
 
-	if(SdlKey[SDLK_3] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_3] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_D] < KEY_MAX_COUNT)
 			key[KEY_D]++;
 	}
@@ -92,7 +92,7 @@ void GameIO::routine() {
 		key[KEY_D] = 0;
 	}
 
-	if(SdlKey[SDLK_4] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[3] == 1){
+	if(SdlKey[SDLK_4] == SDL_PRESSED || jbutton[3] == 1){
 		if(key[KEY_E] < KEY_MAX_COUNT)
 			key[KEY_E]++;
 	}
@@ -100,7 +100,7 @@ void GameIO::routine() {
 		key[KEY_E] = 0;
 	}
 
-	if(SdlKey[SDLK_5] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_5] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_F] < KEY_MAX_COUNT)
 			key[KEY_F]++;
 	}
@@ -108,21 +108,21 @@ void GameIO::routine() {
 		key[KEY_F] = 0;
 	}
 
-	if(SdlKey[SDLK_6] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_6] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_G] < KEY_MAX_COUNT)
 			key[KEY_G]++;
 	}
 	else {
 		key[KEY_G] = 0;
 	}
-	if(SdlKey[SDLK_7] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_7] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_H] < KEY_MAX_COUNT)
 			key[KEY_H]++;
 	}
 	else {
 		key[KEY_H] = 0;
 	}
-	if(SdlKey[SDLK_8] == SDL_PRESSED || SdlKey[SDLK_z] == SDL_PRESSED || jbutton[2] == 1){
+	if(SdlKey[SDLK_8] == SDL_PRESSED || jbutton[2] == 1){
 		if(key[KEY_I] < KEY_MAX_COUNT)
 			key[KEY_I]++;
 	}
