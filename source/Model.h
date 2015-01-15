@@ -25,6 +25,8 @@ class Model
 
         void GetAnimation(const char*);
 
+        vector<string> split(const string &str, char delim);
+
 
         FbxTime animationStartFrame;
 		FbxTime animationEndFrame;

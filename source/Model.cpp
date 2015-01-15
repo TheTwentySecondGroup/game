@@ -73,6 +73,15 @@ void Model::Draw(double x, double y, double z, double dir) {
 		//glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 		//texture
+		if (mat[i].texture) {
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, *(mat[i].texture));
+			glTexCoordPointer(2, GL_FLOAT,0, &mat[i].uv[0].u);
+		} else {
+			glDisable(GL_TEXTURE_2D);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		}
 
 		glNormalPointer(GL_FLOAT, sizeof(vec3f), &mat[i].nor[0].x);
 		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
@@ -336,7 +345,9 @@ int Model::getMesh(FbxNode* node) {
 				FbxProperty lProperty = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
 				FbxTexture* ktex = FbxCast<FbxTexture>(lProperty.GetSrcObject(FbxTexture::ClassId, 0));
 				if (ktex) {
-					mattemp.textureName = FbxCast<FbxFileTexture>(ktex)->GetFileName();
+					string tmp = FbxCast<FbxFileTexture>(ktex)->GetFileName();
+					vector<string> temp = split(tmp, '\\');
+					mattemp.textureName = "data/fbx/" + temp[temp.size() - 1];
 					cout << "texture name is " << mattemp.textureName << endl;
 					if (FILE * file = fopen(mattemp.textureName.c_str(), "r")) {
 						fclose(file);
@@ -417,4 +428,15 @@ void Model::GetAnimation(const char* filename) {
 
 	FbxAnimEvaluator* mySceneEvaluator = scene->GetEvaluator();
 
+}
+
+vector<string> Model::split(const string &str, char delim) {
+	vector<string> res;
+	size_t current = 0, found;
+	while ((found = str.find_first_of(delim, current)) != string::npos) {
+		res.push_back(string(str, current, found - current));
+		current = found + 1;
+	}
+	res.push_back(string(str, current, str.size() - current));
+	return res;
 }

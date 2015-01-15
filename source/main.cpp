@@ -134,7 +134,6 @@ int main(int argc, char* argv[]) {
 
 	while (1) {
 		sys->io->routine();
-		cout<<"keyup"<<sys->io->key[KEY_UP]<<"keyup"<<sys->io->key[KEY_DOWN]<<"keyup"<<sys->io->key[KEY_RIGHT]<<"keyup"<<sys->io->key[KEY_LEFT]<<endl;
 		for (int i = 0; i < 4; i++) {
 			sys->player[i].routine();
 		}

@@ -7,8 +7,6 @@
 #include "system.h"
 #include "Player.h"
 #include "net.h"
-using namespace std;
-
 System::System() {
 	TTF_Init();
 	font = TTF_OpenFont("data/Koruri-20140904/Koruri-Bold.ttf", 100);
@@ -22,6 +20,8 @@ System::System() {
 	Stage = 0;
 	selChara = 1;
 }
+using namespace std;
+
 System::~System() {
 	TTF_CloseFont(font);
 
@@ -134,7 +134,6 @@ void System::moveChara() {
 	}
 	rad = (player[myID].dir * 56.5) * (PI / 180.0);
 
-
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 1;
@@ -150,7 +149,7 @@ void System::moveChara() {
 			}
 		}
 	}
-	
+
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
@@ -166,7 +165,6 @@ void System::moveChara() {
 			}
 		}
 	}
-	
 
 	/*ATTACK3(仮)*/
 	if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
@@ -199,8 +197,7 @@ void System::moveChara() {
 				break;
 			}
 		}
-	}	
-	
+	}
 
 	/*ATTACK5*/
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 3) {
@@ -232,7 +229,7 @@ void System::moveChara() {
 			}
 		}
 	}
-	
+
 	/*ATTACK7*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		player[myID].attflag = 1;
@@ -274,7 +271,7 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
 			return 1;
 		}
-}
+	}
 	return 0;
 }
 
@@ -293,14 +290,15 @@ void System::detectCollision() {
 
 		if (effect[i].f > 0) {
 			for (int c = 0; c < 4; c++) {
-				if (player[c].hp <= 0){
+				if (player[c].hp <= 0) {
 					continue;
 				}
 				//effect[i].x = player[c].x;
 				//effect[i].z = player[c].z;
-				if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c && judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
+				if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c
+						&& judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
 					player[c].avoidDamageCount = 30;
-					player[c].hp -= 10;	
+					player[c].hp -= 10;
 				}
 			}
 
