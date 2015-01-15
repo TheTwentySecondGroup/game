@@ -191,6 +191,26 @@ void Draw::drawHP(int x, int y, int w, int h) {
 		glEnd();
 		glDeleteTextures(1, tmpimage);
 	}
+	if(sys->player[sys->myID].hp >= 60){
+		glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
+	}
+	else if(sys->player[sys->myID].hp < 60 && sys->player[sys->myID].hp >= 30){
+		glBindTexture(GL_TEXTURE_2D, *texHandle[4]);
+	}
+	else if(sys->player[sys->myID].hp < 30){
+		glBindTexture(GL_TEXTURE_2D, *texHandle[5]);
+	}
+
+	glBegin(GL_QUADS);
+	glTexCoord2i(0,0);
+	glVertex3f(10,10,0);
+	glTexCoord2i(0,1);
+	glVertex3f(10+sys->player[sys->myID].hp*3,10,0);
+	glTexCoord2i(1,1);
+	glVertex3f(10+sys->player[sys->myID].hp*3,50,0);
+	glTexCoord2i(1,1);
+	glVertex3f(10,50,0);
+	glEnd();
 }
 Draw::Draw() {
 
@@ -215,6 +235,9 @@ Draw::Draw() {
 	texHandle[0] = initTexture("data/image/zimen.bmp");
 	texHandle[1] = initTexture("data/image/sky2.bmp");
 	texHandle[2] = initTexture("data/image/block.bmp");
+	texHandle[3] = initTexture("data/image/hp.bmp");
+	texHandle[4] = initTexture("data/image/hp2.bmp");
+	texHandle[5] = initTexture("data/image/hp3.bmp");
 
 	lightpos[0] = 0;
 	lightpos[1] = 0;

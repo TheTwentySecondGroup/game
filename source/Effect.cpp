@@ -777,10 +777,10 @@ void Effect::drawAttack7(){
 	{
 		GLfloat vertices[4][3] = {
 			{ x, 0.8, z + 0.8 },
-            		{ x, 0.8, z - 0.8 },
-            		{ x, 0.4, z - 0.8 },
-            		{ x, 0.4, z + 0.8 },
-        	};
+    		{ x, 0.8, z - 0.8 },
+            { x, 0.4, z - 0.8 },
+            { x, 0.4, z + 0.8 },
+        };
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0,0);
 		glVertex3fv(vertices[0]);

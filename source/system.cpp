@@ -280,7 +280,7 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
 			return 1;
 		}
-	}
+}
 	return 0;
 }
 
@@ -299,13 +299,14 @@ void System::detectCollision() {
 
 		if (effect[i].f > 0) {
 			for (int c = 0; c < 4; c++) {
-				if (player[c].hp <= 0)
+				if (player[c].hp <= 0){
 					continue;
-				if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c
-						&& judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
+				}
+				//effect[i].x = player[c].x;
+				//effect[i].z = player[c].z;
+				if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c && judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
 					player[c].avoidDamageCount = 30;
-					player[c].hp -= 10;
-
+					player[c].hp -= 10;	
 				}
 			}
 
