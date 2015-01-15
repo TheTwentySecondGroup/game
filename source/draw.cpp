@@ -30,9 +30,9 @@ void Draw::routine() {
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
 
-		lightpos[0] = sys->player[sys->myID].x - 2*sin(sys->player[sys->myID].dir);
+		lightpos[0] = sys->player[sys->myID].x - 2 * sin(sys->player[sys->myID].dir);
 		lightpos[1] = sys->player[sys->myID].y + 0.5;
-		lightpos[2] = sys->player[sys->myID].z - 2*cos(sys->player[sys->myID].dir);
+		lightpos[2] = sys->player[sys->myID].z - 2 * cos(sys->player[sys->myID].dir);
 
 		lightpos[3] = 1;
 
@@ -45,17 +45,16 @@ void Draw::routine() {
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, DifLight);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, SpecularLight);
 
-
-
-		lightpos[0] = 5;
-		lightpos[1] = 10;
-		lightpos[2] = 5;
+		//light1
+		lightpos[0] = sys->lighteffect[0].posX;
+		lightpos[1] = 5;
+		lightpos[2] = sys->lighteffect[0].posY;
 		lightpos[3] = 1;
 
 		glDisable(GL_FOG);
 
 		glLightfv(GL_LIGHT1, GL_POSITION, lightpos);
-		GLfloat Light1Dir[] = {0, -1, 0 };
+		GLfloat Light1Dir[] = { 0, -1, 0 };
 		glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
 		glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
 		glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
@@ -65,10 +64,8 @@ void Draw::routine() {
 
 		glEnable(GL_FOG);
 
-
 		sys->map->drawMap();
 
-		cout << endl;
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
 				if (sys->player[i].chara <= 4 && sys->player[i].chara > 0) {
@@ -606,7 +603,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices1[0]);
 
 	//glNormal3f(vertices1[1][0], vertices1[1][1], vertices1[1][2]);
-	glTexCoord2i(0, 1);
+	glTexCoord2i(1, 0);
 	glVertex3fv(vertices1[1]);
 
 	//glNormal3f(vertices1[2][0], vertices1[2][1], vertices1[2][2]);
@@ -614,7 +611,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices1[2]);
 
 	//glNormal3f(vertices1[3][0], vertices1[3][1], vertices1[3][2]);
-	glTexCoord2i(1, 0);
+	glTexCoord2i(0, 1);
 	glVertex3fv(vertices1[3]);
 	glEnd();
 
@@ -628,7 +625,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices2[0]);
 
 	//glNormal3f(vertices2[1][0], vertices2[1][1], vertices2[1][2]);
-	glTexCoord2i(0, 1);
+	glTexCoord2i(1, 0);
 	glVertex3fv(vertices2[1]);
 
 	//glNormal3f(vertices2[2][0], vertices2[2][1], vertices2[2][2]);
@@ -636,7 +633,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices2[2]);
 
 	//glNormal3f(vertices2[3][0], vertices2[3][1], vertices2[3][2]);
-	glTexCoord2i(1, 0);
+	glTexCoord2i(0, 1);
 	glVertex3fv(vertices2[3]);
 	glEnd();
 
@@ -649,7 +646,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices3[0]);
 
 	//glNormal3f(vertices3[1][0], vertices3[1][1], vertices3[1][2]);
-	glTexCoord2i(0, 1);
+	glTexCoord2i(1, 0);
 	glVertex3fv(vertices3[1]);
 
 	//glNormal3f(vertices3[2][0], vertices3[2][1], vertices3[2][2]);
@@ -657,7 +654,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices3[2]);
 
 	//glNormal3f(vertices3[3][0], vertices3[3][1], vertices3[3][2]);
-	glTexCoord2i(1, 0);
+	glTexCoord2i(0, 1);
 	glVertex3fv(vertices3[3]);
 	glEnd();
 
@@ -671,7 +668,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices4[0]);
 
 	//glNormal3f(vertices4[1][0], vertices4[1][1], vertices4[1][2]);
-	glTexCoord2i(0, 1);
+	glTexCoord2i(1, 0);
 	glVertex3fv(vertices4[1]);
 
 	//glNormal3f(vertices4[2][0], vertices4[2][1], vertices4[2][2]);
@@ -679,7 +676,7 @@ void Draw::drawWall(int x, int y) {
 	glVertex3fv(vertices4[2]);
 
 	//glNormal3f(vertices4[3][0], vertices4[3][1], vertices4[3][2]);
-	glTexCoord2i(1, 0);
+	glTexCoord2i(0, 1);
 	glVertex3fv(vertices4[3]);
 	glEnd();
 
@@ -693,15 +690,44 @@ void Draw::drawWall(int x, int y) {
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices5[0]);
 
-	glTexCoord2i(0, 1);
+	glTexCoord2i(1,0);
 	glVertex3fv(vertices5[1]);
 
 	glTexCoord2i(1, 1);
 	glVertex3fv(vertices5[2]);
 
-	glTexCoord2i(1, 0);
+	glTexCoord2i(0, 1);
 	glVertex3fv(vertices5[3]);
 	glEnd();
 
+}
+
+void Draw::drawCylinder(int div, float r, float h) {
+	int i;
+	double degree;
+	float x, z;
+
+	degree = 360 / div;
+	for (i = 0; i < div; i++) {
+		glBegin(GL_QUADS);
+		{
+			double temp = degree * i / 180.0 * PI;
+			x = r * sin(temp);
+			z = r * cos(temp);
+			glTexCoord2i(0, 0);
+			glVertex3f(x, h, z);
+			glTexCoord2i(0, 1);
+			glVertex3f(x, 0.0f, z);
+
+			temp = degree * (i + 1) / 180.0 * PI;
+			x = r * sin(temp);
+			z = r * cos(temp);
+			glTexCoord2i(1, 1);
+			glVertex3f(x, 0.0f, z);
+			glTexCoord2i(1,0);
+			glVertex3f(x, h, z);
+		}
+		glEnd();
+	}
 }
 

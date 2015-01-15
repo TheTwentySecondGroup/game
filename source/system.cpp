@@ -28,12 +28,10 @@ System::~System() {
 }
 
 int System::selectChara() {
-	cout << "execute sys selectChara()" << endl;
 
 	char buf[30];
 
 	//while (1) {
-	cout << "selectChara loop   " << selChara << io->key[KEY_RIGHT] << io->key[KEY_LEFT] << endl;
 	//sys->io->routine();
 
 	//if (io->key[KEY_RIGHT] == 1) {
@@ -41,8 +39,6 @@ int System::selectChara() {
 		if (selChara < 4)
 			selChara++;
 		else
-
-			// if (selChara == 4)
 			selChara = 1;
 	}
 	if (io->key[KEY_LEFT] == 1) {
@@ -74,68 +70,66 @@ void System::moveChara() {
 		if ((player[myID].dir -= 0.03) <= -6.03) {
 			player[myID].dir = 0;
 		}
-		cout << player[myID].dir << endl;
+		//cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
 		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
-		cout << player[myID].dir << endl;
+		//cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_UP] > 0) {
-		//if(player[myID].attflag == 0){
-		player[myID].x += sin(player[myID].dir) / 3;
+		//x axis
+		player[myID].x += sin(player[myID].dir) / 6;
 		if (player[myID].x > STAGE_X)
 			player[myID].x = STAGE_X;
 		if (player[myID].x < 1.5)
 			player[myID].x = 1.5;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
-			player[myID].x -= sin(player[myID].dir) / 3;
-		} else {
-			player[myID].x -= sin(player[myID].dir) / 6;
+		if (map->data[(int) (player[myID].x + sin(player[myID].dir))][(int) player[myID].z] == 1) {
+			player[myID].x = old.x;
 		}
 
-		player[myID].z += cos(player[myID].dir) / 3;
+		//z axis
+		player[myID].z += cos(player[myID].dir) / 6;
 		if (player[myID].z < 1.5)
 			player[myID].z = 1.5;
 		if (player[myID].z > STAGE_Y)
 			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
-			player[myID].z -= cos(player[myID].dir) / 3;
-		} else {
-			player[myID].z -= cos(player[myID].dir) / 6;
+		if (map->data[(int) player[myID].x][(int) (player[myID].z + cos(player[myID].dir))] == 1) {
+			player[myID].z = old.z;
 		}
-		//cout << "px = " << player[myID].x << " pz = " << player[myID].z << endl;
 	}
 
 	if (io->key[KEY_DOWN] > 0) {
-		//if(player[myID].attflag == 0){
+		//x axis
 		player[myID].x -= sin(player[myID].dir) / 3;
 		if (player[myID].x < 1.5)
 			player[myID].x = 1.5;
 		if (player[myID].x > STAGE_X)
 			player[myID].x = STAGE_X;
+
 		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
 			player[myID].x += sin(player[myID].dir) / 3;
 		} else {
 			player[myID].x += sin(player[myID].dir) / 6;
 		}
+		if (map->data[(int) (player[myID].x - sin(player[myID].dir))][(int) player[myID].z] == 1) {
+			player[myID].x = old.x;
+		}
 
+		//z axis
 		player[myID].z -= cos(player[myID].dir) / 3;
 		if (player[myID].z < 1.5)
 			player[myID].z = 1.5;
 		if (player[myID].z > STAGE_Y)
 			player[myID].z = STAGE_Y;
 
-		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
-			player[myID].z += cos(player[myID].dir) / 3;
-		} else {
-			player[myID].z += cos(player[myID].dir) / 6;
-
+		if (map->data[(int) player[myID].x][(int) (player[myID].z - cos(player[myID].dir))] == 1) {
+			player[myID].z = old.z;
 		}
 	}
 	rad = (player[myID].dir * 56.5) * (PI / 180.0);

@@ -109,7 +109,7 @@ void Effect::drawAttack(){
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices[3]);
 	glEnd();
-	//glPopMatrix();
+
 
     glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	{
@@ -191,6 +191,7 @@ void Effect::drawAttack(){
 	glTexCoord2i(1, 0);
 	glVertex3fv(vertices5[3]);
 	glEnd();
+
 
 	glPopMatrix();
 	glEnable(GL_DEPTH_TEST);
