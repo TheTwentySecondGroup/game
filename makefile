@@ -15,7 +15,7 @@ ifeq "$(VARIANT)" "debug"
     GCC_DEBUG_FLAGS += -g -D_DEBUG
 endif
 
-M64 = -m32
+M64 = -m64
 ARCH = x86
 ifeq "$(M64)" "-m64"
     ARCH=x64
@@ -76,7 +76,7 @@ else
     FBXSDK_LIB = $(LIBDIR)/libfbxsdk.a
 endif
 
-LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lglut -lGLU -lGL -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
+LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lglut -lGLU -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
 
 .SUFFIXES: .cpp
 
