@@ -54,8 +54,8 @@ void lightEffect::draw() {
 	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, sys->draw->WhiteMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sys->draw->WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60);
-	glBlendFunc(GL_ONE, GL_ONE);
-	glColor4f(1.0, 1.0, 1.0, 0.5);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glColor4f(1.0, 1.0, 1.0, 0.1);
 	for (int i = 0; i < MAX_LIGHT_EFFECT; i++) {
 		glPushMatrix();
 		glTranslatef(x[i] + posX, y[i], z[i] + posY);
