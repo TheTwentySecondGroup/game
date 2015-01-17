@@ -37,7 +37,12 @@ void Effect::routine() {
 	//if(fromPlayerID == sys->myID)
 
 	if (f > 0) {
-		//dir+=0.1;
+	
+		if(f == 2 && count >= 50 || f == 7 && count >= 20){
+			z+=cos(dir)/2;
+			x+=sin(dir)/2;
+		}
+
 		count++;
 		if (count >= COUNT) {
 			sys->player[sys->myID].attflag = 0;
@@ -273,11 +278,13 @@ void Effect::drawAttack2(){
 			glEnd();
 		}
 	}
+/*
 	if(count >= 50){
 		z+=cos(dir)/4;
 		x+=sin(dir)/4;
 		//cout <<"x = " << x <<" z = " << z << endl;
 	}
+*/
 	if(x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y){
 		count = COUNT;
 	}
@@ -838,11 +845,12 @@ void Effect::drawAttack7(){
 
 	if((r+=25) >= 360)	r = 0;
     	glPopMatrix();
+/*
 	if(count >= 20){
 		z+=cos(dir)/2;
 		x+=sin(dir)/2;
 	}
-
+*/
 	cout << "efx = " << x << "efz = " << z << endl; 
 
 	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y) count = COUNT;

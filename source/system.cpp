@@ -7,6 +7,7 @@
 #include "system.h"
 #include "Player.h"
 #include "net.h"
+#include <fstream>
 using namespace std;
 
 System::System() {
@@ -164,7 +165,7 @@ void System::moveChara() {
 	}
 	
 
-	/*ATTACK3(仮)*/
+	/*ATTACK3(仮)
 	if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 3;
@@ -180,6 +181,7 @@ void System::moveChara() {
 			}
 		}
 	}
+	*/
 	/*ATTACK4*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
 		player[myID].attflag = 1;
@@ -213,7 +215,7 @@ void System::moveChara() {
 			}
 		}
 	}
-	/*ATTACK6*/
+	/*ATTACK6
 	if (io->key[KEY_G] == 1 && player[myID].attflag == 0) {
 		player[myID].attflag = 1;
 		player[myID].attpatern = 6;
@@ -228,7 +230,7 @@ void System::moveChara() {
 			}
 		}
 	}
-	
+*/	
 	/*ATTACK7*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		player[myID].attflag = 1;
@@ -281,6 +283,18 @@ void System::gameMain() {
 	if (player[myID].hp > 0)
 		moveChara();
 	draw->routine();
+}
+
+void System::IPset(){
+	std::ofstream ofs("data/ip.txt");
+	string ip;
+	
+	cout << "input server ip" << endl;
+	cin >> ip;
+	
+	ofs << ip << endl;
+
+	Stage = 0;
 }
 
 void System::detectCollision() {
