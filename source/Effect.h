@@ -2,7 +2,7 @@
 #define __EFFECT_H__
 
 #define MAX_EFFECT 20
-#define COUNT 200
+#define COUNT 150
 class Effect{
 public:
    int f,count,fromPlayerID;

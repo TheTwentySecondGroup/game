@@ -37,7 +37,12 @@ void Effect::routine() {
 	//if(fromPlayerID == sys->myID)
 
 	if (f > 0) {
-		//dir+=0.1;
+	
+		if(f == 2 && count >= 50 || f == 7 && count >= 20){
+			z+=cos(dir)/2;
+			x+=sin(dir)/2;
+		}
+
 		count++;
 		if (count >= COUNT) {
 			sys->player[sys->myID].attflag = 0;
@@ -260,12 +265,14 @@ void Effect::drawAttack2() {
 			glEnd();
 		}
 	}
-	if (count >= 50) {
-		z += cos(dir) / 4;
-		x += sin(dir) / 4;
+/*
+	if(count >= 50){
+		z+=cos(dir)/4;
+		x+=sin(dir)/4;
 		//cout <<"x = " << x <<" z = " << z << endl;
 	}
-	if (x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y) {
+*/
+	if(x <= 0 || x >= STAGE_X || z <= 0 || z >= STAGE_Y){
 		count = COUNT;
 	}
 	glPopMatrix();
@@ -705,16 +712,57 @@ void Effect::drawAttack7() {
 		glEnd();
 	}
 
+	glBindTexture(GL_TEXTURE_2D, *effectImage[9]);
+	{
+		GLfloat vertices[4][3] = {
+			{ x+0.4, 0.8, z+0.8 },
+    		{ x+0.4, 0.8, z-0.8 },
+            { x+0.4, 0.4, z-0.8 },
+            { x+0.4, 0.4, z+0.8 },
+        };
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
+
+	glBindTexture(GL_TEXTURE_2D, *effectImage[9]);
+	{
+		GLfloat vertices[4][3] = {
+			{ x-0.4, 0.8, z + 0.8 },
+    		{ x-0.4, 0.8, z - 0.8 },
+            { x-0.4, 0.4, z - 0.8 },
+            { x-0.4, 0.4, z + 0.8 },
+        };
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-	if ((r += 25) >= 360)
-		r = 0;
-	glPopMatrix();
-	if (count >= 20) {
-		z += cos(dir) / 2;
-		x += sin(dir) / 2;
+	if((r+=25) >= 360)	r = 0;
+    	glPopMatrix();
+/*
+	if(count >= 20){
+		z+=cos(dir)/2;
+		x+=sin(dir)/2;
 	}
+*/
+	cout << "efx = " << x << "efz = " << z << endl; 
 
 	if (x < 0 || x > STAGE_X || z < 0 || z > STAGE_Y)
 		count = COUNT;

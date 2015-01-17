@@ -216,11 +216,11 @@ Draw::Draw() {
 	charaImage[0] = initTexture("data/image/chara1.bmp");
 	charaImage[1] = initTexture("data/image/chara2.bmp");
 	charaImage[2] = initTexture("data/image/chara3.bmp");
-	charaImage[3] = initTexture("data/image/chara4.bmp");
-	charaImage[4] = initTexture("data/image/chara1g.bmp");
-	charaImage[5] = initTexture("data/image/chara2g.bmp");
-	charaImage[6] = initTexture("data/image/chara3g.bmp");
-	charaImage[7] = initTexture("data/image/chara4g.bmp");
+//	charaImage[3] = initTexture("data/image/chara4.bmp");
+	charaImage[3] = initTexture("data/image/chara1g.bmp");
+	charaImage[4] = initTexture("data/image/chara2g.bmp");
+	charaImage[5] = initTexture("data/image/chara3g.bmp");
+	//charaImage[7] = initTexture("data/image/chara4g.bmp");
 
 //initialize GLUT
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
@@ -229,9 +229,9 @@ Draw::Draw() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 //LoadTexture
-	texHandle[0] = initTexture("data/image/zimen.bmp");
-	texHandle[1] = initTexture("data/image/sky2.bmp");
-	texHandle[2] = initTexture("data/image/block.bmp");
+	texHandle[0] = pngTexture("data/image/zimen.png");
+	//texHandle[1] = initTexture("data/image/sky2.bmp");
+	texHandle[2] = pngTexture("data/image/block.png");
 	texHandle[3] = initTexture("data/image/hp.bmp");
 	texHandle[4] = initTexture("data/image/hp2.bmp");
 	texHandle[5] = initTexture("data/image/hp3.bmp");
@@ -397,45 +397,25 @@ void Draw::drawCharaSelect() {
 	{
 		//character1
 		cout << "selChara" << sys->selChara << endl;
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 3; i++) {
 			if (sys->selChara == i + 1)
 				glBindTexture( GL_TEXTURE_2D, *charaImage[i]);
 			else
-				glBindTexture( GL_TEXTURE_2D, *charaImage[i + 4]);
+				glBindTexture( GL_TEXTURE_2D, *charaImage[i + 3]);
 			glBegin( GL_QUADS);
 			glTexCoord2i(0, 0);
-			glVertex3f(200 * (i), 0, 0);
+			glVertex3f(200 * (i) + 120, 200, 0);
 			glTexCoord2i(1, 0);
-			glVertex3f(200 * (i + 1), 0, 0);
+			glVertex3f(200 * (i + 1) + 100,200, 0);
 			glTexCoord2i(1, 1);
-			glVertex3f(200 * (i + 1), 200, 0);
+			glVertex3f(200 * (i + 1) + 100, 400, 0);
 			glTexCoord2i(0, 1);
-			glVertex3f(200 * (i), 200, 0);
+			glVertex3f(200 * (i) + 120, 400, 0);
 			glEnd();
-
-			/*
-			 strcpy(buf, "ニブルヘイム");
-			 TextImage=TTF_RenderUTF8_Blended(font,buf,white);
-			 GLuint *texText;
-			 texText = timeTexture(TextImage);
-			 glBindTexture( GL_TEXTURE_2D, *texText);
-			 glBegin( GL_QUADS );
-			 glTexCoord2i( 0, 0 );
-			 glVertex3f( 0, 300, 0 );
-			 glTexCoord2i( 1, 0 );
-			 glVertex3f( 150, 300, 0 );
-			 glTexCoord2i( 1, 1 );
-			 glVertex3f( 150, 350, 0 );
-			 glTexCoord2i( 0, 1 );
-			 glVertex3f( 0, 350, 0 );
-			 glEnd();
-			 glDeleteTextures(1,texText);
-			 */
 		}
 	}
 	glFlush();
 	SDL_GL_SwapBuffers();
-
 }
 
 void Draw::drawCube(int x, int y) {
@@ -444,9 +424,7 @@ void Draw::drawCube(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
-	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1 + x, 1.0, 1 + y },
-			{ 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0 + x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1
-					+ y } };
+	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1 + x, 1.0, 1 + y }, { 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0 + x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1 + y } };
 
 // 右
 	glBegin(GL_POLYGON);

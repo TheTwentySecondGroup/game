@@ -157,6 +157,10 @@ int main(int argc, char* argv[]) {
 		case 4:
 			sys->gameMain();
 			break;
+		case 5:
+		cout << "aaaaaaaaaaaaaaaa" << endl;
+			sys->IPset();
+			break;
 		case -1:
 			sys->selectChara();
 			break;

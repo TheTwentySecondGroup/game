@@ -117,10 +117,11 @@ void Title::routine(){
     if(sys->io->key[KEY_A] >= 1){
     	if(sel==3){
     		exit(EXIT_FAILURE);
-    	}else{
-    	//Tutorial();
-		sys->Stage = -2;
-    	}
+    	}else if(sel == 1){
+			sys->Stage = -2;
+    	}else if(sel == 2){
+			sys->Stage = 5;
+		}
 	}
 	cout<<"execute title routine() 1"<<endl;
 
