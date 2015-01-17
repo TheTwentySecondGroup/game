@@ -31,12 +31,8 @@ int System::selectChara() {
 
 	char buf[30];
 
-	//while (1) {
-	//sys->io->routine();
-
-	//if (io->key[KEY_RIGHT] == 1) {
 	if (io->key[KEY_RIGHT] == 1) {
-		if (selChara < 4)
+		if (selChara < 3)
 			selChara++;
 		else
 			selChara = 1;
@@ -46,7 +42,7 @@ int System::selectChara() {
 			selChara--;
 		else
 			//if (selChara == 1)
-			selChara = 4;
+			selChara = 3;
 	}
 	if (io->key[KEY_A] == 1) {
 		charatype = selChara;
@@ -274,7 +270,8 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
 			return 1;
 		}
-}
+		cout << "efx = " << ef->x << "efz = " << ef->z << endl;
+	}
 	return 0;
 }
 
@@ -290,14 +287,11 @@ void System::detectCollision() {
 
 	//cout<<"execute detectCollision()"<<endl;
 	for (int i = 0; i < MAX_EFFECT; i++) {
-
 		if (effect[i].f > 0) {
 			for (int c = 0; c < 4; c++) {
 				if (player[c].hp <= 0){
 					continue;
-				}
-				//effect[i].x = player[c].x;
-				//effect[i].z = player[c].z;
+				}	
 				if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c && judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
 					player[c].avoidDamageCount = 30;
 					player[c].hp -= 10;	

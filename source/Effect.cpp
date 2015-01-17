@@ -794,7 +794,45 @@ void Effect::drawAttack7(){
 		glEnd();
 	}
 
+	glBindTexture(GL_TEXTURE_2D, *effectImage[9]);
+	{
+		GLfloat vertices[4][3] = {
+			{ x+0.4, 0.8, z+0.8 },
+    		{ x+0.4, 0.8, z-0.8 },
+            { x+0.4, 0.4, z-0.8 },
+            { x+0.4, 0.4, z+0.8 },
+        };
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
 
+	glBindTexture(GL_TEXTURE_2D, *effectImage[9]);
+	{
+		GLfloat vertices[4][3] = {
+			{ x-0.4, 0.8, z + 0.8 },
+    		{ x-0.4, 0.8, z - 0.8 },
+            { x-0.4, 0.4, z - 0.8 },
+            { x-0.4, 0.4, z + 0.8 },
+        };
+		glBegin(GL_POLYGON);
+		glTexCoord2i(0,0);
+		glVertex3fv(vertices[0]);
+		glTexCoord2i(0, 1);
+		glVertex3fv(vertices[1]);
+		glTexCoord2i(1, 1);
+		glVertex3fv(vertices[2]);
+		glTexCoord2i(1, 0);
+		glVertex3fv(vertices[3]);
+		glEnd();
+	}
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
@@ -804,6 +842,8 @@ void Effect::drawAttack7(){
 		z+=cos(dir)/2;
 		x+=sin(dir)/2;
 	}
+
+	cout << "efx = " << x << "efz = " << z << endl; 
 
 	if(x<0 || x>STAGE_X || z<0 || z>STAGE_Y) count = COUNT;
 }
