@@ -65,6 +65,9 @@ public:
 
 //draw cylinder
 	void drawCylinder(int div, float r, float h);
+
+// draw indicator
+	void drawIndicator();
 //for font
 	TTF_Font* font;
 };

@@ -66,6 +66,7 @@ void Draw::routine() {
 
 		sys->map->drawMap();
 
+		//draw character
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
 				if (sys->player[i].chara <= 4 && sys->player[i].chara > 0) {
@@ -74,6 +75,8 @@ void Draw::routine() {
 				}
 			}
 		}
+
+		drawIndicator();
 
 		for (int i = 0; i < MAX_EFFECT; i++) {
 			if (sys->effect[i].f > 0) {
@@ -188,25 +191,23 @@ void Draw::drawHP(int x, int y, int w, int h) {
 		glEnd();
 		glDeleteTextures(1, tmpimage);
 	}
-	if(sys->player[sys->myID].hp >= 60){
+	if (sys->player[sys->myID].hp >= 60) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
-	}
-	else if(sys->player[sys->myID].hp < 60 && sys->player[sys->myID].hp >= 30){
+	} else if (sys->player[sys->myID].hp < 60 && sys->player[sys->myID].hp >= 30) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[4]);
-	}
-	else if(sys->player[sys->myID].hp < 30){
+	} else if (sys->player[sys->myID].hp < 30) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[5]);
 	}
 
 	glBegin(GL_QUADS);
-	glTexCoord2i(0,0);
-	glVertex3f(10,10,0);
-	glTexCoord2i(0,1);
-	glVertex3f(10+sys->player[sys->myID].hp*3,10,0);
-	glTexCoord2i(1,1);
-	glVertex3f(10+sys->player[sys->myID].hp*3,50,0);
-	glTexCoord2i(1,1);
-	glVertex3f(10,50,0);
+	glTexCoord2i(0, 0);
+	glVertex3f(10, 10, 0);
+	glTexCoord2i(0, 1);
+	glVertex3f(10 + sys->player[sys->myID].hp * 3, 10, 0);
+	glTexCoord2i(1, 1);
+	glVertex3f(10 + sys->player[sys->myID].hp * 3, 50, 0);
+	glTexCoord2i(1, 1);
+	glVertex3f(10, 50, 0);
 	glEnd();
 }
 Draw::Draw() {
@@ -690,7 +691,7 @@ void Draw::drawWall(int x, int y) {
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices5[0]);
 
-	glTexCoord2i(1,0);
+	glTexCoord2i(1, 0);
 	glVertex3fv(vertices5[1]);
 
 	glTexCoord2i(1, 1);
@@ -724,10 +725,35 @@ void Draw::drawCylinder(int div, float r, float h) {
 			z = r * cos(temp);
 			glTexCoord2i(1, 1);
 			glVertex3f(x, 0.0f, z);
-			glTexCoord2i(1,0);
+			glTexCoord2i(1, 0);
 			glVertex3f(x, h, z);
 		}
 		glEnd();
 	}
+}
+
+void Draw::drawIndicator() {
+	glDisable(GL_BLEND);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, sys->draw->WhiteMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, sys->draw->GrayMaterial);
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, sys->draw->WhiteMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sys->draw->WhiteMaterial);
+	glMaterialf(GL_FRONT, GL_SHININESS, 60);
+	for (int i = 0; i < 4; i++) {
+		if (i == sys->myID)continue;
+
+		double dis = 4*sqrt((sys->player[i].x - sys->player[sys->myID].x)*(sys->player[i].x - sys->player[sys->myID].x) + (sys->player[i].z - sys->player[sys->myID].z)*(sys->player[i].z - sys->player[sys->myID].z));
+
+		glPushMatrix();
+		glTranslatef((sys->player[i].x - sys->player[sys->myID].x)/dis + sys->player[sys->myID].x, 0.5, (sys->player[i].z - sys->player[sys->myID].z)/dis + sys->player[sys->myID].z);
+		cout<<dis<<"  "<<sys->player[i].x/dis + sys->player[i].x <<"  "<< sys->player[i].z/dis + sys->player[i].z<<endl;
+
+		glBegin(GL_POLYGON);
+		glutSolidSphere(0.01, 4, 4);
+		glEnd();
+		glPopMatrix();
+
+	}
+
 }
 
