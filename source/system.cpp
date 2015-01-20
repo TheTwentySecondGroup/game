@@ -42,7 +42,6 @@ int System::selectChara() {
 		if (selChara > 1)
 			selChara--;
 		else
-			//if (selChara == 1)
 			selChara = 3;
 	}
 	if (io->key[KEY_A] == 1) {
@@ -51,8 +50,6 @@ int System::selectChara() {
 		Stage = 1;
 	}
 	draw->drawCharaSelect();
-	//}
-	//return -1;
 }
 
 void System::initChara() {
@@ -67,14 +64,12 @@ void System::moveChara() {
 		if ((player[myID].dir -= 0.03) <= -6.03) {
 			player[myID].dir = 0;
 		}
-		//cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
 		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
-		//cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_UP] > 0) {
@@ -110,7 +105,7 @@ void System::moveChara() {
 			player[myID].x = STAGE_X;
 
 		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
-			player[myID].x += sin(player[myID].dir) / 3;
+			player[myID].x += sin(player[myID].dir) / 6;
 		} else {
 			player[myID].x += sin(player[myID].dir) / 6;
 		}
@@ -119,7 +114,7 @@ void System::moveChara() {
 		}
 
 		//z axis
-		player[myID].z -= cos(player[myID].dir) / 3;
+		player[myID].z -= cos(player[myID].dir) / 6;
 		if (player[myID].z < 1.5)
 			player[myID].z = 1.5;
 		if (player[myID].z > STAGE_Y)
@@ -263,7 +258,6 @@ void System::moveChara() {
 			}
 		}
 	}
-
 }
 
 int System::judgeHit(int mode, Player *pl, Effect *ef) {
@@ -272,14 +266,12 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
 			return 1;
 		}
-		cout << "efx = " << ef->x << "efz = " << ef->z << endl;
 	}
 	return 0;
 }
 
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
-
 	if (player[myID].hp > 0)
 		moveChara();
 	draw->routine();
@@ -298,7 +290,6 @@ void System::IPset(){
 }
 
 void System::detectCollision() {
-
 	//cout<<"execute detectCollision()"<<endl;
 	for (int i = 0; i < MAX_EFFECT; i++) {
 		if (effect[i].f > 0) {
