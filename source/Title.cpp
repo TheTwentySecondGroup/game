@@ -113,7 +113,7 @@ void Title::routine(){
         if(sel<CHOICE_MAX)sel +=1;
     }
 	//cout<<sys->io->key[KEY_A]<<"----------------------------------------------------------------------"<<endl;
-    if(sys->io->key[KEY_A] >= 1){
+    if(sys->io->key[KEY_A] > 1){
     	if(sel==3){
     		exit(EXIT_FAILURE);
     	}else if(sel == 1){
