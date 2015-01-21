@@ -42,11 +42,6 @@ Model::~Model() {
 }
 
 void Model::Draw(double x, double y, double z, double dir) {
-	//cout<<"--Model """<<x<<y<<z<<dir<<endl;
-
-	//int i,j;
-	//cout<<"numIndices="<< numIndices<<"\n";
-	//cout<<mat.size()<<"\n";
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -77,7 +72,7 @@ void Model::Draw(double x, double y, double z, double dir) {
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, *(mat[i].texture));
-			glTexCoordPointer(2, GL_FLOAT,0, &mat[i].uv[0].u);
+			glTexCoordPointer(2, GL_FLOAT, 0, &mat[i].uv[0].u);
 		} else {
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -354,6 +349,7 @@ int Model::getMesh(FbxNode* node) {
 
 						mattemp.texture = sys->draw->pngTexture(mattemp.textureName);
 					}
+
 					/*
 					 //テクスチャを作成
 					 TexData.push_back(tex);
@@ -383,6 +379,7 @@ int Model::getMesh(FbxNode* node) {
 				}
 			}
 
+			getWeight(node->GetMesh(), &mattemp);
 			mat.push_back(mattemp);
 
 			cout << "mat.push_back complated\n";
@@ -396,6 +393,8 @@ int Model::getMesh(FbxNode* node) {
 		this->getMesh(node->GetChild(i));
 		//if(this->getMesh(node->GetChild(i))==1);//return 1;
 	}
+	GetAnimation("data/fbx/n.fbx");
+
 	return 1;
 }
 
@@ -412,8 +411,12 @@ void Model::GetAnimation(const char* filename) {
 
 	importer->Import(scene);
 
+	FbxNode* rootnode = scene->GetRootNode();
+	FbxMesh* mesh = rootnode->GetMesh();
+
 // アニメーションフレーム数取得
 	int animStackCount = importer->GetAnimStackCount();
+	cout << "=============================animStackCount =" << animStackCount << endl;
 //assert(animStackCount == 1);
 	FbxTakeInfo* takeInfo = importer->GetTakeInfo(0);
 
@@ -424,9 +427,330 @@ void Model::GetAnimation(const char* filename) {
 	animationStartFrame = (importOffset.Get() + startTime.Get()) / FbxTime::GetOneFrameValue(FbxTime::eFrames60);
 	animationEndFrame = (importOffset.Get() + stopTime.Get()) / FbxTime::GetOneFrameValue(FbxTime::eFrames60);
 	importer->Destroy();
-//EvaluateGlobalTransform()
 
-	FbxAnimEvaluator* mySceneEvaluator = scene->GetEvaluator();
+	int stackCount = scene->GetSrcObjectCount<FbxAnimStack>();
+	if (stackCount <= 0)
+		return;
+
+	// num of animation
+	cout << "stackCount====" << stackCount << endl;
+	for (int i = 0; i < stackCount; i++) {
+		FbxAnimEvaluator *animEvaluator = scene->GetEvaluator();
+		FbxAnimStack* stack = scene->GetSrcObject<FbxAnimStack>(i);
+		int layerCount = stack->GetMemberCount<FbxAnimLayer>();
+		cout << "layercount====================" << layerCount << endl;
+		for (int j = 0; j < layerCount; j++) {
+			FbxAnimLayer* layer = stack->GetMember(FBX_TYPE(FbxAnimLayer), j);
+			FbxAnimCurve* transCurve = scene->GetRootNode()->LclTranslation.GetCurve(layer);
+			FbxAnimCurve* rotateCurve = scene->GetRootNode()->LclRotation.GetCurve(layer);
+			FbxAnimCurve* scaleCurve = scene->GetRootNode()->LclScaling.GetCurve(layer);
+			if (scaleCurve != 0) {
+				int numKeys = scaleCurve->KeyGetCount();
+				for (int keyIndex = 0; keyIndex < numKeys; keyIndex++) {
+					FbxTime frameTime = scaleCurve->KeyGetTime(keyIndex);
+					//FbxDouble3 scalingVector = scene->GetRootNode()->LclScaling();
+
+					//scene->EvaluateLocalScaling(frameTime);
+					//	float x = (float) scalingVector[0];
+					//float y = (float) scalingVector[1];
+					//float z = (float) scalingVector[2];
+					//float frameSeconds = (float) frameTime.GetSecondDouble();
+				}
+			} else {
+				// If this animation layer has no scaling curve, then use the default one, if needed
+				//FbxDouble3 scalingVector = scene->GetRootNode()->LclScaling.Get();
+				//float x = (float) scalingVector[0];
+				//float y = (float) scalingVector[1];
+				//float z = (float) scalingVector[2];
+			}
+
+		}
+
+		/*
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 // If it has some defomer connection, update the vertices position
+		 const bool lHasVertexCache = lMesh->GetDeformerCount(FbxDeformer::eVertexCache) &&
+		 (static_cast<FbxVertexCacheDeformer*>(lMesh->GetDeformer(0, FbxDeformer::eVertexCache)))->IsActive();
+		 const bool lHasShape = lMesh->GetShapeCount() > 0;
+		 const bool lHasSkin = lMesh->GetDeformerCount(FbxDeformer::eSkin) > 0;
+		 const bool lHasDeformation = lHasVertexCache || lHasShape || lHasSkin;
+
+		 FbxVector4* lVertexArray = NULL;
+		 if (!lMeshCache || lHasDeformation)
+		 {
+		 lVertexArray = new FbxVector4[lVertexCount];
+		 memcpy(lVertexArray, lMesh->GetControlPoints(), lVertexCount * sizeof(FbxVector4));
+		 }
+
+		 if (lHasDeformation)
+		 {
+		 // Active vertex cache deformer will overwrite any other deformer
+		 if (lHasVertexCache)
+		 {
+		 ReadVertexCacheData(lMesh, pTime, lVertexArray);
+		 }
+		 else
+		 {
+		 if (lHasShape)
+		 {
+		 // Deform the vertex array with the shapes.
+		 ComputeShapeDeformation(lMesh, pTime, pAnimLayer, lVertexArray);
+		 }
+
+		 //we need to get the number of clusters
+		 const int lSkinCount = lMesh->GetDeformerCount(FbxDeformer::eSkin);
+		 int lClusterCount = 0;
+		 for (int lSkinIndex = 0; lSkinIndex < lSkinCount; ++lSkinIndex)
+		 {
+		 lClusterCount += ((FbxSkin *)(lMesh->GetDeformer(lSkinIndex, FbxDeformer::eSkin)))->GetClusterCount();
+		 }
+		 if (lClusterCount)
+		 {
+		 // Deform the vertex array with the skin deformer.
+		 ComputeSkinDeformation(pGlobalPosition, lMesh, pTime, lVertexArray, pPose);
+		 }
+		 }
+
+
+		 if (lMeshCache)
+		 lMeshCache->UpdateVertexPosition(lMesh, lVertexArray);
+		 }
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 void ComputeSkinDeformation(FbxAMatrix& pGlobalPosition,
+		 FbxMesh* pMesh,
+		 FbxTime& pTime,
+		 */
+		FbxVector4* vertexArray;
+		/*
+		 FbxPose* pPose)
+		 {
+		 FbxSkin * lSkinDeformer = (FbxSkin *)pMesh->GetDeformer(0, FbxDeformer::eSkin);
+		 FbxSkin::EType lSkinningType = lSkinDeformer->GetSkinningType();
+
+		 if(lSkinningType == FbxSkin::eLinear || lSkinningType == FbxSkin::eRigid)
+		 {
+		 ComputeLinearDeformation(pGlobalPosition, pMesh, pTime, pVertexArray, pPose);
+		 }
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 void ComputeLinearDeformation(FbxAMatrix& pGlobalPosition,
+		 FbxMesh* pMesh,
+		 FbxTime& pTime,
+		 FbxVector4* pVertexArray,
+		 FbxPose* pPose)
+		 {
+		 */
+		// All the links must have the same link mode.
+		cout << "aaaaaaaaafsfgasdgasdf" << endl;
+
+		FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
+		int clusterCount = skin->GetClusterCount();
+
+		for (int i = 0; i < clusterCount; ++i) {
+			FbxCluster* cluster = skin->GetCluster(i);
+			int vertexCount = mesh->GetControlPointsCount();
+			FbxAMatrix* clusterDeformation = new FbxAMatrix[vertexCount];
+			memset(clusterDeformation, 0, vertexCount * sizeof(FbxAMatrix));
+
+			double* clusterWeight = new double[vertexCount];
+			memset(clusterWeight, 0, vertexCount * sizeof(double));
+
+			if (cluster->GetLinkMode() == FbxCluster::eAdditive) {
+				for (int i = 0; i < vertexCount; ++i) {
+					clusterDeformation[i].SetIdentity();
+				}
+			} else if (cluster->GetLinkMode() == FbxCluster::eNormalize) {
+				;
+			}
+
+			// For all skins and all clusters, accumulate their deformation and weight
+			// on each vertices and store them in lClusterDeformation and lClusterWeight.
+			int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
+			for (int k = 0; k < skinCount; k++) {
+				FbxSkin * skinDeformer = (FbxSkin *) mesh->GetDeformer(k, FbxDeformer::eSkin);
+
+				int clusterCount = skinDeformer->GetClusterCount();
+				for (int l = 0; l < clusterCount; l++) {
+					FbxCluster* cluster = skinDeformer->GetCluster(l);
+					if (!cluster->GetLink())continue;
+
+					FbxAMatrix vertexTransformMatrix;
+					//ComputeClusterDeformation(pGlobalPosition, pMesh, lCluster, lVertexTransformMatrix, pTime, pPose);
+
+					int vertexIndexCount = cluster->GetControlPointIndicesCount();
+					for (int m = 0; m < vertexIndexCount; ++m) {
+						int lIndex = cluster->GetControlPointIndices()[m];
+
+						// Sometimes, the mesh can have less points than at the time of the skinning
+						// because a smooth operator was active when skinning but has been deactivated during export.
+						if (lIndex >= vertexCount)
+							continue;
+
+						double lWeight = cluster->GetControlPointWeights()[m];
+
+						if (lWeight == 0.0) {
+							continue;
+						}
+
+						// Compute the influence of the link on the vertex.
+						FbxAMatrix influence = vertexTransformMatrix;
+						//MatrixScale(influence, lWeight);
+
+						if (clusterMode == FbxCluster::eAdditive) {
+							// Multiply with the product of the deformations on the vertex.
+							//MatrixAddToDiagonal(influence, 1.0 - lWeight);
+							//clusterDeformation[lIndex] = influence * clusterDeformation[lIndex];
+
+							// Set the link to 1.0 just to know this vertex is influenced by a link.
+							clusterWeight[lIndex] = 1.0;
+						} else // lLinkMode == FbxCluster::eNormalize || lLinkMode == FbxCluster::eTotalOne
+						{
+							// Add to the sum of the deformations on the vertex.
+							//MatrixAdd(clusterDeformation[lIndex], influence);
+
+							// Add to the sum of weights to either normalize or complete the vertex.
+							clusterWeight[lIndex] += lWeight;
+						}
+					} //For each vertex
+				} //lClusterCount
+			}
+
+			//Actually deform each vertices here by information stored in lClusterDeformation and lClusterWeight
+			for (int i = 0; i < vertexCount; i++) {
+				FbxVector4 srcVertex = vertexArray[i];
+				FbxVector4& dstVertex = vertexArray[i];
+				double lWeight = clusterWeight[i];
+
+				// Deform the vertex if there was at least a link with an influence on the vertex,
+				if (lWeight != 0.0) {
+					dstVertex = clusterDeformation[i].MultT(srcVertex);
+					if (clusterMode == FbxCluster::eNormalize) {
+						// In the normalized link mode, a vertex is always totally influenced by the links.
+						dstVertex /= lWeight;
+					} else if (clusterMode == FbxCluster::eTotalOne) {
+						// In the total 1 link mode, a vertex can be partially influenced by the links.
+						srcVertex *= (1.0 - lWeight);
+						dstVertex += srcVertex;
+					}
+				}
+			}
+
+			delete[] clusterDeformation;
+			delete[] clusterWeight;
+		}
+		//}
+		/*
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 *
+		 */
+
+//FinalVector = TranslationMat * RotationMat * ScaleMat * vector
+// Analogically, process rotationa and translation
+		/*
+		 scene->GetEvaluator()->SetContext(stack);
+
+
+		 if(layerCount>0){
+		 const char* animeName = stack->GetName();
+		 const S32 clipIndex = a.AddClip();
+
+		 //  追加したクリップを貰う
+		 AnimationBuild::Clip& clip = a.GetClip( clipIndex );
+
+		 //  パラメーター初期化
+		 clip.InitParam( clipIndex );
+
+		 //  クリップ名がすでにあるかどうか調べる
+		 if( a.isClipName( animeName ) ) {
+		 //  ある場合はインデックス名で生成
+		 std::stringstream str;
+		 str<<"motion"<<clipIndex;
+		 clip.SetClipName( str.str().c_str() );
+		 } else {
+		 //  ないので普通に名前を設定
+		 clip.SetClipName( animeName );
+		 }
+
+		 //  開始と終了の時間を貰う
+		 FbxTime startTime = pStack->LocalStart;
+		 FbxTime endTime   = pStack->LocalStop;
+
+		 //  フレームに直す
+		 const S32 startFrame = GetFrameValue( startTime );
+		 const S32 endFrame   = GetFrameValue( endTime );
+
+		 ASSERT( startFrame < endFrame );
+
+		 //  差をフレーム数にします
+		 clip.SetFrame( endFrame - startFrame );
+
+		 //  開始フレームオフセットを設定
+		 clip.SetStartFrameOffset( startFrame );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		 }*/
+
+	}
+	animScene = scene;
+
+//scene->setContext();
+//FbxAnimEvaluator* mySceneEvaluator = scene->GetEvaluator();
 
 }
 
@@ -439,4 +763,100 @@ vector<string> Model::split(const string &str, char delim) {
 	}
 	res.push_back(string(str, current, str.size() - current));
 	return res;
+}
+
+void Model::getWeight(FbxMesh* mesh, material *mattemp) {
+
+	int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
+
+//no skin
+	if (skinCount == 0) {
+		return;
+	}
+
+	cout << skinCount << endl;
+	int controlPointsCount = mesh->GetControlPointsCount();
+
+	FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
+	int clusterCount = skin->GetClusterCount();
+
+	for (int i = 0; i < clusterCount; ++i) {
+		FbxCluster* cluster = skin->GetCluster(i);
+
+// eNormalize
+		if (cluster->GetLinkMode() == FbxCluster::eNormalize) {
+
+			int indicesCount = cluster->GetControlPointIndicesCount();
+			int* indices = cluster->GetControlPointIndices();
+			double* weightarray = cluster->GetControlPointWeights();
+
+			//get weight
+			for (int i = 0; i < indicesCount; ++i) {
+				int index = indices[i];
+				mattemp->weightIndex.push_back(index);
+				mattemp->weight.push_back((float) weightarray[i]);
+				cout << "index=" << index << " weight[" << i << "]" << (float) weightarray[i] << endl;
+			}
+			//get weight's name
+			mattemp->weightName.push_back(cluster->GetLink()->GetName());
+			cout << " name:" << cluster->GetLink()->GetName() << endl;
+			// ペースポーズの逆行列を作成しておく
+			//GLKMatrix4 invBaseposeMatrix;
+			GLfloat invBaseposeMatrix[16];
+			FbxAMatrix baseposeMatrix = cluster->GetLink()->EvaluateGlobalTransform().Inverse();
+			double* baseposeMatrixPtr = (double*) baseposeMatrix;
+			for (int j = 0; j < 16; ++j) {
+				cout << "matrix[" << j << "] " << (float) baseposeMatrixPtr[j] << endl;
+				invBaseposeMatrix[j] = (float) baseposeMatrixPtr[j];
+
+				mattemp->invBaseposeMatrix.push_back(invBaseposeMatrix[j]);
+			}
+
+			cout << "aa" << endl;
+			//invBaseposeMatrixList.push_back(invBaseposeMatrix);
+		}
+	}
+
+	/*
+	 // コントロールポイントに対応したウェイトを作成
+	 std::vector<ModelBoneWeight> boneWeightListControlPoints;
+	 for (auto& tmpBoneWeight : tmpBoneWeightList) {
+	 // ウェイトの大きさでソート
+	 std::sort(tmpBoneWeight.begin(), tmpBoneWeight.end(),
+	 [](const TmpWeight& weightA, const TmpWeight& weightB) {return weightA.second > weightB.second;}
+	 //[](const TmpWeight& weightA, const TmpWeight& weightB){ return weightA.second < weightB.second; }
+	 );
+
+	 // 1頂点に4つより多くウェイトが割り振られているなら影響が少ないものは無視する
+	 while (tmpBoneWeight.size() > 4) {
+	 tmpBoneWeight.pop_back();
+	 }
+
+	 // 4つに満たない場合はダミーを挿入
+	 while (tmpBoneWeight.size() < 4) {
+	 tmpBoneWeight.push_back( { 0, 0.0f });
+	 }
+
+	 ModelBoneWeight weight;
+	 float total = 0.0f;
+	 for (int i = 0; i < 4; ++i) {
+	 weight.boneIndex[i] = tmpBoneWeight[i].first;
+	 weight.boneWeight.v[i] = tmpBoneWeight[i].second;
+
+	 total += tmpBoneWeight[i].second;
+	 }
+
+	 // ウェイトの正規化
+	 for (int i = 0; i < 4; ++i) {
+	 weight.boneWeight.v[i] /= total;
+	 }
+
+	 boneWeightListControlPoints.push_back(weight);
+	 }
+
+	 // インデックスで展開
+	 for (auto index : indexList) {
+	 boneWeightList.push_back(boneWeightListControlPoints[index]);
+	 }
+	 */
 }

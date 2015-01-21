@@ -28,6 +28,9 @@ class Model
         vector<string> split(const string &str, char delim);
 
 
+        void getWeight(FbxMesh* mesh,material *mattemp);
+
+
         FbxTime animationStartFrame;
 		FbxTime animationEndFrame;
 
@@ -35,6 +38,10 @@ class Model
         char Name[256];//モデル名
         vector <material> mat;//モデルの情報
         vector <TEXTURE> texture;//テクスチャデータ
+
+        FbxScene *animScene;
+
+
 
 };
 

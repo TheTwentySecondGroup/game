@@ -74,7 +74,15 @@ class material{
         vector <UV> uv;//UV座標
         vector <int> index;//インデックスバッファ
         double shininess;
-        GLuint *texture;
+        GLuint *texture;//テクスチャハンドル
+
+        vector <string> weightName;
+        vector <int>weightIndex;
+        vector <float>weight;
+        vector <GLfloat> invBaseposeMatrix;
+
+        FbxTime myTime,startTime,endTime;
+
         material(){
         	texture=NULL;
 
