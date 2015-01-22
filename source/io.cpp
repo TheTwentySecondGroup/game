@@ -19,7 +19,7 @@ void GameIO::routine() {
 		exit(EXIT_FAILURE);
 	}
 
-	if (joystick == NULL || SDL_JoystickOpened(0) == 0) {
+	if (joystick == NULL) {
 		axis0 = 0;
 		axis1 = 0;
 	} else {
