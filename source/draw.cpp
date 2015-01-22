@@ -216,11 +216,9 @@ Draw::Draw() {
 	charaImage[0] = initTexture("data/image/chara1.bmp");
 	charaImage[1] = initTexture("data/image/chara2.bmp");
 	charaImage[2] = initTexture("data/image/chara3.bmp");
-//	charaImage[3] = initTexture("data/image/chara4.bmp");
 	charaImage[3] = initTexture("data/image/chara1g.bmp");
 	charaImage[4] = initTexture("data/image/chara2g.bmp");
 	charaImage[5] = initTexture("data/image/chara3g.bmp");
-	//charaImage[7] = initTexture("data/image/chara4g.bmp");
 
 //initialize GLUT
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);

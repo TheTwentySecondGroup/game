@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "net.h"
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 System::System() {
@@ -44,7 +45,6 @@ int System::selectChara() {
 		if (selChara > 1)
 			selChara--;
 		else
-			//if (selChara == 1)
 			selChara = 3;
 	}
 	if (io->key[KEY_A] == 1) {
@@ -53,8 +53,6 @@ int System::selectChara() {
 		Stage = 1;
 	}
 	draw->drawCharaSelect();
-	//}
-	//return -1;
 }
 
 void System::initChara() {
@@ -69,14 +67,12 @@ void System::moveChara() {
 		if ((player[myID].dir -= 0.03) <= -6.03) {
 			player[myID].dir = 0;
 		}
-		//cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_LEFT] > 0) {
 		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
-		//cout << player[myID].dir << endl;
 	}
 
 	if (io->key[KEY_UP] > 0) {
@@ -112,7 +108,7 @@ void System::moveChara() {
 			player[myID].x = STAGE_X;
 
 		if (map->data[(int) player[myID].x][(int) player[myID].z] == 1) {
-			player[myID].x += sin(player[myID].dir) / 3;
+			player[myID].x += sin(player[myID].dir) / 6;
 		} else {
 			player[myID].x += sin(player[myID].dir) / 6;
 		}
@@ -121,7 +117,7 @@ void System::moveChara() {
 		}
 
 		//z axis
-		player[myID].z -= cos(player[myID].dir) / 3;
+		player[myID].z -= cos(player[myID].dir) / 6;
 		if (player[myID].z < 1.5)
 			player[myID].z = 1.5;
 		if (player[myID].z > STAGE_Y)
@@ -262,7 +258,6 @@ void System::moveChara() {
 			}
 		}
 	}
-
 }
 
 int System::judgeHit(int mode, Player *pl, Effect *ef) {
@@ -277,26 +272,71 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 
 void System::gameMain() {
 	//cout << "execute sys gameMain()" << endl;
-
 	if (player[myID].hp > 0)
 		moveChara();
 	draw->routine();
 }
 
-void System::IPset(){
-	std::ofstream ofs("data/ip.txt");
-	string ip;
-	
-	cout << "input server ip" << endl;
-	cin >> ip;
-	
-	ofs << ip << endl;
+	int p=1, n1=0, n2=1;
+	string s1("192.168.");
+	string s2("0");
+	string s3("1");
+	string s4(".");
 
-	Stage = 0;
+void System::IPset(){
+//	int p=1, n1=0, n2=1;
+//	string s1("192.168.");
+//	string s2("0.");
+//	string s3("1");
+std::ostringstream ss;
+cout << "execute IPset" << endl; 	
+
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	draw->init2D();
+	{
+		title->drawMenu(100, 100, 800, 150, "Input server IP");
+		title->drawMenu(100, 200, 800, 250, s1+s2+s4+s3);	
+	}
+	if(io->key[KEY_RIGHT] > 0){
+		if(p == 1)	p++;
+		else p=1;
+	}
+	if(io->key[KEY_LEFT] > 0){
+		if(p == 2)	p--;
+		else p=2;
+	}
+	if(io->key[KEY_UP] > 0){
+		if(p == 1){
+			ss << ++n1;
+			s2 = ss.str();
+		}
+		else if(p == 2){
+			ss << ++n2;
+			s3 = ss.str();
+		}
+	}
+	if(io->key[KEY_DOWN] > 0){
+		if(p == 1 && n1 > 0){
+			ss << --n1;
+			s2 = ss.str();
+		}
+		else if(p == 2 && n2 > 0){
+			ss <<--n2;
+			s3 = ss.str();
+		}
+	}
+
+	glFlush();
+	SDL_GL_SwapBuffers();
+	SDL_Delay(80);
+	if(io->key[KEY_A] == 1){	
+		std::ofstream ofs("data/ip.txt");
+		ofs << s1+s2+s4+s3 << endl;
+		Stage = 0;
+	}
 }
 
 void System::detectCollision() {
-
 	//cout<<"execute detectCollision()"<<endl;
 	for (int i = 0; i < MAX_EFFECT; i++) {
 		if (effect[i].f > 0) {

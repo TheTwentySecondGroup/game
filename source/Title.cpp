@@ -40,15 +40,14 @@ Title::Title(){
 	titleImage[1] = sys->draw->timeTexture(tmp1);
 	tmp2 = TTF_RenderUTF8_Blended(sys->font,"2 VS 2",color1);
 	titleImage[2] = sys->draw->timeTexture(tmp2);
-    tmp3 = TTF_RenderUTF8_Blended(sys->font,"BATTLE ROYAL",color1);
-    titleImage[3] = sys->draw->timeTexture(tmp3);
-    tmp4 = TTF_RenderUTF8_Blended(sys->font,"1 VS 1",color2);
-    titleImage[4] = sys->draw->timeTexture(tmp4);
-    tmp5 = TTF_RenderUTF8_Blended(sys->font,"2 VS 2",color2);
+    	tmp3 = TTF_RenderUTF8_Blended(sys->font,"BATTLE ROYAL",color1);
+    	titleImage[3] = sys->draw->timeTexture(tmp3);
+    	tmp4 = TTF_RenderUTF8_Blended(sys->font,"1 VS 1",color2);
+    	titleImage[4] = sys->draw->timeTexture(tmp4);
+    	tmp5 = TTF_RenderUTF8_Blended(sys->font,"2 VS 2",color2);
 	titleImage[5] = sys->draw->timeTexture(tmp5);
 	tmp6 = TTF_RenderUTF8_Blended(sys->font,"BATTLE ROYAL",color2);
 	titleImage[6] = sys->draw->timeTexture(tmp6);
-
 }
 
 Title::~Title(){
@@ -114,7 +113,7 @@ void Title::routine(){
         if(sel<CHOICE_MAX)sel +=1;
     }
 	//cout<<sys->io->key[KEY_A]<<"----------------------------------------------------------------------"<<endl;
-    if(sys->io->key[KEY_A] >= 1){
+    if(sys->io->key[KEY_A] > 1){
     	if(sel==3){
     		exit(EXIT_FAILURE);
     	}else if(sel == 1){
