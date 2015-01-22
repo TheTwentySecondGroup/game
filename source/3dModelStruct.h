@@ -5,11 +5,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include "Model.h"
 
 using namespace std;
 
-
+class Model;
 //3軸ベクトル
 class vec3f{
     public:
@@ -65,6 +65,12 @@ class TEXTURE{
 };
 
 
+class Flame{
+public:
+	vector <double> weight;
+	vector <FbxAMatrix> bone;
+};
+
 class material{
     public:
 		string textureName;
@@ -79,16 +85,18 @@ class material{
         vector <string> weightName;
         vector <int>weightIndex;
         vector <float>weight;
-        vector <GLfloat> invBaseposeMatrix;
+        FbxAMatrix invBaseposeMatrix;
 
+
+        vector <Flame> flame;
         FbxTime myTime,startTime,endTime;
 
+        Model* model;
         material(){
         	texture=NULL;
 
         	shininess = 128;
         }
 };
-
 
 #endif

@@ -13,6 +13,8 @@
 #include <GL/glut.h>
 using namespace std;
 
+class material;
+
 //3Dモデル管理用クラス
 class Model
 {
@@ -33,6 +35,7 @@ class Model
 
         FbxTime animationStartFrame;
 		FbxTime animationEndFrame;
+		FbxTime myTime;
 
         void  Draw(double x ,double y,double z,double dir);//描写
         char Name[256];//モデル名
