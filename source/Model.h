@@ -31,6 +31,7 @@ class Model
 
 
         void getWeight(FbxMesh* mesh,material *mattemp);
+        FbxAMatrix GetGeometry(FbxNode* node)
 
 
         FbxTime animationStartFrame;

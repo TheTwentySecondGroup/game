@@ -82,15 +82,15 @@ void Model::Draw(double x, double y, double z, double dir) {
 
 		cout << "lahgsf" << endl;
 		vector<vec3f> transVec;
-		cout<<"size ="<< mat[i].flame.size() <<endl;
+		cout << "size =" << mat[i].flame.size() << endl;
 		for (int j = 0; j < mat[i].ver.size(); j++) {
 			//cout<<j<<endl;;
 			FbxVector4 vertex(mat[i].ver[j].x, mat[i].ver[j].y, mat[i].ver[j].z);
 			FbxVector4 transVertex = vertex;
 			double lWeight = mat[i].weight[j];
 			if (lWeight != 0.0) {
-				if(mat[i].flame[j].bone.size()>=j)
-				transVertex = mat[i].flame[0].bone[0].MultT(vertex);
+				if (mat[i].flame[j].bone.size() >= j)
+					transVertex = mat[i].flame[0].bone[0].MultT(vertex);
 				transVertex += vertex * (1.0 - lWeight);
 			}
 			vec3f tmp;
@@ -101,7 +101,7 @@ void Model::Draw(double x, double y, double z, double dir) {
 			transVec.push_back(tmp);
 		}
 
-		cout<<"asgfsrfg"<<endl;
+		cout << "asgfsrfg" << endl;
 		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &transVec[0].x);
 
 		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
@@ -478,12 +478,12 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 		return;
 	}
 
-	cout << skinCount << endl;
+	//cout << skinCount << endl;
 	int controlPointsCount = mesh->GetControlPointsCount();
 
 	FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
 	int clusterCount = skin->GetClusterCount();
-
+	cout << "cluster num =" << clusterCount << endl;
 	for (int i = 0; i < clusterCount; ++i) {
 		FbxCluster* cluster = skin->GetCluster(i);
 
@@ -495,17 +495,18 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 			int* indices = cluster->GetControlPointIndices();
 			double* weightarray = cluster->GetControlPointWeights();
 
+			cout << "weight num = " << indicesCount << endl;
 			//get weight
 			for (int i = 0; i < indicesCount; ++i) {
 				int index = indices[i];
 				mattemp->weightIndex.push_back(index);
 				mattemp->weight.push_back((float) weightarray[i]);
-				cout << "index=" << index << " weight[" << i << "]" << (float) weightarray[i] << endl;
+				//cout << "index=" << index << " weight[" << i << "]" << (float) weightarray[i] << endl;
 			}
 			//get weight's name
 			mattemp->weightName.push_back(cluster->GetLink()->GetName());
-			cout << " name:" << cluster->GetLink()->GetName() << endl;
-			mattemp->invBaseposeMatrix  = cluster->GetLink()->EvaluateGlobalTransform().Inverse();
+			//cout << " name:" << cluster->GetLink()->GetName() << endl;
+			mattemp->invBaseposeMatrix = cluster->GetLink()->EvaluateGlobalTransform().Inverse();
 			for (FbxTime t = mattemp->model->animationStartFrame; t < mattemp->model->animationEndFrame; t +=
 					FbxTime::GetOneFrameValue(FbxTime::eFrames60)) {
 				FbxAMatrix matrix = mattemp->invBaseposeMatrix * cluster->GetLink()->EvaluateGlobalTransform(t);
@@ -514,8 +515,6 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 				flametmp.bone.push_back(matrix);
 				mattemp->flame.push_back(flametmp);
 			}
-
-
 
 		}
 	}
@@ -562,4 +561,11 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 	 boneWeightList.push_back(boneWeightListControlPoints[index]);
 	 }
 	 */
+}
+
+FbxAMatrix Model::GetGeometry(FbxNode* node) {
+	FbxVector4 lT = node->GetGeometricTranslation(FbxNode::eSourcePivot);
+	FbxVector4 lR = node->GetGeometricRotation(FbxNode::eSourcePivot);
+	FbxVector4 lS = node->GetGeometricScaling(FbxNode::eSourcePivot);
+	return FbxAMatrix(lT, lR, lS);
 }
