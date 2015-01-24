@@ -299,11 +299,9 @@ cout << "execute IPset" << endl;
 	}
 	if(io->key[KEY_RIGHT] > 0){
 		if(p == 1)	p++;
-		else p=1;
 	}
 	if(io->key[KEY_LEFT] > 0){
 		if(p == 2)	p--;
-		else p=2;
 	}
 	if(io->key[KEY_UP] > 0){
 		if(p == 1){
@@ -320,7 +318,7 @@ cout << "execute IPset" << endl;
 			ss << --n1;
 			s2 = ss.str();
 		}
-		else if(p == 2 && n2 > 0){
+		else if(p == 2 && n2 > 1){
 			ss <<--n2;
 			s3 = ss.str();
 		}

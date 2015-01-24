@@ -76,7 +76,7 @@ else
     FBXSDK_LIB = $(LIBDIR)/libfbxsdk.a
 endif
 
-LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lglut -lGLU -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
+LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lglut -lGLU -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote -D_ENABLE_TILT -D_ENABLE_FORCE 
 
 .SUFFIXES: .cpp
 
@@ -84,7 +84,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	mkdir -p $(BINDIR)
-	$(LD) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJSFINAL) -L$(LIBDIR) -L/usr/lib $(LIBS) $(RPATH_DEF)
+	$(LD) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJSFINAL) -L$(LIBDIR) $(LIBS) -L/usr/lib $(RPATH_DEF)
 
 .cpp.o:
 	mkdir -p $(OBJDIR)
