@@ -65,6 +65,7 @@ void Draw::routine() {
 		glEnable(GL_FOG);
 
 		sys->map->drawMap();
+		drawHP3D();
 
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
@@ -157,6 +158,7 @@ void Draw::drawWin(int x, int y, int w, int h) {
 	glEnd();
 	glDeleteTextures(1, tmpimage);
 }
+
 void Draw::drawHP(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
@@ -205,10 +207,51 @@ void Draw::drawHP(int x, int y, int w, int h) {
 	glVertex3f(10+sys->player[sys->myID].hp*3,10,0);
 	glTexCoord2i(1,1);
 	glVertex3f(10+sys->player[sys->myID].hp*3,50,0);
-	glTexCoord2i(1,1);
+	glTexCoord2i(1,0);
 	glVertex3f(10,50,0);
 	glEnd();
+	
 }
+
+void Draw::drawHP3D(){
+	int i;
+	//glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
+	glPushMatrix();
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
+	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);;
+
+	glTranslated(0.25, 0, 0);
+	for(i=0; i<4; i++){
+		if(sys->player[i].hp > 0 && i != sys->myID){
+			glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
+			GLfloat vertices[4][3] = {
+				{sys->player[i].x-sys->player[i].hp*0.005, 0.8, sys->player[i].z},
+				{sys->player[i].x, 0.8, sys->player[i].z},
+				{sys->player[i].x, 0.7, sys->player[i].z},
+				{sys->player[i].x-sys->player[i].hp*0.005, 0.7, sys->player[i].z},
+			};
+	
+			glBegin(GL_POLYGON);
+			glTexCoord2i(0,0);
+			glVertex3fv(vertices[0]);
+			glTexCoord2i(0,1);
+			glVertex3fv(vertices[1]);
+			glTexCoord2i(1,1);
+			glVertex3fv(vertices[2]);
+			glTexCoord2i(1,0);
+			glVertex3fv(vertices[3]);
+			glEnd();
+		}
+	}
+	glPopMatrix();
+}
+
+
+
 Draw::Draw() {
 
 //system
