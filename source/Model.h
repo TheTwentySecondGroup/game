@@ -31,12 +31,12 @@ class Model
 
 
         void getWeight(FbxMesh* mesh,material *mattemp);
-        FbxAMatrix GetGeometry(FbxNode* node)
+        FbxAMatrix GetGeometry(FbxNode* node);
 
 
         FbxTime animationStartFrame;
 		FbxTime animationEndFrame;
-		FbxTime myTime;
+		int myTime;
 
         void  Draw(double x ,double y,double z,double dir);//描写
         char Name[256];//モデル名

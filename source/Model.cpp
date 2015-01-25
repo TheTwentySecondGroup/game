@@ -3,6 +3,7 @@
 #include "Model.h"
 
 Model::Model(const char* filename) {
+	myTime = 0;
 	bzero(Name, '\0');
 	strcpy(Name, filename);
 	cout << "A model \"" << filename << "\" is loading\n";
@@ -35,6 +36,9 @@ Model::Model(const char* filename) {
 
 	}
 
+
+	GetAnimation("data/fbx/n.fbx");
+
 }
 
 Model::~Model() {
@@ -43,6 +47,9 @@ Model::~Model() {
 
 void Model::Draw(double x, double y, double z, double dir) {
 
+	if (myTime++ && myTime >= mat[0].flame.size()) {
+		myTime = 0;
+	}
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -79,7 +86,7 @@ void Model::Draw(double x, double y, double z, double dir) {
 		}
 
 		glNormalPointer(GL_FLOAT, sizeof(vec3f), &mat[i].nor[0].x);
-
+/*
 		cout << "lahgsf" << endl;
 		vector<vec3f> transVec;
 		cout << "size =" << mat[i].flame.size() << endl;
@@ -90,7 +97,7 @@ void Model::Draw(double x, double y, double z, double dir) {
 			double lWeight = mat[i].weight[j];
 			if (lWeight != 0.0) {
 				if (mat[i].flame[j].bone.size() >= j)
-					transVertex = mat[i].flame[0].bone[0].MultT(vertex);
+					transVertex = mat[i].flame[myTime].bone[0].MultT(vertex);
 				transVertex += vertex * (1.0 - lWeight);
 			}
 			vec3f tmp;
@@ -103,6 +110,9 @@ void Model::Draw(double x, double y, double z, double dir) {
 
 		cout << "asgfsrfg" << endl;
 		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &transVec[0].x);
+*
+*/
+		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
 
 		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
 
@@ -111,45 +121,6 @@ void Model::Draw(double x, double y, double z, double dir) {
 	}
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
-
-	/*
-	 glEnableClientState(GL_VERTEX_ARRAY);
-	 glEnableClientState(GL_NORMAL_ARRAY);
-	 for(int i=0;i<(signed)Material.size();i++){
-	 glPushMatrix();
-	 glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(const GLfloat *)&Material[i].MaterialColor.ambient);
-	 glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(const GLfloat *)&Material[i].MaterialColor.diffuse);
-	 glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(const GLfloat *)&Material[i].MaterialColor.specular);
-	 glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material[i].Shininess);
-	 if(Material[i].TexNo>0){
-	 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	 glEnable(GL_TEXTURE_2D);
-	 glBindTexture(GL_TEXTURE_2D, TexID[Material[i].TexNo-1]);
-	 }else{
-	 glDisable(GL_TEXTURE_2D);
-	 glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	 }
-	 if(Material[i].Tridata.size()>1){
-	 glVertexPointer(3, GL_FLOAT,sizeof(Tri) , &Material[i].Tridata[0].TriVer.x);
-	 glNormalPointer(GL_FLOAT,sizeof(Tri),&Material[i].Tridata[0].TriNor.x);
-	 if(Material[i].TexNo>0)glTexCoordPointer(2, GL_FLOAT, sizeof(Tri), &Material[i].Tridata[0].TriUV.u);
-	 glDrawArrays(GL_TRIANGLES,0,Material[i].Tridata.size());
-	 }
-	 if(Material[i].Quaddata.size()>1){
-	 glVertexPointer(3, GL_FLOAT,sizeof(Quad) , &Material[i].Quaddata[0].QuadVer.x);
-	 glNormalPointer(GL_FLOAT,sizeof(Quad),&Material[i].Quaddata[0].QuadNor.x);
-	 if(Material[i].TexNo>0)glTexCoordPointer(2, GL_FLOAT, sizeof(Quad), &Material[i].Quaddata[0].QuadUV.u);
-	 glDrawArrays(GL_QUADS,0,Material[i].Quaddata.size());
-	 }
-	 glPopMatrix();
-	 }
-	 glDisableClientState(GL_VERTEX_ARRAY);
-	 glDisableClientState(GL_NORMAL_ARRAY);
-	 glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	 glDisable(GL_TEXTURE_2D);
-
-	 */
-
 }
 
 int Model::getMesh(FbxNode* node) {
@@ -165,7 +136,7 @@ int Model::getMesh(FbxNode* node) {
 
 			int* indexes = mesh->GetPolygonVertices();
 			int indexcounttmp = mesh->GetPolygonVertexCount();
-			int VerticesCount = mesh->GetControlPointsCount();
+			//int VerticesCount = mesh->GetControlPointsCount();
 
 			//cout << VerticesCount << "\n";
 			FbxVector4* vec = mesh->GetControlPoints();
@@ -372,31 +343,6 @@ int Model::getMesh(FbxNode* node) {
 
 						mattemp.texture = sys->draw->pngTexture(mattemp.textureName);
 					}
-
-					/*
-					 //テクスチャを作成
-					 TexData.push_back(tex);
-					 TexData[TexData.size() - 1] = new TEXTURE(mtl.TextureName.c_str());
-					 ;
-					 mtl.TexNo = TexData.size();
-					 TexID.push_back(TexID2);
-					 glGenTextures(1, (GLuint *) &TexID[TexData.size() - 1]);
-					 glBindTexture(GL_TEXTURE_2D, TexID[TexData.size() - 1]);
-					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-					 GL_NEAREST);
-					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-					 GL_NEAREST);
-					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-					 GL_REPEAT);
-					 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-					 GL_REPEAT);
-
-					 glEnable(GL_TEXTURE_2D);
-					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, TexData[TexData.size() - 1]->Width,
-					 TexData[TexData.size() - 1]->Height, 0, GL_RGBA,
-					 GL_UNSIGNED_BYTE, TexData[TexData.size() - 1]->image);
-					 glDisable(GL_TEXTURE_2D);
-					 */
 				} else {
 					cout << "no texture\n";
 				}
@@ -414,9 +360,7 @@ int Model::getMesh(FbxNode* node) {
 	int childCount = node->GetChildCount();
 	for (int i = 0; childCount > i; i++) {
 		this->getMesh(node->GetChild(i));
-		//if(this->getMesh(node->GetChild(i))==1);//return 1;
 	}
-	GetAnimation("data/fbx/n.fbx");
 
 	return 1;
 }
@@ -478,8 +422,10 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 		return;
 	}
 
+	//FbxAMatrix trans[mattemp->ver.size()];
+
 	//cout << skinCount << endl;
-	int controlPointsCount = mesh->GetControlPointsCount();
+
 
 	FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
 	int clusterCount = skin->GetClusterCount();
@@ -487,17 +433,17 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 	for (int i = 0; i < clusterCount; ++i) {
 		FbxCluster* cluster = skin->GetCluster(i);
 
-// eNormalize
-
 		if (cluster->GetLinkMode() == FbxCluster::eNormalize) {
 
 			int indicesCount = cluster->GetControlPointIndicesCount();
 			int* indices = cluster->GetControlPointIndices();
 			double* weightarray = cluster->GetControlPointWeights();
 
+
 			cout << "weight num = " << indicesCount << endl;
 			//get weight
 			for (int i = 0; i < indicesCount; ++i) {
+
 				int index = indices[i];
 				mattemp->weightIndex.push_back(index);
 				mattemp->weight.push_back((float) weightarray[i]);
@@ -514,6 +460,39 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 				Flame flametmp;
 				flametmp.bone.push_back(matrix);
 				mattemp->flame.push_back(flametmp);
+
+
+
+
+				int* indexes = mesh->GetPolygonVertices();
+				int indexcounttmp = mesh->GetPolygonVertexCount();
+				//int VerticesCount = mesh->GetControlPointsCount();
+
+				//cout << VerticesCount << "\n";
+				FbxVector4* vec = mesh->GetControlPoints();
+				//cout << indexcounttmp << endl;
+				for (int i = 0; i < indexcounttmp; i++) {
+					//位置情報格納
+					vec3f temp;
+					temp.x = (float) vec[indexes[i]].mData[0];
+				}
+				/*
+				transform.loadZeroes();
+
+				for (uint j = 0; j < newMesh.vertices[i].bonesReferences.size(); j++)
+				{
+					string& boneName = newMesh.vertices[i].bonesReferences[j].boneName;
+					float& boneWeight = newMesh.vertices[i].bonesReferences[j].boneWeight;
+
+
+					transform +=
+						boneWeight *
+						newMesh.transforms[boneName] *
+						newMesh.linkTransforms[boneName].getInvers
+			*/
+
+
+
 			}
 
 		}
