@@ -15,12 +15,12 @@ System *sys;
 
 //int endFlag=0;
 //for wiimote
-//wiimote_t wiimote = WIIMOTE_INIT;
+wiimote_t wiimote = WIIMOTE_INIT;
 int fallingFlag = 0;
 
-//void* wiimoteUpdate();
+void* wiimoteUpdate(void* pParam);
 
-wiimote_t wiimote;
+//wiimote_t wiimote;
 int Stage = 1;
 time_t start, now, end;
 int MaxTime;
@@ -211,16 +211,16 @@ int main(int argc, char* argv[]) {
 }
 
 /*
- void* wiimoteUpdate(void* pParam){
- while(1){
- if(wiimote_is_open(&wiimote)){
- if(wiimote_update(&wiimote) >= 0){
- //printf("TILT x=%.3f y=%.3f z=%.3f\n", wiimote.tilt.x,wiimote.tilt.y, wiimote.tilt.z);
- }else {
- wiimote_disconnect(&wiimote);
- }
-
- }
- SDL_Delay(10);
- }
- } */
+void* wiimoteUpdate(void* pParam){
+	while(1){
+		if(wiimote_is_open(&wiimote)){
+			if(wiimote_update(&wiimote) >= 0){
+			}
+			else {
+				wiimote_disconnect(&wiimote);
+			}
+		}
+		SDL_Delay(10);
+	}
+} 
+*/

@@ -76,7 +76,9 @@ else
     FBXSDK_LIB = $(LIBDIR)/libfbxsdk.a
 endif
 
+
 LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lGL -lglut -lGLU -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
+
 
 .SUFFIXES: .cpp
 
@@ -84,7 +86,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	mkdir -p $(BINDIR)
-	$(LD) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJSFINAL) -L$(LIBDIR) -L/usr/lib $(LIBS) $(RPATH_DEF)
+	$(LD) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJSFINAL) -L$(LIBDIR) $(LIBS) -L/usr/lib $(RPATH_DEF)
 
 .cpp.o:
 	mkdir -p $(OBJDIR)

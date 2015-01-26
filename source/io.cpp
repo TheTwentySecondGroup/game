@@ -125,14 +125,14 @@ void GameIO::routine() {
 }
 
 GameIO::GameIO() {
+
 	// TODO Auto-generated constructor stub
 	for (int i = 0; i < KEY_MAX; i++)
 		key[i] = 0;
 	joystick = NULL;
-	if (SDL_NumJoysticks() > 0 &&strcmp(SDL_JoystickName(0),"VirtualBox mouse integration")!=0) {
-
-		joystick = SDL_JoystickOpen(0);	// ジョイスティックを開いて構造体に割り当てる（有効にする）．ここではジョイスティックは1つとして引数に0を指定
-		SDL_JoystickEventState(SDL_ENABLE);	// ジョイスティック関連のイベントを取得可能にする
+	if (SDL_NumJoysticks() > 0 &&strcmp(SDL_JoystickName(0),"VirtualBox mouse integration")!=0&& strcmp(SDL_JoystickName(0),"ST LIS3LV02DL Accelerometer")!=0) {
+		joystick = SDL_JoystickOpen(0); // ジョイスティックを開いて構造体に割り当てる（有効にする）．ここではジョイスティックは1つとして引数に0を指定
+		SDL_JoystickEventState(SDL_ENABLE); // ジョイスティック関連のイベントを取得可能にする
 	}
 }
 
