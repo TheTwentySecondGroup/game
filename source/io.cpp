@@ -19,7 +19,7 @@ void GameIO::routine() {
 		exit(EXIT_FAILURE);
 	}
 
-	if (joystick == NULL || SDL_JoystickOpened(0) == 0) {
+	if (joystick == NULL) {
 		axis0 = 0;
 		axis1 = 0;
 	} else {
@@ -95,9 +95,9 @@ void GameIO::routine() {
 	} else {
 		key[KEY_E] = 0;
 	}
-
-	if (SdlKey[SDLK_5] == SDL_PRESSED || jbutton[2] == 1) {
-		if (key[KEY_F] < KEY_MAX_COUNT)
+/*
+	if(SdlKey[SDLK_5] == SDL_PRESSED || jbutton[2] == 1){
+		if(key[KEY_F] < KEY_MAX_COUNT)
 			key[KEY_F]++;
 	} else {
 		key[KEY_F] = 0;
@@ -121,6 +121,7 @@ void GameIO::routine() {
 	} else {
 		key[KEY_I] = 0;
 	}
+*/
 }
 
 GameIO::GameIO() {
