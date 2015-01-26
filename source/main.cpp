@@ -36,13 +36,12 @@ void Init() {
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
-	Model modeltmp0("data/fbx/n.fbx");
+	Model modeltmp0("data/fbx/e.fbx");
 	sys->model.push_back(modeltmp0);
 	Model modeltmp1("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp1);
 	Model modeltmp2("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp2);
-
 
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";
@@ -83,7 +82,11 @@ int main(int argc, char* argv[]) {
 	}
 	SDL_WM_SetCaption("test program", NULL);
 
-	sys = new System();
+	if (argc == 2 && strcmp(argv[1], "server") == 0) {
+		sys = new System(MODE_SERVER);
+	} else {
+		sys = new System(MODE_CLIENT);
+	}
 
 	sys->io = new GameIO();
 

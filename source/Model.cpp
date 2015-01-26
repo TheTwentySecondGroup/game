@@ -25,9 +25,19 @@ Model::Model(const char* filename) {
 	geometryConverter.Triangulate(scene, true);
 	geometryConverter.SplitMeshesPerMaterial(scene, true);
 
+	//animation
+	FbxTakeInfo* takeInfo = importer->GetTakeInfo(0);
+	if (takeInfo != NULL) {
+		importOffset = takeInfo->mImportOffset;
+		startTime = takeInfo->mLocalTimeSpan.GetStart();
+		stopTime = takeInfo->mLocalTimeSpan.GetStop();
+	}
+
 	importer->Destroy();
 
-	//scene->SetEvaluator();
+	poseNum = scene->GetPoseCount();
+	cout << "scene->GetPoseCount() ==" << scene->GetPoseCount() << endl;
+	pPose = NULL; //scene->GetPose(0);
 
 	rootnode = scene->GetRootNode();
 
@@ -36,8 +46,7 @@ Model::Model(const char* filename) {
 
 	}
 
-
-	GetAnimation("data/fbx/n.fbx");
+	//GetAnimation("data/fbx/n.fbx");
 
 }
 
@@ -48,19 +57,22 @@ Model::~Model() {
 void Model::Draw(double x, double y, double z, double dir) {
 
 	if (myTime++ && myTime >= mat[0].flame.size()) {
-		myTime = 0;
+		myTime = 1;
 	}
+	cout << "myTime=" << myTime << endl;
+	//cout << "Model::Draw start" << endl;
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glEnableClientState(GL_NORMAL_ARRAY);
 
-	for (int i = 0; i < mat.size(); i++) {
-		glPushMatrix();
+	glPushMatrix();
 
-		glTranslatef(x, 0, z);
-		glScalef(0.3f, 0.3f, 0.3f);
-		glRotatef(dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
-		glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+	glTranslatef(x, 0.3, z);
+	glScalef(0.3f, 0.3f, 0.3f);
+	glRotatef(dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
+	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+
+	for (int i = 0; i < mat.size(); i++) {
 
 		//glRotatef();
 		//material
@@ -69,10 +81,6 @@ void Model::Draw(double x, double y, double z, double dir) {
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (const GLfloat *) &mat[i].color.diffuse);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (const GLfloat *) &mat[i].color.specular);
 		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat[i].shininess);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, WhiteMaterial);
-		//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
-		//glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 		//texture
 		if (mat[i].texture) {
@@ -86,46 +94,57 @@ void Model::Draw(double x, double y, double z, double dir) {
 		}
 
 		glNormalPointer(GL_FLOAT, sizeof(vec3f), &mat[i].nor[0].x);
-/*
-		cout << "lahgsf" << endl;
-		vector<vec3f> transVec;
-		cout << "size =" << mat[i].flame.size() << endl;
-		for (int j = 0; j < mat[i].ver.size(); j++) {
-			//cout<<j<<endl;;
-			FbxVector4 vertex(mat[i].ver[j].x, mat[i].ver[j].y, mat[i].ver[j].z);
-			FbxVector4 transVertex = vertex;
-			double lWeight = mat[i].weight[j];
-			if (lWeight != 0.0) {
-				if (mat[i].flame[j].bone.size() >= j)
-					transVertex = mat[i].flame[myTime].bone[0].MultT(vertex);
-				transVertex += vertex * (1.0 - lWeight);
-			}
-			vec3f tmp;
-			tmp.x = transVertex[0];
-			tmp.y = transVertex[1];
-			tmp.z = transVertex[2];
+		/*
+		 cout << "lahgsf" << endl;
+		 vector<vec3f> transVec;
+		 cout << "size =" << mat[i].flame.size() << endl;
+		 for (int j = 0; j < mat[i].ver.size(); j++) {
+		 //cout<<j<<endl;;
+		 FbxVector4 vertex(mat[i].ver[j].x, mat[i].ver[j].y, mat[i].ver[j].z);
+		 FbxVector4 transVertex = vertex;
+		 double lWeight = mat[i].weight[j];
+		 if (lWeight != 0.0) {
+		 if (mat[i].flame[j].bone.size() >= j)
+		 transVertex = mat[i].flame[myTime].bone[0].MultT(vertex);
+		 transVertex += vertex * (1.0 - lWeight);
+		 }
+		 vec3f tmp;
+		 tmp.x = transVertex[0];
+		 tmp.y = transVertex[1];
+		 tmp.z = transVertex[2];
 
-			transVec.push_back(tmp);
-		}
+		 transVec.push_back(tmp);
+		 }
 
-		cout << "asgfsrfg" << endl;
-		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &transVec[0].x);
-*
-*/
-		glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
+		 cout << "asgfsrfg" << endl;
+		 glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &transVec[0].x);
+		 */
+
+		if (mat[i].flame.size() == 0)
+			glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
+		else
+			glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].flame[myTime].ver[0].x);
 
 		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
 
-		glPopMatrix();
+		//cout << "Model::Draw mat" <<i<<"end"<< endl;
 
 	}
+
+	glPopMatrix();
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
+
 }
 
 int Model::getMesh(FbxNode* node) {
 	FbxNodeAttribute* attr = node->GetNodeAttribute();
 	if (attr != NULL) {
+		FbxAMatrix dummy;
+		FbxAMatrix lGlobalPosition = GetGlobalPosition(node, startTime, pPose, &dummy);
+		FbxAMatrix lGeometryOffset = GetGeometry(node);
+		FbxAMatrix lGlobalOffPosition = lGlobalPosition * lGeometryOffset;
+
 		if (attr->GetAttributeType() == FbxNodeAttribute::eMesh) {
 			//syori
 			FbxMesh *mesh = node->GetMesh();
@@ -391,8 +410,8 @@ void Model::GetAnimation(const char* filename) {
 	FbxTime startTime = takeInfo->mLocalTimeSpan.GetStart();
 	FbxTime stopTime = takeInfo->mLocalTimeSpan.GetStop();
 
-	animationStartFrame = (importOffset.Get() + startTime.Get()) / FbxTime::GetOneFrameValue(FbxTime::eFrames60);
-	animationEndFrame = (importOffset.Get() + stopTime.Get()) / FbxTime::GetOneFrameValue(FbxTime::eFrames60);
+	animationStartFrame = (importOffset.Get() + startTime.Get()) / FbxTime::GetOneFrameValue(FbxTime::eFrames24);
+	animationEndFrame = (importOffset.Get() + stopTime.Get()) / FbxTime::GetOneFrameValue(FbxTime::eFrames24);
 	importer->Destroy();
 
 	animScene = scene;
@@ -418,128 +437,126 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 	int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
 
 //no skin
+	cout << "skinCount" << skinCount << endl;
 	if (skinCount == 0) {
 		return;
 	}
 
-	//FbxAMatrix trans[mattemp->ver.size()];
+	FbxCluster::ELinkMode clusterMode =
+			((FbxSkin*) mesh->GetDeformer(0, FbxDeformer::eSkin))->GetCluster(0)->GetLinkMode();
 
-	//cout << skinCount << endl;
+	int vertexCount = mesh->GetControlPointsCount();
+	FbxAMatrix* clusterDeformation = new FbxAMatrix[vertexCount];
+	memset(clusterDeformation, 0, vertexCount * sizeof(FbxAMatrix));
 
+	double* clusterWeight = new double[vertexCount];
+	memset(clusterWeight, 0, vertexCount * sizeof(double));
 
-	FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
-	int clusterCount = skin->GetClusterCount();
-	cout << "cluster num =" << clusterCount << endl;
-	for (int i = 0; i < clusterCount; ++i) {
-		FbxCluster* cluster = skin->GetCluster(i);
-
-		if (cluster->GetLinkMode() == FbxCluster::eNormalize) {
-
-			int indicesCount = cluster->GetControlPointIndicesCount();
-			int* indices = cluster->GetControlPointIndices();
-			double* weightarray = cluster->GetControlPointWeights();
-
-
-			cout << "weight num = " << indicesCount << endl;
-			//get weight
-			for (int i = 0; i < indicesCount; ++i) {
-
-				int index = indices[i];
-				mattemp->weightIndex.push_back(index);
-				mattemp->weight.push_back((float) weightarray[i]);
-				//cout << "index=" << index << " weight[" << i << "]" << (float) weightarray[i] << endl;
+	for (FbxTime t = startTime; t < stopTime; t += FbxTime::GetOneFrameValue(FbxTime::eFrames24) * 30) {
+		if (clusterMode == FbxCluster::eAdditive) {
+			for (int i = 0; i < vertexCount; ++i) {
+				clusterDeformation[i].SetIdentity();
 			}
-			//get weight's name
-			mattemp->weightName.push_back(cluster->GetLink()->GetName());
-			//cout << " name:" << cluster->GetLink()->GetName() << endl;
-			mattemp->invBaseposeMatrix = cluster->GetLink()->EvaluateGlobalTransform().Inverse();
-			for (FbxTime t = mattemp->model->animationStartFrame; t < mattemp->model->animationEndFrame; t +=
-					FbxTime::GetOneFrameValue(FbxTime::eFrames60)) {
-				FbxAMatrix matrix = mattemp->invBaseposeMatrix * cluster->GetLink()->EvaluateGlobalTransform(t);
-
-				Flame flametmp;
-				flametmp.bone.push_back(matrix);
-				mattemp->flame.push_back(flametmp);
-
-
-
-
-				int* indexes = mesh->GetPolygonVertices();
-				int indexcounttmp = mesh->GetPolygonVertexCount();
-				//int VerticesCount = mesh->GetControlPointsCount();
-
-				//cout << VerticesCount << "\n";
-				FbxVector4* vec = mesh->GetControlPoints();
-				//cout << indexcounttmp << endl;
-				for (int i = 0; i < indexcounttmp; i++) {
-					//位置情報格納
-					vec3f temp;
-					temp.x = (float) vec[indexes[i]].mData[0];
-				}
-				/*
-				transform.loadZeroes();
-
-				for (uint j = 0; j < newMesh.vertices[i].bonesReferences.size(); j++)
-				{
-					string& boneName = newMesh.vertices[i].bonesReferences[j].boneName;
-					float& boneWeight = newMesh.vertices[i].bonesReferences[j].boneWeight;
-
-
-					transform +=
-						boneWeight *
-						newMesh.transforms[boneName] *
-						newMesh.linkTransforms[boneName].getInvers
-			*/
-
-
-
-			}
-
 		}
+
+		FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
+		int clusterCount = skin->GetClusterCount();
+		cout << "cluster num =" << clusterCount << endl;
+
+		for (int i = 0; i < clusterCount; ++i) {
+
+			FbxCluster* cluster = skin->GetCluster(i);
+			if (!cluster->GetLink())
+				continue;
+
+			FbxAMatrix vertexTransformMatrix;
+			FbxAMatrix dummy;
+			ComputeClusterDeformation(dummy, mesh, cluster, vertexTransformMatrix, t, pPose);
+
+			int vertexIndexCount = cluster->GetControlPointIndicesCount();
+			for (int k = 0; k < vertexIndexCount; ++k) {
+				int index = cluster->GetControlPointIndices()[k];
+
+				// Sometimes, the mesh can have less points than at the time of the skinning
+				// because a smooth operator was active when skinning but has been deactivated during export.
+				if (index >= mesh->GetControlPointsCount())
+					continue;
+
+				double weight = cluster->GetControlPointWeights()[k];
+
+				if (weight == 0.0) {
+					continue;
+				}
+
+				// Compute the influence of the link on the vertex.
+				FbxAMatrix influence = vertexTransformMatrix;
+				MatrixScale(influence, weight);
+
+				if (clusterMode == FbxCluster::eAdditive) {
+					// Multiply with the product of the deformations on the vertex.
+					MatrixAddToDiagonal(influence, 1.0 - weight);
+					clusterDeformation[index] = influence * clusterDeformation[index];
+
+					// Set the link to 1.0 just to know this vertex is influenced by a link.
+					clusterWeight[index] = 1.0;
+				} else // lLinkMode == FbxCluster::eNormalize || lLinkMode == FbxCluster::eTotalOne
+				{
+					// Add to the sum of the deformations on the vertex.
+					MatrixAdd(clusterDeformation[index], influence);
+
+					// Add to the sum of weights to either normalize or complete the vertex.
+					clusterWeight[index] += weight;
+				}
+			} //For each vertex
+		} //lClusterCount
+
+		FbxVector4 tmpControlPoint[vertexCount];
+		FbxVector4 *vertexArray = mesh->GetControlPoints();
+//Actually deform each vertices here by information stored in lClusterDeformation and lClusterWeight
+		for (int i = 0; i < vertexCount; i++) {
+			FbxVector4 srcVertex = vertexArray[i];
+			FbxVector4& dstVertex = vertexArray[i];
+			double weight = clusterWeight[i];
+
+			// Deform the vertex if there was at least a link with an influence on the vertex,
+			if (weight != 0.0) {
+				dstVertex = clusterDeformation[i].MultT(srcVertex);
+				if (clusterMode == FbxCluster::eNormalize) {
+					// In the normalized link mode, a vertex is always totally influenced by the links.
+					dstVertex /= weight;
+				} else if (clusterMode == FbxCluster::eTotalOne) {
+					// In the total 1 link mode, a vertex can be partially influenced by the links.
+					srcVertex *= (1.0 - weight);
+					dstVertex += srcVertex;
+				}
+			}
+			tmpControlPoint[i] = dstVertex;
+		}
+
+		int* indexes = mesh->GetPolygonVertices();
+		int indexcounttmp = mesh->GetPolygonVertexCount();
+		//cout << tmpControlPoint.size() << "  " << indexcounttmp << endl;
+
+		cout << ((stopTime - startTime) / (FbxTime::GetOneFrameValue(FbxTime::eFrames24) * 20)).Get() << endl;
+		;
+		Flame flame;
+		for (int i = 0; i < indexcounttmp; i++) {
+			//位置情報格納
+			vec3f temp;
+			temp.x = (float) tmpControlPoint[indexes[i]].mData[0];
+			temp.y = (float) tmpControlPoint[indexes[i]].mData[1];
+			temp.z = (float) tmpControlPoint[indexes[i]].mData[2];
+
+			flame.ver.push_back(temp);
+
+			//cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
+		}
+		mattemp->flame.push_back(flame);
+
 	}
 
-	/*
-	 // コントロールポイントに対応したウェイトを作成
-	 std::vector<ModelBoneWeight> boneWeightListControlPoints;
-	 for (auto& tmpBoneWeight : tmpBoneWeightList) {
-	 // ウェイトの大きさでソート
-	 std::sort(tmpBoneWeight.begin(), tmpBoneWeight.end(),
-	 [](const TmpWeight& weightA, const TmpWeight& weightB) {return weightA.second > weightB.second;}
-	 //[](const TmpWeight& weightA, const TmpWeight& weightB){ return weightA.second < weightB.second; }
-	 );
-
-	 // 1頂点に4つより多くウェイトが割り振られているなら影響が少ないものは無視する
-	 while (tmpBoneWeight.size() > 4) {
-	 tmpBoneWeight.pop_back();
-	 }
-
-	 // 4つに満たない場合はダミーを挿入
-	 while (tmpBoneWeight.size() < 4) {
-	 tmpBoneWeight.push_back( { 0, 0.0f });
-	 }
-
-	 ModelBoneWeight weight;
-	 float total = 0.0f;
-	 for (int i = 0; i < 4; ++i) {
-	 weight.boneIndex[i] = tmpBoneWeight[i].first;
-	 weight.boneWeight.v[i] = tmpBoneWeight[i].second;
-
-	 total += tmpBoneWeight[i].second;
-	 }
-
-	 // ウェイトの正規化
-	 for (int i = 0; i < 4; ++i) {
-	 weight.boneWeight.v[i] /= total;
-	 }
-
-	 boneWeightListControlPoints.push_back(weight);
-	 }
-
-	 // インデックスで展開
-	 for (auto index : indexList) {
-	 boneWeightList.push_back(boneWeightListControlPoints[index]);
-	 }
-	 */
+	delete[] clusterDeformation;
+	delete[] clusterWeight;
 }
 
 FbxAMatrix Model::GetGeometry(FbxNode* node) {
@@ -547,4 +564,155 @@ FbxAMatrix Model::GetGeometry(FbxNode* node) {
 	FbxVector4 lR = node->GetGeometricRotation(FbxNode::eSourcePivot);
 	FbxVector4 lS = node->GetGeometricScaling(FbxNode::eSourcePivot);
 	return FbxAMatrix(lT, lR, lS);
+}
+
+void Model::ComputeClusterDeformation(FbxAMatrix& pGlobalPosition, FbxMesh* pMesh, FbxCluster* pCluster,
+		FbxAMatrix& pVertexTransformMatrix, FbxTime pTime, FbxPose* pPose) {
+	FbxCluster::ELinkMode lClusterMode = pCluster->GetLinkMode();
+
+	FbxAMatrix lReferenceGlobalInitPosition;
+	FbxAMatrix lReferenceGlobalCurrentPosition;
+	FbxAMatrix lAssociateGlobalInitPosition;
+	FbxAMatrix lAssociateGlobalCurrentPosition;
+	FbxAMatrix lClusterGlobalInitPosition;
+	FbxAMatrix lClusterGlobalCurrentPosition;
+
+	FbxAMatrix lReferenceGeometry;
+	FbxAMatrix lAssociateGeometry;
+	FbxAMatrix lClusterGeometry;
+
+	FbxAMatrix lClusterRelativeInitPosition;
+	FbxAMatrix lClusterRelativeCurrentPositionInverse;
+
+	if (lClusterMode == FbxCluster::eAdditive && pCluster->GetAssociateModel()) {
+		pCluster->GetTransformAssociateModelMatrix(lAssociateGlobalInitPosition);
+		// Geometric transform of the model
+		lAssociateGeometry = GetGeometry(pCluster->GetAssociateModel());
+		lAssociateGlobalInitPosition *= lAssociateGeometry;
+		lAssociateGlobalCurrentPosition = GetGlobalPosition(pCluster->GetAssociateModel(), pTime, pPose, NULL);
+
+		pCluster->GetTransformMatrix(lReferenceGlobalInitPosition);
+		// Multiply lReferenceGlobalInitPosition by Geometric Transformation
+		lReferenceGeometry = GetGeometry(pMesh->GetNode());
+		lReferenceGlobalInitPosition *= lReferenceGeometry;
+		lReferenceGlobalCurrentPosition = pGlobalPosition;
+
+		// Get the link initial global position and the link current global position.
+		pCluster->GetTransformLinkMatrix(lClusterGlobalInitPosition);
+		// Multiply lClusterGlobalInitPosition by Geometric Transformation
+		lClusterGeometry = GetGeometry(pCluster->GetLink());
+		lClusterGlobalInitPosition *= lClusterGeometry;
+		lClusterGlobalCurrentPosition = GetGlobalPosition(pCluster->GetLink(), pTime, pPose, NULL);
+
+		// Compute the shift of the link relative to the reference.
+		//ModelM-1 * AssoM * AssoGX-1 * LinkGX * LinkM-1*ModelM
+		pVertexTransformMatrix = lReferenceGlobalInitPosition.Inverse() * lAssociateGlobalInitPosition
+				* lAssociateGlobalCurrentPosition.Inverse() * lClusterGlobalCurrentPosition
+				* lClusterGlobalInitPosition.Inverse() * lReferenceGlobalInitPosition;
+	} else {
+		pCluster->GetTransformMatrix(lReferenceGlobalInitPosition);
+		lReferenceGlobalCurrentPosition = pGlobalPosition;
+		// Multiply lReferenceGlobalInitPosition by Geometric Transformation
+		lReferenceGeometry = GetGeometry(pMesh->GetNode());
+		lReferenceGlobalInitPosition *= lReferenceGeometry;
+
+		// Get the link initial global position and the link current global position.
+		pCluster->GetTransformLinkMatrix(lClusterGlobalInitPosition);
+		lClusterGlobalCurrentPosition = GetGlobalPosition(pCluster->GetLink(), pTime, pPose, NULL);
+
+		// Compute the initial position of the link relative to the reference.
+		lClusterRelativeInitPosition = lClusterGlobalInitPosition.Inverse() * lReferenceGlobalInitPosition;
+
+		// Compute the current position of the link relative to the reference.
+		lClusterRelativeCurrentPositionInverse = lReferenceGlobalCurrentPosition.Inverse()
+				* lClusterGlobalCurrentPosition;
+
+		// Compute the shift of the link relative to the reference.
+		pVertexTransformMatrix = lClusterRelativeCurrentPositionInverse * lClusterRelativeInitPosition;
+	}
+}
+// Scale all the elements of a matrix.
+void Model::MatrixScale(FbxAMatrix& pMatrix, double pValue) {
+	int i, j;
+
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 4; j++) {
+			pMatrix[i][j] *= pValue;
+		}
+	}
+}
+FbxAMatrix Model::GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPose,
+		FbxAMatrix* pParentGlobalPosition) {
+	FbxAMatrix lGlobalPosition;
+	bool lPositionFound = false;
+	/*
+	 if (pPose) {
+	 int lNodeIndex = pPose->Find(pNode);
+
+	 if (lNodeIndex > -1) {
+	 // The bind pose is always a global matrix.
+	 // If we have a rest pose, we need to check if it is
+	 // stored in global or local space.
+	 if (pPose->IsBindPose() || !pPose->IsLocalMatrix(lNodeIndex)) {
+	 lGlobalPosition = GetPoseMatrix(pPose, lNodeIndex);
+	 } else {
+	 // We have a local matrix, we need to convert it to
+	 // a global space matrix.
+	 FbxAMatrix lParentGlobalPosition;
+
+	 if (pParentGlobalPosition) {
+	 lParentGlobalPosition = *pParentGlobalPosition;
+	 } else {
+	 if (pNode->GetParent()) {
+	 lParentGlobalPosition = GetGlobalPosition(pNode->GetParent(), pTime, pPose, NULL);
+	 }
+	 }
+
+	 FbxAMatrix lLocalPosition = GetPoseMatrix(pPose, lNodeIndex);
+	 lGlobalPosition = lParentGlobalPosition * lLocalPosition;
+	 }
+
+	 lPositionFound = true;
+	 }
+	 }
+	 */
+	if (!lPositionFound) {
+		// There is no pose entry for that node, get the current global position instead.
+
+		// Ideally this would use parent global position and local position to compute the global position.
+		// Unfortunately the equation
+		//    lGlobalPosition = pParentGlobalPosition * lLocalPosition
+		// does not hold when inheritance type is other than "Parent" (RSrs).
+		// To compute the parent rotation and scaling is tricky in the RrSs and Rrs cases.
+		lGlobalPosition = pNode->EvaluateGlobalTransform(pTime);
+	}
+
+	return lGlobalPosition;
+}
+
+FbxAMatrix Model::GetPoseMatrix(FbxPose* pPose, int pNodeIndex) {
+	FbxAMatrix lPoseMatrix;
+	FbxMatrix lMatrix = pPose->GetMatrix(pNodeIndex);
+
+	memcpy((double*) lPoseMatrix, (double*) lMatrix, sizeof(lMatrix.mData));
+
+	return lPoseMatrix;
+}
+
+// Add a value to all the elements in the diagonal of the matrix.
+void Model::MatrixAddToDiagonal(FbxAMatrix& pMatrix, double pValue) {
+	pMatrix[0][0] += pValue;
+	pMatrix[1][1] += pValue;
+	pMatrix[2][2] += pValue;
+	pMatrix[3][3] += pValue;
+}
+// Sum two matrices element by element.
+void Model::MatrixAdd(FbxAMatrix& pDstMatrix, FbxAMatrix& pSrcMatrix) {
+	int i, j;
+
+	for (i = 0; i < 4; i++) {
+		for (j = 0; j < 4; j++) {
+			pDstMatrix[i][j] += pSrcMatrix[i][j];
+		}
+	}
 }

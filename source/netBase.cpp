@@ -159,10 +159,11 @@ int netBase::clientCommand(char command, int index) {
 				receive_data(TO_SERVER, &playertmp[i].y, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].z, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].dir, sizeof(double));
+				/*
 				cout << "received player[" << i << "] position "
 						<< sys->player[i].x << sys->player[i].y
 						<< sys->player[i].z << sys->player[i].dir << endl;
-
+*/
 			}
 			for (int i = 0; i < CLIENT_MAX; i++) {
 				if (i != sys->myID) {

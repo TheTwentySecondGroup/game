@@ -67,6 +67,7 @@ class TEXTURE{
 
 class Flame{
 public:
+	vector <vec3f> ver;
 	vector <double> weight;
 	vector <FbxAMatrix> bone;
 };

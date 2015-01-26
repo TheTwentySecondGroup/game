@@ -733,6 +733,8 @@ void Draw::drawCylinder(int div, float r, float h) {
 }
 
 void Draw::drawIndicator() {
+	glDisable(GL_TEXTURE_2D);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisable(GL_BLEND);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, sys->draw->WhiteMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, sys->draw->GrayMaterial);
@@ -740,13 +742,19 @@ void Draw::drawIndicator() {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sys->draw->WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60);
 	for (int i = 0; i < 4; i++) {
-		if (i == sys->myID)continue;
+		if (i == sys->myID)
+			continue;
 
-		double dis = 4*sqrt((sys->player[i].x - sys->player[sys->myID].x)*(sys->player[i].x - sys->player[sys->myID].x) + (sys->player[i].z - sys->player[sys->myID].z)*(sys->player[i].z - sys->player[sys->myID].z));
+		double dis = 4
+				* sqrt(
+						(sys->player[i].x - sys->player[sys->myID].x) * (sys->player[i].x - sys->player[sys->myID].x)
+								+ (sys->player[i].z - sys->player[sys->myID].z)
+										* (sys->player[i].z - sys->player[sys->myID].z));
 
 		glPushMatrix();
-		glTranslatef((sys->player[i].x - sys->player[sys->myID].x)/dis + sys->player[sys->myID].x, 0.5, (sys->player[i].z - sys->player[sys->myID].z)/dis + sys->player[sys->myID].z);
-		cout<<dis<<"  "<<sys->player[i].x/dis + sys->player[i].x <<"  "<< sys->player[i].z/dis + sys->player[i].z<<endl;
+		glTranslatef((sys->player[i].x - sys->player[sys->myID].x) / dis + sys->player[sys->myID].x, 0.5,
+				(sys->player[i].z - sys->player[sys->myID].z) / dis + sys->player[sys->myID].z);
+		//cout<<dis<<"  "<<sys->player[i].x/dis + sys->player[i].x <<"  "<< sys->player[i].z/dis + sys->player[i].z<<endl;
 
 		glBegin(GL_POLYGON);
 		glutSolidSphere(0.01, 4, 4);

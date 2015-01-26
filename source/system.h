@@ -39,6 +39,8 @@ public:
 
 	lightEffect *lighteffect;
 
+	int mode;
+
 	int myID;
 	//int myChara;
 	int selChara;
@@ -56,7 +58,7 @@ public:
 	TTF_Font *font;
 	vector<Model> model;
 
-	System();
+	System(int);
 	~System();
 	void initChara();
 	int selectChara();

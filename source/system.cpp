@@ -7,7 +7,8 @@
 #include "system.h"
 #include "Player.h"
 #include "net.h"
-System::System() {
+System::System(int m) {
+	mode = m;
 	TTF_Init();
 	font = TTF_OpenFont("data/Koruri-20140904/Koruri-Bold.ttf", 100);
 	//if(!font)cout<<TTF_GetError()<<endl;
@@ -276,11 +277,10 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 }
 
 void System::gameMain() {
-	//cout << "execute sys gameMain()" << endl;
-
 	if (player[myID].hp > 0)
 		moveChara();
 	draw->routine();
+
 }
 
 void System::detectCollision() {
