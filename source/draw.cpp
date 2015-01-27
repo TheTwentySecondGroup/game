@@ -66,7 +66,7 @@ void Draw::routine() {
 
 		sys->map->drawMap();
 		for(int i = 0; i < 4; i++){
-			if(sys->player[i].hp > 0 && sys->player[sys->myID].chara != -1 && i != sys->myID){
+			if(sys->player[i].hp > 0 && sys->player[i].chara != -1 && i != sys->myID){
 				drawHP3D(i);
 			}
 		}
@@ -232,13 +232,21 @@ void Draw::drawHP3D(int i){
 	glTranslated(-sys->player[i].x, 0,-sys->player[i].z);
 
 	glTranslated(0.25, 0, 0);
+	if(sys->player[i].hp >= 60){
+		glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
+	}
+	else if(sys->player[i].hp < 60 && sys->player[i].hp >= 30){
+		glBindTexture(GL_TEXTURE_2D, *texHandle[4]);
+	}
+	else if(sys->player[i].hp < 30){
+		glBindTexture(GL_TEXTURE_2D, *texHandle[5]);
+	}
 
-	glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
 	GLfloat vertices[4][3] = {
 		{sys->player[i].x-sys->player[i].hp*0.005, 0.8, sys->player[i].z},
 		{sys->player[i].x, 0.8, sys->player[i].z},
-		{sys->player[i].x, 0.7, sys->player[i].z},
-		{sys->player[i].x-sys->player[i].hp*0.005, 0.7, sys->player[i].z},
+		{sys->player[i].x, 0.75, sys->player[i].z},
+		{sys->player[i].x-sys->player[i].hp*0.005, 0.75, sys->player[i].z},
 	};
 	
 	glBegin(GL_POLYGON);
