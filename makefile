@@ -77,7 +77,7 @@ else
 endif
 
 
-LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lGL -lglut -lGLU -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
+LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lGL -lGLU -lglut -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
 
 
 .SUFFIXES: .cpp
