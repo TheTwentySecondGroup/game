@@ -56,7 +56,7 @@ public:
 
 //draw 2D HP
 	void drawHP(int x, int y, int w, int h);
-	void drawHP3D();
+	void drawHP3D(int n);
 //draw 2D GameOver Message
 	void drawGameOver(int x, int y, int w, int h);
 //draw 2D Win Message
