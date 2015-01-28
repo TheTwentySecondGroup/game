@@ -52,9 +52,9 @@ int netBase::send_data(int index, void *data, int data_size) {
 		return 0;
 		//}
 	} else {
+		int size = 0;
 		if (write(cli[index].socket, data, data_size) < 0) {
-			cout << "cli[" << index << "] write() is failed! errno=" << errno
-					<< endl;
+			cout << "cli[" << index << "] write() is failed! errno=" << errno << endl;
 			return 1;
 		}
 		return 0;
@@ -72,8 +72,7 @@ int netBase::Accept(int ListenSocket) {
 	//int val = SOCKET_BLOCKING_MODE;
 	//ioctl(ListenSocket, FIONBIO, &val);
 	unsigned int serverAddrSize = sizeof(struct sockaddr_in);
-	socket = accept(ListenSocket, (struct sockaddr *) &cli_addr,
-			&serverAddrSize);
+	socket = accept(ListenSocket, (struct sockaddr *) &cli_addr, &serverAddrSize);
 	if (socket > 0) {
 		//client clitemp;
 		//clitemp.socket=socket;
@@ -101,8 +100,7 @@ int netBase::Accept(int ListenSocket) {
 		return 0;
 	}
 
-	cout << "accept() is failed socket =" << socket << "  errno = " << errno
-			<< endl;
+	cout << "accept() is failed socket =" << socket << "  errno = " << errno << endl;
 	;
 	return -1;
 
@@ -133,19 +131,66 @@ int netBase::clientCommand(char command, int index) {
 
 	//client :: sending process
 	if (index == TO_SERVER) {
-		if (command == POS_COMMAND) {
+		if (command == FACE_COMMAND) {
+			int res = 0;
+			FILE *fp;
+			string tmp = "data/";
+			tmp += sys->myID;
+			tmp += ".png";
+			fp = fopen(tmp.c_str(), "rb");
+			long int size = 0;
+			char* tmpimage;
+			if (fp != NULL) {
+				fseek(fp, 0, SEEK_END);
+				size = ftell(fp);
+				fclose(fp);
+			}
+			fp = fopen(tmp.c_str(), "rb");
+			if (fp != NULL) {
+				tmpimage = (char *) malloc((int) size);
+				fread((void*) tmpimage, (int) size, 1, fp);
+				fclose(fp);
+			}
+			res += send_data(TO_SERVER, &command, sizeof(command));
+			res += send_data(TO_SERVER, &sys->myID, sizeof(sys->myID));
+
+			res += send_data(TO_SERVER, &size, sizeof(int));
+			res += send_data(TO_SERVER, &tmpimage, (int) size);
+			free((void*) tmpimage);
+			sys->sendFaceFlag = 0;
+			return res;
+
+		} else if (command == FACE_SYNC_COMMAND) {
+			int Id = 0;
+			int fsize = 0;
+			receive_data(TO_SERVER, &Id, sizeof(int));
+			receive_data(TO_SERVER, &fsize, sizeof(int));
+
+			tmpImage[Id] = (char*)malloc((int)fsize);
+			receive_data(TO_SERVER, &tmpImage[Id], fsize);
+
+			FILE *fp;
+			string tmp = "data/";
+			tmp += Id;
+			tmp += ".png";
+			fp = fopen(tmp.c_str(), "w");
+			char* tmpimage;
+			if (fp != NULL) {
+				tmpimage = (char *) malloc((int) fsize);
+				fwrite((void*) tmpimage, (int) fsize, 1, fp);
+				fclose(fp);
+			}
+			sys->faceImage[Id] = sys->draw->pngTexture(tmp);
+
+		} else if (command == POS_COMMAND) {
 			int res = 0;
 			res += send_data(TO_SERVER, &command, sizeof(command));
 			res += send_data(TO_SERVER, &sys->myID, sizeof(sys->myID));
-			res += send_data(TO_SERVER, &sys->selChara,sizeof(int));
-			res += send_data(TO_SERVER, &sys->player[sys->myID].x,
-					sizeof(sys->player[sys->myID].x));
-			res += send_data(TO_SERVER, &sys->player[sys->myID].y,
-					sizeof(sys->player[sys->myID].y));
-			res += send_data(TO_SERVER, &sys->player[sys->myID].z,
-					sizeof(sys->player[sys->myID].z));
-			res += send_data(TO_SERVER, &sys->player[sys->myID].dir,
-					sizeof(sys->player[sys->myID].dir));
+			res += send_data(TO_SERVER, &sys->selChara, sizeof(int));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].x, sizeof(sys->player[sys->myID].x));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].y, sizeof(sys->player[sys->myID].y));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].z, sizeof(sys->player[sys->myID].z));
+			res += send_data(TO_SERVER, &sys->player[sys->myID].dir, sizeof(sys->player[sys->myID].dir));
 			return res;
 
 		} else if (command == SYNC_COMMAND) {
@@ -160,10 +205,10 @@ int netBase::clientCommand(char command, int index) {
 				receive_data(TO_SERVER, &playertmp[i].z, sizeof(double));
 				receive_data(TO_SERVER, &playertmp[i].dir, sizeof(double));
 				/*
-				cout << "received player[" << i << "] position "
-						<< sys->player[i].x << sys->player[i].y
-						<< sys->player[i].z << sys->player[i].dir << endl;
-*/
+				 cout << "received player[" << i << "] position "
+				 << sys->player[i].x << sys->player[i].y
+				 << sys->player[i].z << sys->player[i].dir << endl;
+				 */
 			}
 			for (int i = 0; i < CLIENT_MAX; i++) {
 				if (i != sys->myID) {
@@ -174,7 +219,7 @@ int netBase::clientCommand(char command, int index) {
 					sys->player[i].y = playertmp[i].y;
 					sys->player[i].z = playertmp[i].z;
 					sys->player[i].dir = playertmp[i].dir;
-				}else {
+				} else {
 					sys->player[i].hp = playertmp[i].hp;
 					sys->player[i].mp = playertmp[i].mp;
 					sys->player[i].chara = sys->selChara;
@@ -185,10 +230,9 @@ int netBase::clientCommand(char command, int index) {
 			int res = 0;
 
 			int Id = syncEffectFlag;
-			syncEffectFlag=-1;
+			syncEffectFlag = -1;
 
-			cout<<"Id = "<<Id<<endl;
-
+			cout << "Id = " << Id << endl;
 
 			res += send_data(TO_SERVER, &command, sizeof(command));
 			//for (int i = 0; i < MAX_EFFECT; i++) {
@@ -197,14 +241,13 @@ int netBase::clientCommand(char command, int index) {
 			//res += send_data(TO_SERVER,sys->effect,sizeof(sys->effect));
 
 			res += send_data(TO_SERVER, &sys->effect[Id].f, sizeof(int));
-			res += send_data(TO_SERVER, &sys->effect[Id].fromPlayerID,sizeof(int));
+			res += send_data(TO_SERVER, &sys->effect[Id].fromPlayerID, sizeof(int));
 			res += send_data(TO_SERVER, &sys->effect[Id].count, sizeof(int));
 			res += send_data(TO_SERVER, &sys->effect[Id].x, sizeof(double));
 			res += send_data(TO_SERVER, &sys->effect[Id].y, sizeof(double));
 			res += send_data(TO_SERVER, &sys->effect[Id].z, sizeof(double));
 			res += send_data(TO_SERVER, &sys->effect[Id].r, sizeof(double));
 			res += send_data(TO_SERVER, &sys->effect[Id].dir, sizeof(double));
-
 
 			return res;
 
@@ -233,8 +276,34 @@ int netBase::clientCommand(char command, int index) {
 int netBase::serverCommand(char command, int index) {
 	int result = 0;
 
-	//receive the position data from client
 	if (command == POS_COMMAND) {
+		int Id = 0;
+		int fsize = 0;
+		receive_data(index, &Id, sizeof(int));
+		receive_data(index, &fsize, sizeof(int));
+
+		tmpImage[Id] = (char *)malloc(fsize);
+		receive_data(index, &tmpImage[Id], fsize);
+
+		for (int c = 0; c < 4; c++) {
+			if (c == Id)
+				continue;
+			syncImageFlag[c] = 1;
+		}
+
+		char com = FACE_SYNC_COMMAND;
+		for (int c = 0; c < 4; c++) {
+			if (cli[c].socket > 0) {
+				send_data(c, &com, sizeof(char));
+				send_data(c, &Id, sizeof(int));
+
+				send_data(c, &fsize, sizeof(int));
+				send_data(c, &tmpImage[Id], (int) fsize);
+
+			}
+		}
+		return 0;
+	} else if (command == POS_COMMAND) {
 		int Id = 0;
 		receive_data(index, &Id, sizeof(int));
 		receive_data(index, &sys->player[Id].chara, sizeof(int));
@@ -243,11 +312,11 @@ int netBase::serverCommand(char command, int index) {
 		receive_data(index, &sys->player[Id].z, sizeof(double));
 		receive_data(index, &sys->player[Id].dir, sizeof(double));
 		/*
-		cout << "receive player[" << Id << "] position " << sys->player[Id].x
-				<< sys->player[Id].y << sys->player[Id].z << sys->player[Id].dir
-				<< endl;*/
+		 cout << "receive player[" << Id << "] position " << sys->player[Id].x
+		 << sys->player[Id].y << sys->player[Id].z << sys->player[Id].dir
+		 << endl;*/
 		return 0;
-	}else if (command == SYNC_COMMAND) {
+	} else if (command == SYNC_COMMAND) {
 		int res = 0;
 		res += send_data(index, &command, sizeof(char));
 		for (int i = 0; i < CLIENT_MAX; i++) {
@@ -259,14 +328,12 @@ int netBase::serverCommand(char command, int index) {
 			res += send_data(index, &sys->player[i].y, sizeof(double));
 			res += send_data(index, &sys->player[i].z, sizeof(double));
 			res += send_data(index, &sys->player[i].dir, sizeof(double));
-			cout << "send player[" << i << "] position " << sys->player[i].x
-					<< sys->player[i].y << sys->player[i].z
-					<< sys->player[i].dir  <<" chara="<<sys->player[i].chara<< endl;
+			cout << "send player[" << i << "] position " << sys->player[i].x << sys->player[i].y << sys->player[i].z
+					<< sys->player[i].dir << " chara=" << sys->player[i].chara << endl;
 		}
 		return res;
 	} else if (command == EFFECT_COMMAND) {
-		int Id = 0,recvdint=0;
-
+		int Id = 0, recvdint = 0;
 
 		//for(int c=0;c<MAX_EFFECT;c++){
 		receive_data(index, &Id, sizeof(int));
@@ -279,10 +346,8 @@ int netBase::serverCommand(char command, int index) {
 		receive_data(index, &sys->effect[Id].r, sizeof(double));
 		receive_data(index, &sys->effect[Id].dir, sizeof(double));
 
-
-
 		syncEEffectFlag[Id] = 1;
-	//}
+		//}
 		return 0;
 	} else if (command == E_SYNC_COMMAND) {
 		int res = 0;
@@ -293,13 +358,13 @@ int netBase::serverCommand(char command, int index) {
 						res += send_data(c, &command, sizeof(char));
 						res += send_data(c, &i, sizeof(int));
 						res += send_data(c, &sys->effect[i].f, sizeof(int));
-						res += send_data(c, &sys->effect[i].fromPlayerID,sizeof(int));
+						res += send_data(c, &sys->effect[i].fromPlayerID, sizeof(int));
 						res += send_data(c, &sys->effect[i].count, sizeof(int));
 						res += send_data(c, &sys->effect[i].x, sizeof(double));
 						res += send_data(c, &sys->effect[i].y, sizeof(double));
 						res += send_data(c, &sys->effect[i].z, sizeof(double));
 						res += send_data(c, &sys->effect[i].r, sizeof(double));
-						res += send_data(c, &sys->effect[i].dir,sizeof(double));
+						res += send_data(c, &sys->effect[i].dir, sizeof(double));
 					}
 				}
 				syncEEffectFlag[i] = 0;
@@ -316,9 +381,12 @@ int netBase::serverCommand(char command, int index) {
 }
 
 netBase::netBase() {
-	syncEffectFlag=-1;
-	for(int i=0;i<MAX_EFFECT;i++){
-		syncEEffectFlag[i]=0;
+	syncEffectFlag = -1;
+	for (int i = 0; i < MAX_EFFECT; i++) {
+		syncEEffectFlag[i] = 0;
+	}
+	for (int c = 0; c < 4; c++) {
+		syncImageFlag[c] = 0;
 	}
 // TODO Auto-generated constructor stub
 }

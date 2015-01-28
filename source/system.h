@@ -12,6 +12,10 @@
 #include "net.h"
 #include "Effect.h"
 #include "lightEffect.h"
+#include <stdio.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
+#include <opencv2/highgui/highgui_c.h>
 
 
 using namespace std;
@@ -58,6 +62,11 @@ public:
 	TTF_Font *font;
 	vector<Model> model;
 
+	GLuint *faceImage[4];
+	GLuint *myFaceImage;
+
+	int sendFaceFlag;
+
 	System(int);
 	~System();
 	void initChara();
@@ -68,6 +77,10 @@ public:
 	void IPset();
 	void detectCollision();
 
+	CvCapture *capture;
+	IplImage *sourceImage;
+	int initCamera();
+	int capImage();
 };
 
 extern System *sys;

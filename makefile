@@ -77,7 +77,7 @@ else
 endif
 
 
-LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lGL -lGLU -lglut -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
+LIBS = $(FBXSDK_LIB) -lrt  -lstdc++ -lpthread -ldl -lGL -lGLU -lglut -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote   -I/usr/local/include/opencv -I/usr/local/include/opencv2   -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_core -lopencv_highgui -lopencv_imgproc  
 
 
 .SUFFIXES: .cpp
@@ -90,7 +90,7 @@ $(TARGET): $(OBJS)
 
 .cpp.o:
 	mkdir -p $(OBJDIR)
-	$(CC) $(CXXFLAGS) -I$(INCDIR) -c $< -o $*.o
+	$(CC) $(CXXFLAGS) -I$(INCDIR)  -c $< -o $*.o
 	mv $*.o $(OBJDIR)
 
 clean:

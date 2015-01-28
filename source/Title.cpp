@@ -17,10 +17,7 @@ Title::Title(){
 	sel = 1;
 	KeyFlag=0;
 
-	//sys->player[sys->myID].x=2.5;
-    //sys->player[sys->myID].y=0;
-    //sys->player[sys->myID].z = 1.5;
-    //sys->player[sys->myID].dir=0;
+
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -166,31 +163,6 @@ void Title::drawTitle(){
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE); 
 
-/*
-        //draw wall
-        glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,sys->draw->WhiteMaterial);
-        glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,sys->draw->WhiteMaterial);
-        glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,sys->draw->WhiteMaterial);
-        glMaterialf(GL_FRONT,GL_SHININESS,60.0);
-        glBindTexture( GL_TEXTURE_2D, *titleImage[0] );
-        GLfloat vertices [4][3]={
-            {2, 8,  3.0},
-            {2, 8, -1.5},
-            { 8, 8, -1.5},
-            { 8, 8,  3.0},
-        };
-        glBegin(GL_POLYGON);
-        glNormal3f(sys->player[0].xd , sys->player[0].yd , 0);
-        glTexCoord2i(0,0);
-        glVertex3fv(vertices[0]);
-        glTexCoord2i(0,1);
-        glVertex3fv(vertices[1]);
-        glTexCoord2i(1,1);
-        glVertex3fv(vertices[2]);
-        glTexCoord2i(1,0);
-        glVertex3fv(vertices[3]);
-		glEnd();
-	*/
 		
         sys->map->drawMap();
 	}
@@ -214,7 +186,6 @@ void Title::drawTitle(){
 	glFlush();
 	SDL_GL_SwapBuffers();
 
-	cout<<"execute title drawTitle() 5"<<endl;
 
 }
 
