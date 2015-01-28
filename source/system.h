@@ -81,6 +81,13 @@ public:
 	IplImage *sourceImage;
 	int initCamera();
 	int capImage();
+
+
+
+	//music
+	Mix_Music    *bgm;
+	Mix_Chunk    *damage,*wind;
+
 };
 
 extern System *sys;

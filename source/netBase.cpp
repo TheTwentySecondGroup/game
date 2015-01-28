@@ -220,6 +220,10 @@ int netBase::clientCommand(char command, int index) {
 					sys->player[i].z = playertmp[i].z;
 					sys->player[i].dir = playertmp[i].dir;
 				} else {
+					//if get damage
+					if(sys->player[i].hp != playertmp[i].hp){
+						Mix_PlayChannel( -1,sys->damage,0 );
+					}
 					sys->player[i].hp = playertmp[i].hp;
 					sys->player[i].mp = playertmp[i].mp;
 					sys->player[i].chara = sys->selChara;

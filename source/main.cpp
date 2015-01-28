@@ -69,6 +69,7 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 
+
 	glutInit(&argc, argv);
 
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
@@ -125,13 +126,29 @@ int main(int argc, char* argv[]) {
 	 wiimote.mode.ir = 1;
 
 	 //make thread for wiimote
-	 pthread_t wu;
+	 pthread_t w//timeProc();u;
 	 pthread_create(&wu,NULL,wiimoteUpdate ,NULL);
 	 printf("wiiremote  connected\n");
 	 }else{
 	 printf("wiiremote can't connect\n");
 	 }
 	 */
+
+
+
+
+	Mix_OpenAudio(22050,AUDIO_S16,2,4096);
+	Mix_AllocateChannels(16);
+
+	//sys->bgm->Mix_LoadMUS("data/music/bgm.wav");
+	sys->damage = Mix_LoadWAV("data/music/damage_se.wav");
+	sys->wind = Mix_LoadWAV("data/music/se_wind.wav");
+	//Mix_PlayMusic(sys->bgm,-1);
+
+
+
+
+
 
 	cout << "Stage =  " << sys->Stage << endl;
 
@@ -149,7 +166,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		//timeProc();
+
 		switch (sys->Stage) {
 		case 0:
 			sys->title->routine();
