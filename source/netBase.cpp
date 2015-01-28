@@ -166,7 +166,7 @@ int netBase::clientCommand(char command, int index) {
 			receive_data(TO_SERVER, &Id, sizeof(int));
 			receive_data(TO_SERVER, &fsize, sizeof(int));
 
-			tmpImage[Id] = (char*)malloc((int)fsize);
+			tmpImage[Id] = (char*) malloc((int) fsize);
 			receive_data(TO_SERVER, &tmpImage[Id], fsize);
 
 			FILE *fp;
@@ -221,8 +221,8 @@ int netBase::clientCommand(char command, int index) {
 					sys->player[i].dir = playertmp[i].dir;
 				} else {
 					//if get damage
-					if(sys->player[i].hp != playertmp[i].hp){
-						Mix_PlayChannel( -1,sys->damage,0 );
+					if (sys->player[i].hp != playertmp[i].hp) {
+						Mix_PlayChannel(-1, sys->damage, 0);
 					}
 					sys->player[i].hp = playertmp[i].hp;
 					sys->player[i].mp = playertmp[i].mp;
@@ -280,13 +280,13 @@ int netBase::clientCommand(char command, int index) {
 int netBase::serverCommand(char command, int index) {
 	int result = 0;
 
-	if (command == POS_COMMAND) {
+	if (command == FACE_COMMAND) {
 		int Id = 0;
 		int fsize = 0;
 		receive_data(index, &Id, sizeof(int));
 		receive_data(index, &fsize, sizeof(int));
 
-		tmpImage[Id] = (char *)malloc(fsize);
+		tmpImage[Id] = (char *) malloc(fsize);
 		receive_data(index, &tmpImage[Id], fsize);
 
 		for (int c = 0; c < 4; c++) {
