@@ -26,6 +26,8 @@ using namespace std;
 #define SYNC_COMMAND 'S'
 #define EFFECT_COMMAND 'E'
 #define E_SYNC_COMMAND 'W'
+#define FACE_COMMAND 'I'
+#define FACE_SYNC_COMMAND 'A'
 
 
 //1==non-blocking 0==blocking
@@ -58,6 +60,9 @@ public:
 	int syncEffectFlag;
 	//for server
 	int syncEEffectFlag[MAX_EFFECT];
+
+	char* tmpImage[4];
+	int syncImageFlag[4];
 
 
 	netBase();

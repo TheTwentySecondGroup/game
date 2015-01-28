@@ -24,18 +24,51 @@ System::System(int m) {
 	myID = 0;
 	Stage = 0;
 	selChara = 1;
+	sendFaceFlag=0;
 }
-using namespace std;
 
 System::~System() {
 	TTF_CloseFont(font);
 
 }
 
+int System::initCamera() {
+
+	capture = NULL;
+	capture = cvCreateCameraCapture(0);
+	if (capture == NULL) {
+		cout << "Can't open /dev/video0" << endl;
+		return -1;
+	}
+
+	// キャプチャサイズの設定
+	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 128);
+	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 128);
+
+	return 0;
+}
+int System::capImage() {
+
+	sourceImage = cvQueryFrame(capture);
+
+	if (sourceImage == NULL) {
+		cout << "Can't get camera's image" << endl;
+		return -1;
+	};
+	string tmp="data/";
+	tmp+=myID;
+	tmp+=".png";
+	cvSaveImage(tmp.c_str(),sourceImage);
+	myFaceImage = draw->timeTexture(SDL_CreateRGBSurfaceFrom((void*) sourceImage->imageData, sourceImage->width, sourceImage->height,
+			sourceImage->depth, sourceImage->nChannels * sourceImage->width, 0x0000ff, 0x00ff00, 0xff0000, 0));
+
+	sendFaceFlag=1;
+	return 0;
+}
+
 int System::selectChara() {
 
 	char buf[30];
-
 
 	if (io->key[KEY_RIGHT] == 1) {
 		if (selChara < 3)
@@ -51,10 +84,15 @@ int System::selectChara() {
 	}
 	if (io->key[KEY_A] == 1) {
 		charatype = selChara;
+		if(charatype == 3){
+			initCamera();
+			capImage();
+		}
 		player[0].chara = selChara;
 		Stage = 1;
 	}
 	draw->drawCharaSelect();
+	return 0;
 }
 
 void System::initChara() {
@@ -164,22 +202,22 @@ void System::moveChara() {
 	}
 
 	/*ATTACK3(仮)
-	if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
-		player[myID].attflag = 1;
-		player[myID].attpatern = 3;
-		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-			if (effect[serchEffect].f == 0) {
-				effect[serchEffect].fromPlayerID = myID;
-				effect[serchEffect].f = 3;
-				effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-				effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-				effect[serchEffect].dir = player[myID].dir;
-				network->syncEffectFlag = serchEffect;
-				break;
-			}
-		}
-	}
-	*/
+	 if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
+	 player[myID].attflag = 1;
+	 player[myID].attpatern = 3;
+	 for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+	 if (effect[serchEffect].f == 0) {
+	 effect[serchEffect].fromPlayerID = myID;
+	 effect[serchEffect].f = 3;
+	 effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
+	 effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
+	 effect[serchEffect].dir = player[myID].dir;
+	 network->syncEffectFlag = serchEffect;
+	 break;
+	 }
+	 }
+	 }
+	 */
 	/*ATTACK4*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
 		player[myID].attflag = 1;
@@ -213,21 +251,21 @@ void System::moveChara() {
 		}
 	}
 	/*ATTACK6
-	if (io->key[KEY_G] == 1 && player[myID].attflag == 0) {
-		player[myID].attflag = 1;
-		player[myID].attpatern = 6;
-		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-			if (effect[serchEffect].f == 0) {
-				effect[serchEffect].f = 6;
-				effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-				effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-				effect[serchEffect].dir = player[myID].dir;
-				network->syncEffectFlag = serchEffect;
-				break;
-			}
-		}
-	}
-*/	
+	 if (io->key[KEY_G] == 1 && player[myID].attflag == 0) {
+	 player[myID].attflag = 1;
+	 player[myID].attpatern = 6;
+	 for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
+	 if (effect[serchEffect].f == 0) {
+	 effect[serchEffect].f = 6;
+	 effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
+	 effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
+	 effect[serchEffect].dir = player[myID].dir;
+	 network->syncEffectFlag = serchEffect;
+	 break;
+	 }
+	 }
+	 }
+	 */
 	/*ATTACK7*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		player[myID].attflag = 1;
@@ -273,56 +311,56 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 }
 
 void System::gameMain() {
-	//cout << "execute sys gameMain()" << endl;
+//cout << "execute sys gameMain()" << endl;
 	if (player[myID].hp > 0)
 		moveChara();
 	draw->routine();
 
 }
 
-	int p=1, n1=0, n2=1;
-	string s1("192.168.");
-	string s2("0");
-	string s3("1");
-	string s4(".");
+int p = 1, n1 = 0, n2 = 1;
+string s1("192.168.");
+string s2("0");
+string s3("1");
+string s4(".");
 
-void System::IPset(){
+void System::IPset() {
 //	int p=1, n1=0, n2=1;
 //	string s1("192.168.");
 //	string s2("0.");
 //	string s3("1");
-std::ostringstream ss;
-cout << "execute IPset" << endl; 	
+	std::ostringstream ss;
+	cout << "execute IPset" << endl;
 
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	draw->init2D();
 	{
 		title->drawMenu(100, 100, 800, 150, "Input server IP");
-		title->drawMenu(100, 200, 800, 250, s1+s2+s4+s3);	
+		title->drawMenu(100, 200, 800, 250, s1 + s2 + s4 + s3);
 	}
-	if(io->key[KEY_RIGHT] > 0){
-		if(p == 1)	p++;
+	if (io->key[KEY_RIGHT] > 0) {
+		if (p == 1)
+			p++;
 	}
-	if(io->key[KEY_LEFT] > 0){
-		if(p == 2)	p--;
+	if (io->key[KEY_LEFT] > 0) {
+		if (p == 2)
+			p--;
 	}
-	if(io->key[KEY_UP] > 0){
-		if(p == 1){
+	if (io->key[KEY_UP] > 0) {
+		if (p == 1) {
 			ss << ++n1;
 			s2 = ss.str();
-		}
-		else if(p == 2){
+		} else if (p == 2) {
 			ss << ++n2;
 			s3 = ss.str();
 		}
 	}
-	if(io->key[KEY_DOWN] > 0){
-		if(p == 1 && n1 > 0){
+	if (io->key[KEY_DOWN] > 0) {
+		if (p == 1 && n1 > 0) {
 			ss << --n1;
 			s2 = ss.str();
-		}
-		else if(p == 2 && n2 > 1){
-			ss <<--n2;
+		} else if (p == 2 && n2 > 1) {
+			ss << --n2;
 			s3 = ss.str();
 		}
 	}
@@ -330,16 +368,16 @@ cout << "execute IPset" << endl;
 	glFlush();
 	SDL_GL_SwapBuffers();
 	SDL_Delay(80);
-	if(io->key[KEY_A] == 1){	
+	if (io->key[KEY_A] == 1) {
 		std::ofstream ofs("data/ip.txt");
-		ofs << s1+s2+s4+s3 << endl;
+		ofs << s1 + s2 + s4 + s3 << endl;
 		Stage = 0;
 	}
 }
 
 void System::detectCollision() {
 
-	//cout<<"execute detectCollision()"<<endl;
+//cout<<"execute detectCollision()"<<endl;
 	for (int i = 0; i < MAX_EFFECT; i++) {
 
 		if (effect[i].f > 0) {

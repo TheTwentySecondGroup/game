@@ -76,7 +76,7 @@ void Draw::routine() {
 			if (sys->player[i].hp > 0) {
 				if (sys->player[i].chara <= 4 && sys->player[i].chara > 0) {
 					sys->model[sys->player[i].chara - 1].Draw(sys->player[i].x, sys->player[i].y, sys->player[i].z,
-							sys->player[i].dir);
+						sys->player[i].dir);
 				}
 			}
 		}
