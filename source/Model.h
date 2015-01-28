@@ -21,13 +21,13 @@ public:
 	~Model();
 
 	FbxNode* rootnode;
-	int getMesh(FbxNode* node); //情報所得
+	int getMesh(FbxNode* node,FbxAMatrix&); //情報所得
 
 	void GetAnimation(const char*);
 
 	vector<string> split(const string &str, char delim);
 
-	void getWeight(FbxMesh* mesh, material *mattemp);
+	void getWeight(FbxMesh* mesh, material *mattemp,FbxAMatrix&);
 	FbxAMatrix GetGeometry(FbxNode* node);
 	void ComputeClusterDeformation(FbxAMatrix& pGlobalPosition, FbxMesh* pMesh, FbxCluster* pCluster,
 			FbxAMatrix& pVertexTransformMatrix, FbxTime pTime, FbxPose* pPose);
@@ -47,6 +47,7 @@ public:
 	int poseNum;
 	FbxPose *pPose;
 	int myTime;
+
 
 	void Draw(double x, double y, double z, double dir); //描写
 	char Name[256]; //モデル名

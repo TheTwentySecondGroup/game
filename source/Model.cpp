@@ -42,8 +42,11 @@ Model::Model(const char* filename) {
 	rootnode = scene->GetRootNode();
 
 	if (rootnode) {
-		this->getMesh(rootnode);
+		FbxAMatrix dummy;
+		this->getMesh(rootnode,dummy);
 
+	}else{
+		cout<<"rootnode is NULL"<<endl;
 	}
 
 	//GetAnimation("data/fbx/n.fbx");
@@ -137,13 +140,12 @@ void Model::Draw(double x, double y, double z, double dir) {
 
 }
 
-int Model::getMesh(FbxNode* node) {
+int Model::getMesh(FbxNode* node ,FbxAMatrix& globalPosition) {
 	FbxNodeAttribute* attr = node->GetNodeAttribute();
+	//FbxAMatrix lGlobalOffPosition;
 	if (attr != NULL) {
-		FbxAMatrix dummy;
-		FbxAMatrix lGlobalPosition = GetGlobalPosition(node, startTime, pPose, &dummy);
 		FbxAMatrix lGeometryOffset = GetGeometry(node);
-		FbxAMatrix lGlobalOffPosition = lGlobalPosition * lGeometryOffset;
+		FbxAMatrix lGlobalOffPosition = globalPosition * lGeometryOffset;
 
 		if (attr->GetAttributeType() == FbxNodeAttribute::eMesh) {
 			//syori
@@ -167,7 +169,7 @@ int Model::getMesh(FbxNode* node) {
 				temp.y = (float) vec[indexes[i]].mData[1];
 				temp.z = (float) vec[indexes[i]].mData[2];
 				mattemp.ver.push_back(temp);
-				//cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
+				cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
 			}
 
 			//法線情報
@@ -367,18 +369,21 @@ int Model::getMesh(FbxNode* node) {
 				}
 			}
 
-			getWeight(node->GetMesh(), &mattemp);
+			getWeight(node->GetMesh(), &mattemp,lGlobalOffPosition);
 			mat.push_back(mattemp);
 
 			cout << "mat.push_back complated\n";
 		} else {
 			cout << attr->GetAttributeType() << endl;
 		}
+	}else{
+		cout<<"attr is NULL"<<endl;
 	}
 
 	int childCount = node->GetChildCount();
+	cout<<"childCount="<<childCount<<endl;
 	for (int i = 0; childCount > i; i++) {
-		this->getMesh(node->GetChild(i));
+		this->getMesh(node->GetChild(i),globalPosition);
 	}
 
 	return 1;
@@ -432,7 +437,7 @@ vector<string> Model::split(const string &str, char delim) {
 	return res;
 }
 
-void Model::getWeight(FbxMesh* mesh, material *mattemp) {
+void Model::getWeight(FbxMesh* mesh, material *mattemp,FbxAMatrix &globalPosition) {
 
 	int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
 
