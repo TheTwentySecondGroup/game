@@ -103,7 +103,7 @@ void Effect::draw() {
 }
 
 void Effect::drawAttack() {
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glPushMatrix();
@@ -115,6 +115,8 @@ void Effect::drawAttack() {
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
 
+	glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_BLEND);
 	GLfloat vertices[4][3] = { { x + 2, 0.1, z + 2 }, { x - 2, 0.1, z + 2 }, { x - 2, 0.1, z - 2 },
 			{ x + 2, 0.1, z - 2 }, };
 	glBegin(GL_POLYGON);
@@ -129,6 +131,8 @@ void Effect::drawAttack() {
 	glVertex3fv(vertices[3]);
 	glEnd();
 
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	{
 		GLfloat vertices2[4][3] = { { x + 2, 1.5, z + 2 }, { x - 2, 1.5, z + 2 }, { x - 2, 0.3, z + 2 }, { x + 2, 0.3, z
@@ -379,8 +383,10 @@ void Effect::drawAttack4() {
 	glTranslatef(x, 0, z);
 	glRotated(r, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0, -z);
+	glEnable(GL_BLEND);
 
 	if (count % 2 == 0) {
+		//glEnable(GL_BLEND);
 		glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
 		{
 			GLfloat vertices1[4][3] = { { x + 2, 1.5, z + 2 }, { x - 2, 1.5, z + 2 }, { x - 2, 0.3, z + 2 }, { x + 2,
@@ -467,13 +473,13 @@ void Effect::drawAttack4() {
 		glVertex3fv(vertices1[3]);
 		glEnd();
 	}
-	glDisable(GL_BLEND);
+	//glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glPopMatrix();
 
 	if ((r += 15) >= 360)
 		r = 0;
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 }
 
 void Effect::drawAttack5() {
@@ -664,8 +670,6 @@ void Effect::drawAttack7() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
-	glDisable(GL_CULL_FACE);
-
 	glTranslatef(x, 0.0, z);
 	glRotated(dir * 56.5, 0.0, 1.0, 0.0);
 	glTranslatef(-x, 0.0, -z);
@@ -743,6 +747,7 @@ void Effect::drawAttack7() {
 
 void Effect::drawAttack8(){
 	double i,j;
+	glEnable(GL_BLEND);
 	glPushMatrix();
 	glDisable(GL_DEPTH_TEST);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
