@@ -102,7 +102,7 @@ void Title::drawMenuCube(int x,int y,GLuint *texture,double sw){
 
 void Title::routine(){
 
-	cout<<"execute title routine()"<<endl;
+	//cout<<"execute title routine()"<<endl;
 	if((sys->io->key[KEY_UP] == 1)){
         if(sel>CHOICE_MIN)sel -=1;
     }
@@ -119,18 +119,18 @@ void Title::routine(){
 			sys->Stage = 5;
 		}
 	}
-	cout<<"execute title routine() 1"<<endl;
+	//cout<<"execute title routine() 1"<<endl;
 
 
     drawTitle();
     SDL_Delay(1000/60);
 
-	cout<<"execute title routine()  2"<<endl;
+	//cout<<"execute title routine()  2"<<endl;
 
 }
 
 void Title::drawTitle(){
-	cout<<"execute title drawTitle()"<<endl;
+//	cout<<"execute title drawTitle()"<<endl;
 
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     sys->draw->init3D();

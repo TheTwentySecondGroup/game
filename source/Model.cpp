@@ -60,9 +60,9 @@ Model::~Model() {
 void Model::Draw(double x, double y, double z, double dir) {
 
 	if (myTime++ && myTime >= mat[0].flame.size()) {
-		myTime = 1;
+		myTime = 0;
 	}
-	cout << "myTime=" << myTime << endl;
+	//cout << "myTime=" << myTime << endl;
 	//cout << "Model::Draw start" << endl;
 	glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -169,7 +169,7 @@ int Model::getMesh(FbxNode* node ,FbxAMatrix& globalPosition) {
 				temp.y = (float) vec[indexes[i]].mData[1];
 				temp.z = (float) vec[indexes[i]].mData[2];
 				mattemp.ver.push_back(temp);
-				cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
+				//cout <<"temp.x="<<(float)temp.x<< " 	temp.y="<<(float)temp.y<< "	temp.z="<<(float)temp.z<<"\n";
 			}
 
 			//法線情報
