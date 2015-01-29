@@ -21,7 +21,7 @@ Title::Title() {
 
 	SDL_Color color1 = { 255, 255, 0 };
 	SDL_Color color2 = { 255, 255, 255 };
-	titleImage[0] = sys->draw->pngTexture("data/image/title.png");
+	//titleImage[0] = sys->draw->pngTexture("data/image/title.png");
 
 	SDL_Surface *tmp1, *tmp2, *tmp3, *tmp4, *tmp5, *tmp6, *tmp7;
 	tmp1 = TTF_RenderUTF8_Blended(sys->font, "1 VS 1", color1);
