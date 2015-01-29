@@ -331,9 +331,56 @@ void System::IPset() {
 //	string s2("0.");
 //	string s3("1");
 	std::ostringstream ss;
-	cout << "execute IPset" << endl;
+
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	sys->draw->init3D();
+		{
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			double xd = sin(0);
+			double zd = cos(0);
+
+			gluLookAt(sys->lighteffect[0].posX - xd * 2,   1,
+					sys->lighteffect[0].posY - zd * 2, // position of camera
+					sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
+					0, 1.0f, 0);
+
+			//Light
+			glEnable(GL_LIGHTING);
+			glEnable(GL_NORMALIZE);
+
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT1);
+
+
+
+			//light1
+			sys->draw->lightpos[0] = sys->lighteffect[0].posX;
+			sys->draw->lightpos[1] = 5;
+			sys->draw->lightpos[2] = sys->lighteffect[0].posY;
+			sys->draw->lightpos[3] = 1;
+
+
+			glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+			GLfloat Light1Dir[] = { 0, -1, 0 };
+			glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
+			glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
+			glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
+			glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
+			glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
+			glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+
+
+
+			sys->map->drawMap();
+
+			for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
+				if (sys->lighteffect[i].f > 0) {
+					sys->lighteffect[i].draw();
+				}
+			}
+		}
 	draw->init2D();
 	{
 		title->drawMenu(100, 100, 800, 150, "Input server IP");

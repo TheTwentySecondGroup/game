@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 		printf("failed to initialize videomode.\n");
 		exit(-1);
 	}
-	SDL_WM_SetCaption("test program", NULL);
+	SDL_WM_SetCaption("Calamity", NULL);
 
 	if (argc == 2 && strcmp(argv[1], "server") == 0) {
 		sys = new System(MODE_SERVER);
