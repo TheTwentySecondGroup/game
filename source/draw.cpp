@@ -451,7 +451,7 @@ void Draw::drawCharaSelect() {
 	init2D();
 	{
 		//character1
-		cout << "selChara" << sys->selChara << endl;
+		//cout << "selChara" << sys->selChara << endl;
 		for (int i = 0; i < 3; i++) {
 			if (sys->selChara == i + 1)
 				glBindTexture( GL_TEXTURE_2D, *charaImage[i]);

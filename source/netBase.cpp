@@ -236,7 +236,7 @@ int netBase::clientCommand(char command, int index) {
 			int Id = syncEffectFlag;
 			syncEffectFlag = -1;
 
-			cout << "Id = " << Id << endl;
+			//cout << "Id = " << Id << endl;
 
 			res += send_data(TO_SERVER, &command, sizeof(command));
 			//for (int i = 0; i < MAX_EFFECT; i++) {
