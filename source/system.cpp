@@ -9,6 +9,7 @@
 #include "net.h"
 #include <fstream>
 #include <sstream>
+#include "Wii.h"
 using namespace std;
 
 System::System(int m) {

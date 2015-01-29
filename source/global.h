@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <time.h>
-#include <pthread.h>
+
 #include <iostream>
 #include<string>
 #include<vector>
@@ -22,6 +22,8 @@
 //for wiimote
 #include <libcwiimote/wiimote.h>
 #include <libcwiimote/wiimote_api.h>
+
+
 
 //#include "system.h"
 

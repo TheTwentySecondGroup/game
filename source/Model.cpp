@@ -466,7 +466,7 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp,FbxAMatrix &globalPositio
 
 		FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
 		int clusterCount = skin->GetClusterCount();
-		cout << "cluster num =" << clusterCount << endl;
+		//cout << "cluster num =" << clusterCount << endl;
 
 		for (int i = 0; i < clusterCount; ++i) {
 
@@ -542,8 +542,8 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp,FbxAMatrix &globalPositio
 		int indexcounttmp = mesh->GetPolygonVertexCount();
 		//cout << tmpControlPoint.size() << "  " << indexcounttmp << endl;
 
-		cout << ((stopTime - startTime) / (FbxTime::GetOneFrameValue(FbxTime::eFrames24) * 20)).Get() << endl;
-		;
+		//cout << ((stopTime - startTime) / (FbxTime::GetOneFrameValue(FbxTime::eFrames24) * 20)).Get() << endl;
+
 		Flame flame;
 		for (int i = 0; i < indexcounttmp; i++) {
 			//位置情報格納

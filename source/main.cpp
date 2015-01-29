@@ -7,26 +7,30 @@
 #include "Map.h"
 #include "io.h"
 #include "system.h"
+#include "Wii.h"
 
 #include <time.h>
 //clock_t start,now,end;
+
+
+
+
 using namespace std;
 System *sys;
 
 //int endFlag=0;
 //for wiimote
-wiimote_t wiimote = WIIMOTE_INIT;
+
 int fallingFlag = 0;
 
-void* wiimoteUpdate(void* pParam);
 
-//wiimote_t wiimote;
 int Stage = 1;
 time_t start, now, end;
 int MaxTime;
 int BeforeTime;
 
 float angle = 0.0f;
+
 
 void Init() {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -68,7 +72,6 @@ int main(int argc, char* argv[]) {
 		printf("failed to initialize SDL.\n");
 		exit(-1);
 	}
-
 
 	glutInit(&argc, argv);
 
@@ -117,38 +120,20 @@ int main(int argc, char* argv[]) {
 	} else {
 		sys->network = new NetClass(MODE_CLIENT);
 		Init();
+
+		//Initialize System
+		if(argc>2)wiimoteInit(argv[1]);
+		else cout <<"wii remote controler is not connected"<<endl;
+
 	}
 
-	//Initialize System
-
-	/*if(argc > 1 && !wiimote_connect(&wiimote, argv[1])){
-	 wiimote.led.one  = 1;
-	 wiimote.mode.ir = 1;
-
-	 //make thread for wiimote
-	 pthread_t w//timeProc();u;
-	 pthread_create(&wu,NULL,wiimoteUpdate ,NULL);
-	 printf("wiiremote  connected\n");
-	 }else{
-	 printf("wiiremote can't connect\n");
-	 }
-	 */
-
-
-
-
-	Mix_OpenAudio(22050,AUDIO_S16,2,4096);
+	Mix_OpenAudio(22050, AUDIO_S16, 2, 4096);
 	Mix_AllocateChannels(16);
 
 	//sys->bgm->Mix_LoadMUS("data/music/bgm.wav");
 	sys->damage = Mix_LoadWAV("data/music/damage_se.wav");
 	sys->wind = Mix_LoadWAV("data/music/se_wind.wav");
 	//Mix_PlayMusic(sys->bgm,-1);
-
-
-
-
-
 
 	cout << "Stage =  " << sys->Stage << endl;
 
@@ -165,7 +150,6 @@ int main(int argc, char* argv[]) {
 				sys->lighteffect[i].routine();
 			}
 		}
-
 
 		switch (sys->Stage) {
 		case 0:
@@ -227,17 +211,5 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 
-/*
-void* wiimoteUpdate(void* pParam){
-	while(1){
-		if(wiimote_is_open(&wiimote)){
-			if(wiimote_update(&wiimote) >= 0){
-			}
-			else {
-				wiimote_disconnect(&wiimote);
-			}
-		}
-		SDL_Delay(10);
-	}
-} 
-*/
+
+
