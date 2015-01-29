@@ -208,11 +208,11 @@ void Draw::drawHP(int x, int y, int w, int h) {
 	glBegin(GL_QUADS);
 	glTexCoord2i(0,0);
 	glVertex3f(10,10,0);
-	glTexCoord2i(0,1);
+	glTexCoord2i(1,0);
 	glVertex3f(10+sys->player[sys->myID].hp*3,10,0);
 	glTexCoord2i(1,1);
 	glVertex3f(10+sys->player[sys->myID].hp*3,30,0);
-	glTexCoord2i(1,0);
+	glTexCoord2i(0,1);
 	glVertex3f(10,30,0);
 	glEnd();
 	
