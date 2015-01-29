@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <time.h>
-
+#include <pthread.h>
 #include <iostream>
 #include<string>
 #include<vector>
@@ -62,7 +62,7 @@ extern int BeforeTime;
 extern int goalX, goalY;
 
 //for wiimote
-extern wiimote_t wiimote;
+
 
 //main.c
 //void GameMain();
