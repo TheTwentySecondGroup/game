@@ -42,8 +42,11 @@ Model::Model(const char* filename) {
 	rootnode = scene->GetRootNode();
 
 	if (rootnode) {
-		this->getMesh(rootnode);
+		FbxAMatrix dummy;
+		this->getMesh(rootnode, dummy);
 
+	} else {
+		cout << "rootnode is NULL" << endl;
 	}
 
 	//GetAnimation("data/fbx/n.fbx");
@@ -57,9 +60,9 @@ Model::~Model() {
 void Model::Draw(double x, double y, double z, double dir) {
 
 	if (myTime++ && myTime >= mat[0].flame.size()) {
-		myTime = 1;
+		myTime = 0;
 	}
-	cout << "myTime=" << myTime << endl;
+	//cout << "myTime=" << myTime << endl;
 	//cout << "Model::Draw start" << endl;
 	glEnableClientState(GL_VERTEX_ARRAY);
 
@@ -137,13 +140,12 @@ void Model::Draw(double x, double y, double z, double dir) {
 
 }
 
-int Model::getMesh(FbxNode* node) {
+int Model::getMesh(FbxNode* node, FbxAMatrix& globalPosition) {
 	FbxNodeAttribute* attr = node->GetNodeAttribute();
+	//FbxAMatrix lGlobalOffPosition;
 	if (attr != NULL) {
-		FbxAMatrix dummy;
-		FbxAMatrix lGlobalPosition = GetGlobalPosition(node, startTime, pPose, &dummy);
 		FbxAMatrix lGeometryOffset = GetGeometry(node);
-		FbxAMatrix lGlobalOffPosition = lGlobalPosition * lGeometryOffset;
+		FbxAMatrix lGlobalOffPosition = globalPosition * lGeometryOffset;
 
 		if (attr->GetAttributeType() == FbxNodeAttribute::eMesh) {
 			//syori
@@ -173,11 +175,11 @@ int Model::getMesh(FbxNode* node) {
 			//法線情報
 			FbxGeometryElementNormal* element = mesh->GetElementNormal();
 			int normalCount = mesh->GetElementNormalCount();
-			cout << "normal " << normalCount << endl;
+			//cout << "normal " << normalCount << endl;
 			if (normalCount == 1) {
 				if ((element->GetReferenceMode() == FbxGeometryElement::eDirect)) {
 					if (element->GetMappingMode() == FbxGeometryElement::eByControlPoint) {
-						cout << "controlpoint" << endl;
+						//cout << "controlpoint" << endl;
 						vector<vec3f> vectemp;
 						for (int i = 0; i < element->GetDirectArray().GetCount(); ++i) {
 							vec3f nor;
@@ -190,7 +192,7 @@ int Model::getMesh(FbxNode* node) {
 							mattemp.nor.push_back(vectemp[indexes[i]]);
 						}
 					} else if (element->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) {
-						cout << "Polygon" << endl;
+						//cout << "Polygon" << endl;
 
 						for (int i = 0; i < element->GetDirectArray().GetCount(); ++i) {
 							vec3f nor;
@@ -202,9 +204,9 @@ int Model::getMesh(FbxNode* node) {
 					}
 
 				} else {
-					cout << "not eDirect\n";
+					//cout << "not eDirect\n";
 					if (element->GetMappingMode() == FbxGeometryElement::eByControlPoint) {
-						cout << "controlpoint" << endl;
+						//cout << "controlpoint" << endl;
 						vector<vec3f> vectemp;
 						for (int i = 0; i < element->GetDirectArray().GetCount(); ++i) {
 
@@ -216,7 +218,7 @@ int Model::getMesh(FbxNode* node) {
 							mattemp.nor.push_back(nor);
 						}
 					} else if (element->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) {
-						cout << "Polygon" << endl;
+						//cout << "Polygon" << endl;
 
 						for (int i = 0; i < element->GetDirectArray().GetCount(); ++i) {
 
@@ -246,11 +248,9 @@ int Model::getMesh(FbxNode* node) {
 
 					if (pUV->GetMappingMode() == FbxLayerElement::eByPolygonVertex) {
 
-						cout << "a" << endl;
 						if (pUV->GetReferenceMode() == FbxLayerElement::eDirect) {
 							// 直接取得
 
-							cout << "b" << endl;
 							for (int i = 0; i < uvsize; ++i) {
 								UV uvtemp;
 								uvtemp.u = (float) pUV->GetDirectArray().GetAt(i)[0];
@@ -260,7 +260,6 @@ int Model::getMesh(FbxNode* node) {
 						} else if (pUV->GetReferenceMode() == FbxLayerElement::eIndexToDirect) {
 							// インデックスから取得
 
-							cout << "c" << endl;
 							for (int i = 0; i < uvsize; ++i) {
 								UV uvtemp;
 								int index = pUV->GetIndexArray().GetAt(i);
@@ -351,34 +350,48 @@ int Model::getMesh(FbxNode* node) {
 
 				//テクスチャ
 				FbxProperty lProperty = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
-				FbxTexture* ktex = FbxCast<FbxTexture>(lProperty.GetSrcObject(FbxTexture::ClassId, 0));
-				if (ktex) {
-					string tmp = FbxCast<FbxFileTexture>(ktex)->GetFileName();
-					vector<string> temp = split(tmp, '\\');
-					mattemp.textureName = "data/fbx/" + temp[temp.size() - 1];
-					cout << "texture name is " << mattemp.textureName << endl;
-					if (FILE * file = fopen(mattemp.textureName.c_str(), "r")) {
-						fclose(file);
 
-						mattemp.texture = sys->draw->pngTexture(mattemp.textureName);
+				int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
+
+				int num = lProperty.GetSrcObjectCount( FbxTexture::ClassId );
+
+				cout<<"fileTextureCount="<<fileTextureCount<<" "<<num<<endl;
+
+				for (int j = 0; fileTextureCount > j; j++) {
+					//FbxTexture* ktex = FbxCast<FbxTexture>(lProperty.GetSrcObject(FbxTexture::ClassId, 0))
+					FbxTexture* ktex = lProperty.GetSrcObject<FbxFileTexture>(j);
+					if (ktex) {
+						string tmp = FbxCast<FbxFileTexture>(ktex)->GetFileName();
+						vector<string> temp = split(tmp, '\\');
+						cout << tmp << endl;
+						mattemp.textureName = "data/fbx/" + temp[temp.size() - 1];
+						cout << "texture name is " << mattemp.textureName << endl;
+						if (FILE * file = fopen(mattemp.textureName.c_str(), "r")) {
+							fclose(file);
+
+							mattemp.texture = sys->draw->pngTexture(mattemp.textureName);
+						}
+					} else {
+						cout << "no texture\n";
 					}
-				} else {
-					cout << "no texture\n";
 				}
 			}
 
-			getWeight(node->GetMesh(), &mattemp);
+			getWeight(node->GetMesh(), &mattemp, lGlobalOffPosition);
 			mat.push_back(mattemp);
 
 			cout << "mat.push_back complated\n";
 		} else {
 			cout << attr->GetAttributeType() << endl;
 		}
+	} else {
+		cout << "attr is NULL" << endl;
 	}
 
 	int childCount = node->GetChildCount();
+	cout << "childCount=" << childCount << endl;
 	for (int i = 0; childCount > i; i++) {
-		this->getMesh(node->GetChild(i));
+		this->getMesh(node->GetChild(i), globalPosition);
 	}
 
 	return 1;
@@ -432,7 +445,7 @@ vector<string> Model::split(const string &str, char delim) {
 	return res;
 }
 
-void Model::getWeight(FbxMesh* mesh, material *mattemp) {
+void Model::getWeight(FbxMesh* mesh, material *mattemp, FbxAMatrix &globalPosition) {
 
 	int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
 
@@ -461,7 +474,7 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 
 		FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
 		int clusterCount = skin->GetClusterCount();
-		cout << "cluster num =" << clusterCount << endl;
+		//cout << "cluster num =" << clusterCount << endl;
 
 		for (int i = 0; i < clusterCount; ++i) {
 
@@ -537,8 +550,8 @@ void Model::getWeight(FbxMesh* mesh, material *mattemp) {
 		int indexcounttmp = mesh->GetPolygonVertexCount();
 		//cout << tmpControlPoint.size() << "  " << indexcounttmp << endl;
 
-		cout << ((stopTime - startTime) / (FbxTime::GetOneFrameValue(FbxTime::eFrames24) * 20)).Get() << endl;
-		;
+		//cout << ((stopTime - startTime) / (FbxTime::GetOneFrameValue(FbxTime::eFrames24) * 20)).Get() << endl;
+
 		Flame flame;
 		for (int i = 0; i < indexcounttmp; i++) {
 			//位置情報格納

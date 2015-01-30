@@ -23,6 +23,8 @@
 #include <libcwiimote/wiimote.h>
 #include <libcwiimote/wiimote_api.h>
 
+
+
 //#include "system.h"
 
 
@@ -60,7 +62,7 @@ extern int BeforeTime;
 extern int goalX, goalY;
 
 //for wiimote
-extern wiimote_t wiimote;
+
 
 //main.c
 //void GameMain();

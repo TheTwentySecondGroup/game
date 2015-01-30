@@ -77,8 +77,7 @@ else
 endif
 
 
-LIBS = $(FBXSDK_LIB) -lm -lrt  -lstdc++ -lpthread -ldl -lGL -lGLU -lglut -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf  -lcwiimote 
-
+LIBS = $(FBXSDK_LIB) -lrt  -lstdc++ -lpthread -ldl -lGL -lGLU -lglut -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf -lSDL_mixer  -lcwiimote   -I/usr/local/include/opencv -I/usr/local/include/opencv2   -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_core -lopencv_highgui -lopencv_imgproc 
 
 .SUFFIXES: .cpp
 
@@ -86,11 +85,12 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	mkdir -p $(BINDIR)
-	$(LD) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJSFINAL) -L$(LIBDIR) $(LIBS) -L/usr/lib $(RPATH_DEF)
-
+	gcc $(CXXFLAGS) -I$(INCDIR)  -c ./source/Wii.c -o Wii.o
+	$(LD) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJSFINAL)  Wii.o  -L$(LIBDIR) $(LIBS) -L/usr/lib $(RPATH_DEF)
+	rm Wii.o
 .cpp.o:
 	mkdir -p $(OBJDIR)
-	$(CC) $(CXXFLAGS) -I$(INCDIR) -c $< -o $*.o
+	$(CC) $(CXXFLAGS) -I$(INCDIR)  -c $< -o $*.o
 	mv $*.o $(OBJDIR)
 
 clean:

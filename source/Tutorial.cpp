@@ -26,7 +26,6 @@ Tutorial::~Tutorial() {
 	glDeleteTextures(SLIDE_MAX, *TutorialImage);
 }
 void Tutorial::routine() {
-	cout<<"execute tutorial routine()"<<endl;
 	if(sys->io->key[KEY_A] == 1) {
 		Slide++;
 	}
@@ -96,7 +95,6 @@ void Tutorial::draw(int n) {
 
 	}
 
-	cout<<"execute tutorial draw() 4"<<endl;
 
 	glFlush();
 	SDL_GL_SwapBuffers();

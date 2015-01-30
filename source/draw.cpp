@@ -76,7 +76,7 @@ void Draw::routine() {
 			if (sys->player[i].hp > 0) {
 				if (sys->player[i].chara <= 4 && sys->player[i].chara > 0) {
 					sys->model[sys->player[i].chara - 1].Draw(sys->player[i].x, sys->player[i].y, sys->player[i].z,
-							sys->player[i].dir);
+						sys->player[i].dir);
 				}
 			}
 		}
@@ -451,7 +451,7 @@ void Draw::drawCharaSelect() {
 	init2D();
 	{
 		//character1
-		cout << "selChara" << sys->selChara << endl;
+		//cout << "selChara" << sys->selChara << endl;
 		for (int i = 0; i < 3; i++) {
 			if (sys->selChara == i + 1)
 				glBindTexture( GL_TEXTURE_2D, *charaImage[i]);
