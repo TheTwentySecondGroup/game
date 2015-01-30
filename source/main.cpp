@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
 		Init();
 
 		//Initialize System
-		if(argc>2)wiimoteInit(argv[1]);
+		if(argc>=2)wiimoteInit(argv[1]);
 		else cout <<"wii remote controler is not connected"<<endl;
 
 	}
