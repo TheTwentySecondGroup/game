@@ -62,19 +62,19 @@ int System::capImage() {
     
     
  
- int params[] = {CV_IMWRITE_PNG_COMPRESSION, 9};
+ //int params[] = {CV_IMWRITE_PNG_COMPRESSION, 5};
  
- cvSetImageROI(sourceImage, cvRect(20, 40, 80, 80));
+ cvSetImageROI(sourceImage, cvRect(20, 40, 64, 64));
     
     
     
     char tmp[10];
     //sprintf(tmp,"data/%d.png",myID);
     //cvSaveImage(tmp,sourceImage,params);
-    cvSaveImage("data/me.png",sourceImage,params);
-    myFaceImage = draw->timeTexture(SDL_CreateRGBSurfaceFrom((void*) sourceImage->imageData, sourceImage->width, sourceImage->height,
-                sourceImage->depth, sourceImage->nChannels * sourceImage->width, 0x0000ff, 0x00ff00, 0xff0000, 0));
-
+    cvSaveImage("data/me.bmp",sourceImage);
+    //myFaceImage = draw->initTexture(SDL_CreateRGBSurfaceFrom((void*) sourceImage->imageData, sourceImage->width, sourceImage->height,
+    //            sourceImage->depth, sourceImage->nChannels * sourceImage->width, 0x0000ff, 0x00ff00, 0xff0000, 0));
+    myFaceImage = draw->initTexture("data/me.bmp");
     sendFaceFlag=1;
     return 0;
 }
