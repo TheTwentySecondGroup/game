@@ -44,7 +44,7 @@ void Init() {
 	sys->model.push_back(modeltmp0);
 	Model modeltmp1("data/fbx/n.fbx");
 	sys->model.push_back(modeltmp1);
-	Model modeltmp2("data/fbx/n.fbx");
+	Model modeltmp2("data/fbx/m.fbx");
 	sys->model.push_back(modeltmp2);
 
 	cout << "Init() executed\n";
