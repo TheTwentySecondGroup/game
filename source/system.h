@@ -48,6 +48,7 @@ public:
 	int myID;
 	//int myChara;
 	int selChara;
+	int selConf;
 	int Stage;
 	int charatype;
 
@@ -75,6 +76,8 @@ public:
 	int judgeHit(int mode,Player *pl,Effect *ef);	//当たり判定
 	void gameMain();	//ゲームのメイン
 	void IPset();
+	void selConfig();
+	int VOLset(int vol);
 	void detectCollision();
 
 	CvCapture *capture;
@@ -86,7 +89,7 @@ public:
 
 	//music
 	Mix_Music    *bgm;
-	Mix_Chunk    *damage,*wind;
+	Mix_Chunk    *damage,*wind,*thunder;
 
 };
 

@@ -25,6 +25,7 @@ System::System(int m) {
 	myID = 0;
 	Stage = 0;
 	selChara = 1;
+	selConf = 1;
 	sendFaceFlag=0;
 }
 
@@ -43,57 +44,71 @@ int System::initCamera() {
 	}
 
 	// キャプチャサイズの設定
-	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 128);
-	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 128);
+	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 160);
+	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 120);
 
 	return 0;
 }
 int System::capImage() {
+    for(int i=0;i<5;i++){
+        sourceImage = cvQueryFrame(capture);
 
-	sourceImage = cvQueryFrame(capture);
-
-	if (sourceImage == NULL) {
-		cout << "Can't get camera's image" << endl;
-		return -1;
-	};
-	string tmp="data/";
-	tmp+=myID;
-	tmp+=".png";
-	cvSaveImage(tmp.c_str(),sourceImage);
-	myFaceImage = draw->timeTexture(SDL_CreateRGBSurfaceFrom((void*) sourceImage->imageData, sourceImage->width, sourceImage->height,
-			sourceImage->depth, sourceImage->nChannels * sourceImage->width, 0x0000ff, 0x00ff00, 0xff0000, 0));
-
-	sendFaceFlag=1;
-	return 0;
+        if (sourceImage == NULL) {
+            cout << "Can't get camera's image" << endl;
+        }        else {
+            break;
+        }
+    }
+    if(!sourceImage)return 1;
+    
+    
+ 
+ //int params[] = {CV_IMWRITE_PNG_COMPRESSION, 5};
+ 
+ cvSetImageROI(sourceImage, cvRect(20, 40, 64, 64));
+    
+    
+    
+    char tmp[10];
+    //sprintf(tmp,"data/%d.png",myID);
+    //cvSaveImage(tmp,sourceImage,params);
+    cvSaveImage("data/me.bmp",sourceImage);
+    //myFaceImage = draw->initTexture(SDL_CreateRGBSurfaceFrom((void*) sourceImage->imageData, sourceImage->width, sourceImage->height,
+    //            sourceImage->depth, sourceImage->nChannels * sourceImage->width, 0x0000ff, 0x00ff00, 0xff0000, 0));
+    myFaceImage = draw->initTexture("data/me.bmp");
+    sendFaceFlag=1;
+    return 0;
 }
 
 int System::selectChara() {
 
-	char buf[30];
+    char buf[30];
 
-	if (io->key[KEY_RIGHT] == 1) {
-		if (selChara < 3)
-			selChara++;
-		else
-			selChara = 1;
-	}
-	if (io->key[KEY_LEFT] == 1) {
-		if (selChara > 1)
-			selChara--;
-		else
-			selChara = 3;
-	}
-	if (io->key[KEY_A] == 1) {
-		charatype = selChara;
-		if(charatype == 3){
-			initCamera();
-			capImage();
-		}
-		player[0].chara = selChara;
-		Stage = 1;
-	}
-	draw->drawCharaSelect();
-	return 0;
+    if (io->key[KEY_RIGHT] == 1) {
+        if (selChara < 3)
+            selChara++;
+        else
+            selChara = 1;
+    }
+    if (io->key[KEY_LEFT] == 1) {
+        if (selChara > 1)
+            selChara--;
+        else
+            selChara = 3;
+    }
+    if (io->key[KEY_A] == 1) {
+        charatype = selChara;
+        if(charatype == 3){
+            initCamera();
+            if(capImage()==0){
+                 cout<<"get cameraImage"<<endl;
+            }
+        }
+        player[0].chara = selChara;
+        Stage = 1;
+    }
+    draw->drawCharaSelect();
+    return 0;
 }
 
 void System::initChara() {
@@ -101,6 +116,7 @@ void System::initChara() {
 }
 
 void System::moveChara() {
+
 	double rad;
 	Player old = player[myID];
 
@@ -286,10 +302,10 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 }
 
 void System::gameMain() {
-//cout << "execute sys gameMain()" << endl;
-	if (player[myID].hp > 0)
-		moveChara();
-	draw->routine();
+    //cout << "execute sys gameMain()" << endl;
+    if (player[myID].hp > 0)
+        moveChara();
+    draw->routine();
 
 }
 
@@ -300,111 +316,259 @@ string s3("1");
 string s4(".");
 
 void System::IPset() {
-	std::ostringstream ss;
+     std::ostringstream ss;
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    sys->draw->init3D();
+    {
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        double xd = sin(0);
+        double zd = cos(0);
+
+        gluLookAt(sys->lighteffect[0].posX - xd * 2,   1,
+                sys->lighteffect[0].posY - zd * 2, // position of camera
+                sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
+                0, 1.0f, 0);
+
+        //Light
+        glEnable(GL_LIGHTING);
+        glEnable(GL_NORMALIZE);
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT1);
+
+        //light1
+        sys->draw->lightpos[0] = sys->lighteffect[0].posX;
+        sys->draw->lightpos[1] = 5;
+        sys->draw->lightpos[2] = sys->lighteffect[0].posY;
+        sys->draw->lightpos[3] = 1;
+
+        glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+        GLfloat Light1Dir[] = { 0, -1, 0 };
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
+        glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
+        glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+
+        sys->map->drawMap();
+
+        for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
+            if (sys->lighteffect[i].f > 0) {
+                sys->lighteffect[i].draw();
+            }
+        }
+    }
+    draw->init2D();
+    {
+        title->drawMenu(100, 100, 800, 150, "Input server IP");
+        title->drawMenu(100, 200, 800, 250, s1 + s2 + s4 + s3);
+    }
+    if (io->key[KEY_RIGHT] > 0) {
+        if (p == 1)
+            p++;
+    }
+    if (io->key[KEY_LEFT] > 0) {
+        if (p == 2)
+            p--;
+    }
+    if (io->key[KEY_UP] > 0) {
+        if (p == 1) {
+            ss << ++n1;
+            s2 = ss.str();
+        } else if (p == 2) {
+            ss << ++n2;
+            s3 = ss.str();
+        }
+    }
+    if (io->key[KEY_DOWN] > 0) {
+        if (p == 1 && n1 > 0) {
+            ss << --n1;
+            s2 = ss.str();
+        } else if (p == 2 && n2 > 1) {
+            ss << --n2;
+            s3 = ss.str();
+        }
+    }
+
+    glFlush();
+    SDL_GL_SwapBuffers();
+    SDL_Delay(80);
+    if (io->key[KEY_A] == 1) {
+        std::ofstream ofs("data/ip.txt");
+        ofs << s1 + s2 + s4 + s3 << endl;
+        Stage = 0;
+    }
+}
+
+void System::selConfig(){
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    sys->draw->init3D();
+    {
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        double xd = sin(0);
+        double zd = cos(0);
+
+        gluLookAt(sys->lighteffect[0].posX - xd * 2,   1,
+                sys->lighteffect[0].posY - zd * 2, // position of camera
+                sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
+                0, 1.0f, 0);
+
+        //Light
+        glEnable(GL_LIGHTING);
+        glEnable(GL_NORMALIZE);
+
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT1);
+
+        //light1
+        sys->draw->lightpos[0] = sys->lighteffect[0].posX;
+        sys->draw->lightpos[1] = 5;
+        sys->draw->lightpos[2] = sys->lighteffect[0].posY;
+        sys->draw->lightpos[3] = 1;
+
+        glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+        GLfloat Light1Dir[] = { 0, -1, 0 };
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
+        glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
+        glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+
+        sys->map->drawMap();
+
+        for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
+            if (sys->lighteffect[i].f > 0) {
+                sys->lighteffect[i].draw();
+            }
+        }
+    }
+
+    draw->init2D();
+    {
+	if(selConf==1){
+	    title->drawMenu(50, 100, 90,200, "->");
+	}
+	else if(selConf==2){
+	    title->drawMenu(50, 400, 90, 450, "->");
+	}
+	title->drawMenu(110, 100, 800, 200, "IPSET");
+	title->drawMenu(110, 400, 800, 450, "VOLUMESET");
+    }
+    if(io->key[KEY_UP] > 1){
+	if(selConf==2)
+	    selConf--;
+    }
+    else if(io->key[KEY_DOWN] > 1){
+	if(selConf==1)
+	    selConf++;
+    }
+    else if(io->key[KEY_A] == 1){
+	if(selConf == 1){
+	    Stage = 6;
+	}
+	else if(selConf == 2){
+	    Stage = 7;
+	}
+    }
+    glFlush();
+    SDL_GL_SwapBuffers();
+}
+
+int System::VOLset(int vol){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	sys->draw->init3D();
-		{
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			double xd = sin(0);
-			double zd = cos(0);
+	    sys->draw->init3D();
+	    {
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        double xd = sin(0);
+        double zd = cos(0);
 
-			gluLookAt(sys->lighteffect[0].posX - xd * 2,   1,
-				sys->lighteffect[0].posY - zd * 2, // position of camera
-				sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
-				0, 1.0f, 0);
+        gluLookAt(sys->lighteffect[0].posX - xd * 2,   1,
+                sys->lighteffect[0].posY - zd * 2, // position of camera
+                sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
+                0, 1.0f, 0);
 
-			//Light
-			glEnable(GL_LIGHTING);
-			glEnable(GL_NORMALIZE);
+        //Light
+        glEnable(GL_LIGHTING);
+        glEnable(GL_NORMALIZE);
 
-			glEnable(GL_LIGHTING);
-			glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT1);
 
-			//light1
-			sys->draw->lightpos[0] = sys->lighteffect[0].posX;
-			sys->draw->lightpos[1] = 5;
-			sys->draw->lightpos[2] = sys->lighteffect[0].posY;
-			sys->draw->lightpos[3] = 1;
+        //light1
+        sys->draw->lightpos[0] = sys->lighteffect[0].posX;
+        sys->draw->lightpos[1] = 5;
+        sys->draw->lightpos[2] = sys->lighteffect[0].posY;
+        sys->draw->lightpos[3] = 1;
 
-			glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
-			GLfloat Light1Dir[] = { 0, -1, 0 };
-			glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
-			glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
-			glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
-			glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
-			glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
-			glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+        glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+        GLfloat Light1Dir[] = { 0, -1, 0 };
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
+        glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
+        glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
 
-			sys->map->drawMap();
+        sys->map->drawMap();
 
-			for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
-				if (sys->lighteffect[i].f > 0) {
-					sys->lighteffect[i].draw();
-				}
-			}
-		}
-	draw->init2D();
-	{
-		title->drawMenu(100, 100, 800, 150, "Input server IP");
-		title->drawMenu(100, 200, 800, 250, s1 + s2 + s4 + s3);
-	}
-	if (io->key[KEY_RIGHT] > 0) {
-		if (p == 1)
-			p++;
-	}
-	if (io->key[KEY_LEFT] > 0) {
-		if (p == 2)
-			p--;
-	}
-	if (io->key[KEY_UP] > 0) {
-		if (p == 1) {
-			ss << ++n1;
-			s2 = ss.str();
-		} else if (p == 2) {
-			ss << ++n2;
-			s3 = ss.str();
-		}
-	}
-	if (io->key[KEY_DOWN] > 0) {
-		if (p == 1 && n1 > 0) {
-			ss << --n1;
-			s2 = ss.str();
-		} else if (p == 2 && n2 > 1) {
-			ss << --n2;
-			s3 = ss.str();
-		}
-	}
+        for (int i = 0; i < NUM_LIGHT_EFFECT; i++) {
+            if (sys->lighteffect[i].f > 0) {
+                sys->lighteffect[i].draw();
+            }
+        }
+    }
 
-	glFlush();
-	SDL_GL_SwapBuffers();
-	SDL_Delay(80);
-	if (io->key[KEY_A] == 1) {
-		std::ofstream ofs("data/ip.txt");
-		ofs << s1 + s2 + s4 + s3 << endl;
-		Stage = 0;
-	}
+    stringstream ss;
+    ss << vol;
+    string str = ss.str();
+    draw->init2D();
+    {
+	title->drawMenu(250, 100, 500, 200, "VOLUME");
+	title->drawMenu(400, 300, 480, 350, str);
+    }
+
+    if(io->key[KEY_UP] > 1){
+	if(vol < 128)
+	    vol++;
+    }
+    else if(io->key[KEY_DOWN] > 1){
+	if(vol > 0)
+	    vol--;
+    }
+    SDL_Delay(50);
+    glFlush();
+    SDL_GL_SwapBuffers();
+    if(io->key[KEY_A] == 1){
+	Stage = 0;
+    }
+
+    return vol;
 }
-
 void System::detectCollision() {
-//cout<<"execute detectCollision()"<<endl;
-	for (int i = 0; i < MAX_EFFECT; i++) {
 
-		if (effect[i].f > 0) {
-			for (int c = 0; c < 4; c++) {
-				if (player[c].hp <= 0) {
-					continue;
-				}
-				//effect[i].x = player[c].x;
-				//effect[i].z = player[c].z;
-				if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c
-						&& judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
-					player[c].avoidDamageCount = 30;
-					player[c].hp -= 10;
-				}
-			}
+    //cout<<"execute detectCollision()"<<endl;
+    for (int i = 0; i < MAX_EFFECT; i++) {
 
-		}
+        if (effect[i].f > 0) {
+            for (int c = 0; c < 4; c++) {
+                if (player[c].hp <= 0) {
+                    continue;
+                }
+                //effect[i].x = player[c].x;
+                //effect[i].z = player[c].z;
+                if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c
+                        && judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
+                    player[c].avoidDamageCount = 30;
+                    player[c].hp -= 10;
+                }
+            }
 
-	}
-}
+        }
+
+    }}

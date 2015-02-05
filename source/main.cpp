@@ -20,8 +20,8 @@ System *sys;
 
 int fallingFlag = 0;
 
-
 int Stage = 1;
+int vol = 30;
 time_t start, now, end;
 int MaxTime;
 int BeforeTime;
@@ -47,6 +47,7 @@ void Init() {
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";
 }
+
 
 void timeEnd() {
 	end = time(NULL);
@@ -130,6 +131,8 @@ int main(int argc, char* argv[]) {
 	//sys->bgm->Mix_LoadMUS("data/music/bgm.wav");
 	sys->damage = Mix_LoadWAV("data/music/damage_se.wav");
 	sys->wind = Mix_LoadWAV("data/music/se_wind.wav");
+
+	sys->thunder = Mix_LoadWAV("thunder_se.wav");
 	//Mix_PlayMusic(sys->bgm,-1);
 
 	cout << "Stage =  " << sys->Stage << endl;
@@ -159,7 +162,13 @@ int main(int argc, char* argv[]) {
 			sys->gameMain();
 			break;
 		case 5:
+			sys->selConfig();
+			break;
+		case 6:
 			sys->IPset();
+			break;
+		case 7:
+			vol = sys->VOLset(vol);
 			break;
 		case -1:
 			sys->selectChara();
