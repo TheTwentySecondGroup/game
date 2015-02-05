@@ -29,3 +29,19 @@ void* wiimoteUpdate(void* pParam) {
 		SDL_Delay(10);
 	}
 }
+
+int checkpress(){
+	if(wiimote.keys.one)    return 5;
+	if(wiimote.keys.two)   return 6;
+	if(wiimote.keys.right && wiimote.keys.down)  return 7;
+	if(wiimote.keys.right && wiimote.keys.up)  return 8;
+	if(wiimote.keys.left && wiimote.keys.down)  return 9;
+	if(wiimote.keys.left && wiimote.keys.up)  return 10;
+	if(wiimote.keys.right)	return 1;
+	if(wiimote.keys.left) return 2;
+	if(wiimote.keys.up)   return 3;
+	if(wiimote.keys.down) return 4;
+	if(wiimote.keys.a)  return 11;
+	return 0;
+}
+

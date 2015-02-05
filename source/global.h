@@ -23,11 +23,6 @@
 #include <libcwiimote/wiimote.h>
 #include <libcwiimote/wiimote_api.h>
 
-
-
-//#include "system.h"
-
-
 #define STAGE_X 22
 #define STAGE_Y 44
 
@@ -44,8 +39,6 @@
 
 using namespace std;
 
-
-
 //main.c
 extern SDL_Joystick *joystick;
 //extern System *sys;
@@ -56,16 +49,10 @@ extern int BeforeTime;
 //for my position 
 //extern struct Obj myPos;
 
-//extern int Stage;
-
 //store goal position
 extern int goalX, goalY;
 
-//for wiimote
-
-
 //main.c
-//void GameMain();
 void restart();
 void timeReset();
 void timeProc();

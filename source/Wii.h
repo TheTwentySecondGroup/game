@@ -9,10 +9,9 @@ extern "C" {
 #include <SDL/SDL.h>
 
 
-
 void* wiimoteUpdate(void* pParam);
 void wiimoteInit(char*);
-
+int checkpress();
 
 
 

@@ -59,6 +59,8 @@ Player::Player() {
 
 void Player::routine(){
 	if(avoidDamageCount>0)avoidDamageCount--;
+
+	else avoidDamageCount=0;
 }
 
 Player::~Player() {

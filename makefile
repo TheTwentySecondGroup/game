@@ -15,7 +15,7 @@ ifeq "$(VARIANT)" "debug"
     GCC_DEBUG_FLAGS += -g -D_DEBUG
 endif
 
-M64 = -m32
+M64 = -m64
 ARCH = x86
 ifeq "$(M64)" "-m64"
     ARCH=x64
@@ -78,7 +78,6 @@ endif
 
 
 LIBS = $(FBXSDK_LIB) -lrt  -lstdc++ -lpthread -ldl -lGL -lGLU -lglut -lSDL  -lSDL_image -lSDL_gfx -lSDL_ttf -lSDL_mixer  -lcwiimote   -I/usr/local/include/opencv -I/usr/local/include/opencv2   -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_core -lopencv_highgui -lopencv_imgproc 
-
 
 .SUFFIXES: .cpp
 

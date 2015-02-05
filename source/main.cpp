@@ -12,9 +12,6 @@
 #include <time.h>
 //clock_t start,now,end;
 
-
-
-
 using namespace std;
 System *sys;
 
@@ -23,8 +20,8 @@ System *sys;
 
 int fallingFlag = 0;
 
-
 int Stage = 1;
+int vol = 30;
 time_t start, now, end;
 int MaxTime;
 int BeforeTime;
@@ -50,6 +47,7 @@ void Init() {
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";
 }
+
 
 void timeEnd() {
 	end = time(NULL);
@@ -122,7 +120,7 @@ int main(int argc, char* argv[]) {
 		Init();
 
 		//Initialize System
-		if(argc>2)wiimoteInit(argv[1]);
+		if(argc>=2)wiimoteInit(argv[1]);
 		else cout <<"wii remote controler is not connected"<<endl;
 
 	}
@@ -164,7 +162,13 @@ int main(int argc, char* argv[]) {
 			sys->gameMain();
 			break;
 		case 5:
+			sys->selConfig();
+			break;
+		case 6:
 			sys->IPset();
+			break;
+		case 7:
+			vol = sys->VOLset(vol);
 			break;
 		case -1:
 			sys->selectChara();
@@ -173,12 +177,9 @@ int main(int argc, char* argv[]) {
 			sys->tutorial->routine();
 			break;
 		case -4:
-			//for server
 			sys->detectCollision();
 			break;
 		default:
-			//delTitle();
-			//delete draw;
 			SDL_Quit();
 			exit(0);
 			break;
