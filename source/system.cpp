@@ -201,24 +201,6 @@ void System::moveChara() {
 			}
 		}
 	}
-
-	/*ATTACK3(仮)
-	 if (io->key[KEY_D] == 1 && player[myID].attflag == 0) {
-	 player[myID].attflag = 1;
-	 player[myID].attpatern = 3;
-	 for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-	 if (effect[serchEffect].f == 0) {
-	 effect[serchEffect].fromPlayerID = myID;
-	 effect[serchEffect].f = 3;
-	 effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-	 effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-	 effect[serchEffect].dir = player[myID].dir;
-	 network->syncEffectFlag = serchEffect;
-	 break;
-	 }
-	 }
-	 }
-	 */
 	/*ATTACK4*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
 		player[myID].attflag = 1;
@@ -252,22 +234,6 @@ void System::moveChara() {
 			}
 		}
 	}
-	/*ATTACK6
-	 if (io->key[KEY_G] == 1 && player[myID].attflag == 0) {
-	 player[myID].attflag = 1;
-	 player[myID].attpatern = 6;
-	 for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
-	 if (effect[serchEffect].f == 0) {
-	 effect[serchEffect].f = 6;
-	 effect[serchEffect].x = player[myID].x + 2.5 * sin(rad);
-	 effect[serchEffect].z = player[myID].z + 2.5 * cos(rad);
-	 effect[serchEffect].dir = player[myID].dir;
-	 network->syncEffectFlag = serchEffect;
-	 break;
-	 }
-	 }
-	 }
-	 */
 	/*ATTACK7*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		player[myID].attflag = 1;
@@ -334,13 +300,7 @@ string s3("1");
 string s4(".");
 
 void System::IPset() {
-//	int p=1, n1=0, n2=1;
-//	string s1("192.168.");
-//	string s2("0.");
-//	string s3("1");
 	std::ostringstream ss;
-
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	sys->draw->init3D();
 		{
@@ -350,9 +310,9 @@ void System::IPset() {
 			double zd = cos(0);
 
 			gluLookAt(sys->lighteffect[0].posX - xd * 2,   1,
-					sys->lighteffect[0].posY - zd * 2, // position of camera
-					sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
-					0, 1.0f, 0);
+				sys->lighteffect[0].posY - zd * 2, // position of camera
+				sys->lighteffect[0].posX,   0, sys->lighteffect[0].posY, //look-at point
+				0, 1.0f, 0);
 
 			//Light
 			glEnable(GL_LIGHTING);
@@ -361,14 +321,11 @@ void System::IPset() {
 			glEnable(GL_LIGHTING);
 			glEnable(GL_LIGHT1);
 
-
-
 			//light1
 			sys->draw->lightpos[0] = sys->lighteffect[0].posX;
 			sys->draw->lightpos[1] = 5;
 			sys->draw->lightpos[2] = sys->lighteffect[0].posY;
 			sys->draw->lightpos[3] = 1;
-
 
 			glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
 			GLfloat Light1Dir[] = { 0, -1, 0 };
@@ -378,8 +335,6 @@ void System::IPset() {
 			glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
 			glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
 			glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
-
-
 
 			sys->map->drawMap();
 
@@ -452,6 +407,4 @@ void System::detectCollision() {
 		}
 
 	}
-
 }
-

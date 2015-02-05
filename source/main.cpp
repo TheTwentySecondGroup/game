@@ -12,9 +12,6 @@
 #include <time.h>
 //clock_t start,now,end;
 
-
-
-
 using namespace std;
 System *sys;
 
@@ -171,12 +168,9 @@ int main(int argc, char* argv[]) {
 			sys->tutorial->routine();
 			break;
 		case -4:
-			//for server
 			sys->detectCollision();
 			break;
 		default:
-			//delTitle();
-			//delete draw;
 			SDL_Quit();
 			exit(0);
 			break;

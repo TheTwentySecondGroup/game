@@ -96,7 +96,7 @@ void GameIO::routine() {
 	} else {
 		key[KEY_E] = 0;
 	}
-/}
+}
 
 GameIO::GameIO() {
 
