@@ -269,6 +269,11 @@ int NetClass::routineClient() {
 		clientCommand(EFFECT_COMMAND, TO_SERVER);
 	}
 
+    if(sys->sendFaceFlag==1){
+        clientCommand(FACE_COMMAND,TO_SERVER);
+        sys->sendFaceFlag=0;
+    }
+
 	/*for (int i = 0; i < MAX_EFFECT; i++) {
 		cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
 				<< sys->effect[i].y;

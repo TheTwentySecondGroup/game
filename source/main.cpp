@@ -133,6 +133,8 @@ int main(int argc, char* argv[]) {
 	//sys->bgm->Mix_LoadMUS("data/music/bgm.wav");
 	sys->damage = Mix_LoadWAV("data/music/damage_se.wav");
 	sys->wind = Mix_LoadWAV("data/music/se_wind.wav");
+
+	sys->thunder = Mix_LoadWAV("thunder_se.wav");
 	//Mix_PlayMusic(sys->bgm,-1);
 
 	cout << "Stage =  " << sys->Stage << endl;

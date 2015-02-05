@@ -71,6 +71,13 @@ public:
 	void Close(void);
 	int receive_data(int index, void *data, int data_size);
 	int send_data(int index, void *data, int data_size);
+
+
+	int sendData(int index, void *data, int data_size) ;
+	int receiveData(int index, void *data, int data_size);
+
+
+
 	int Accept(int);
 
 	void sendId(void);
