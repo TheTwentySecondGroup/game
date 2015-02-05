@@ -774,7 +774,7 @@ void Draw::drawIndicator() {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sys->draw->WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60);
 	for (int i = 0; i < 4; i++) {
-		if (i == sys->myID)
+		if (i == sys->myID||sys->player[i].chara==-1)
 			continue;
 
 		double dis = 4
