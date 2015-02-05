@@ -62,6 +62,9 @@ public:
 	int syncEEffectFlag[MAX_EFFECT];
 
 	char* tmpImage[4];
+
+	int tmpImageSize[4];
+
 	int syncImageFlag[4];
 
 

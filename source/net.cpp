@@ -27,7 +27,6 @@ void* serverMain(void*) {
 	signal(SIGPIPE, SIG_IGN);
 	usleep(500000); //stop 0.5s for safe
 
-
 	sys->network->setServer();
 	pthread_t wa;
 	pthread_create(&wa, NULL, waitingClient, NULL);
@@ -52,10 +51,10 @@ void* clientMain(void*) {
 	signal(SIGPIPE, SIG_IGN);
 	usleep(1000000); //stop 1s for safe
 
-	cout<<"IP is "<<sys->network->IP<<endl;
+	cout << "IP is " << sys->network->IP << endl;
 	FILE *fp;
-	fp=fopen("data/ip.txt", "r");
-	if (fp != NULL){
+	fp = fopen("data/ip.txt", "r");
+	if (fp != NULL) {
 		fgets(sys->network->IP, 16, fp);
 		fclose(fp);
 	}
@@ -73,7 +72,7 @@ void* clientMain(void*) {
 			}
 
 		} else {
-			cout << "setClient() is faild.     connected to " << sys->network->IP <<endl;
+			cout << "setClient() is faild.     connected to " << sys->network->IP << endl;
 
 		}
 		usleep(1000000); //stop 1s
@@ -100,11 +99,9 @@ int NetClass::setServer() {
 		return 1;
 	}
 
-	setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, &optimum_value,
-			sizeof(optimum_value));
+	setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, &optimum_value, sizeof(optimum_value));
 
-	if (bind(listenSocket, (struct sockaddr*) &server_address,
-			sizeof(server_address)) == -1) {
+	if (bind(listenSocket, (struct sockaddr*) &server_address, sizeof(server_address)) == -1) {
 		cout << "bind() is failed" << endl;
 		return 1;
 	}
@@ -178,17 +175,32 @@ int NetClass::routineServer() {
 		}
 
 		//第二引数意味なし
-		//if (syncEffectFlag > 0)
+		if (syncEffectFlag > 0)
 			serverCommand(E_SYNC_COMMAND, 0);
 
+		for (int c = 0; c < 4; c++) {
+			if (syncImageFlag[c] == 1) {
 
+				if (cli[c].socket > 0) {
+
+					char com = FACE_SYNC_COMMAND;
+					for (int t = 0; t < 4; t++) {
+						send_data(c, &com, sizeof(char));
+						send_data(c, &t, sizeof(int));
+						send_data(c, &tmpImageSize[t], sizeof(int));
+						sendData(c, tmpImage[t], (int) tmpImageSize[t]);
+					}
+					syncImageFlag[c] = 0;
+				}
+			}
+		}
 
 		/*for (int i = 0; i < MAX_EFFECT; i++) {
-			cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
-					<< sys->effect[i].y;
-			cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
-					<< sys->effect[i].count << "\n";
-		}*/
+		 cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
+		 << sys->effect[i].y;
+		 cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
+		 << sys->effect[i].count << "\n";
+		 }*/
 	}
 
 	return 0;
@@ -219,8 +231,7 @@ int NetClass::setClient(char* serverName) {
 		return 1;
 	}
 
-	if (connect(ser.socket, (struct sockaddr*) &server_addr,
-			sizeof(server_addr)) != 0) {
+	if (connect(ser.socket, (struct sockaddr*) &server_addr, sizeof(server_addr)) != 0) {
 		cout << "client:connect() is failed errno =" << errno << endl;
 		close(ser.socket);
 		ser.socket = -1;
@@ -236,7 +247,7 @@ int NetClass::setClient(char* serverName) {
 	}
 
 	cout << "get myID =" << sys->myID << endl;
-	sys->player[sys->myID].chara=sys->charatype;
+	sys->player[sys->myID].chara = sys->charatype;
 	return 0;
 }
 int NetClass::routineClient() {
@@ -269,17 +280,17 @@ int NetClass::routineClient() {
 		clientCommand(EFFECT_COMMAND, TO_SERVER);
 	}
 
-    if(sys->sendFaceFlag==1){
-        clientCommand(FACE_COMMAND,TO_SERVER);
-        sys->sendFaceFlag=0;
-    }
+	if (sys->sendFaceFlag == 1) {
+		clientCommand(FACE_COMMAND, TO_SERVER);
+		sys->sendFaceFlag = 0;
+	}
 
 	/*for (int i = 0; i < MAX_EFFECT; i++) {
-		cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
-				<< sys->effect[i].y;
-		cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
-				<< sys->effect[i].count << "\n";
-	}*/
+	 cout << "effect["<<i<<"] "<<sys->effect[i].f << " " << sys->effect[i].x << " "
+	 << sys->effect[i].y;
+	 cout << " " << sys->effect[i].z << " " << sys->effect[i].dir << " "
+	 << sys->effect[i].count << "\n";
+	 }*/
 
 //受信
 	if (FD_ISSET(ser.socket, &fds)) {
@@ -291,7 +302,6 @@ int NetClass::routineClient() {
 			result = clientCommand(buf[0], TO_SERVER);
 		}
 	}
-
 
 	return 0;
 }
@@ -309,9 +319,10 @@ NetClass::NetClass(int mode) {
 }
 
 NetClass::NetClass() {
-	memset(IP,'\0',16);
-	strcpy(IP,"127.0.0.1");
+	memset(IP, '\0', 16);
+	strcpy(IP, "127.0.0.1");
 	cout << "error mode was not selected" << endl;
+
 }
 NetClass::~NetClass() {
 // TODO Auto-generated destructor stub

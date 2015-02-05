@@ -46,15 +46,16 @@ int netBase::receiveData(int index, void *data, int data_size) {
 
 	while (1) {
 		if (index == TO_SERVER) {
-			recvd += recv(ser.socket, data+recvd, data_size-recvd, 0);
-			cout<<"recvd"<<recvd<<endl;
+			recvd += recv(ser.socket, data + recvd, data_size - recvd, 0);
+			cout << "recvd" << recvd << endl;
 		} else {
 			//cout << "read() begin" << endl;
-			recvd += recv(cli[index].socket, data+recvd, data_size-recvd, 0);
-			cout<<"recvd"<<recvd<<endl;
+			recvd += recv(cli[index].socket, data + recvd, data_size - recvd, 0);
+			cout << "recvd" << recvd << endl;
 			//cout << "read() ended" << endl;
 		}
-		if(recvd>=data_size)break;
+		if (recvd >= data_size)
+			break;
 
 	}
 	return 0;
@@ -63,8 +64,6 @@ int netBase::receiveData(int index, void *data, int data_size) {
 int netBase::sendData(int index, void *data, int data_size) {
 	int i;
 
-
-
 	//cout << "send_data index =" << index << "  datasize = " << data_size<< endl;
 	assert((data != NULL) && (0 < data_size));
 
@@ -72,14 +71,12 @@ int netBase::sendData(int index, void *data, int data_size) {
 		int cur = 0;
 		while (1) {
 
-
 			if ((cur = send(ser.socket, data + cur, data_size - cur, 0)) < 0) {
 				cout << "TO_SERVER write() is failed! errno = " << errno << endl;
 				return 1;
 			}
 
-
-			cout<<"sended"<<cur<<endl;
+			cout << "sended" << cur << endl;
 			if (data_size <= cur)
 				break;
 
@@ -89,12 +86,12 @@ int netBase::sendData(int index, void *data, int data_size) {
 
 		int cur = 0;
 		while (1) {
-			if ((cur = send(cli[index].socket, data + cur, data_size-  cur, 0)) < 0) {
+			if ((cur = send(cli[index].socket, data + cur, data_size - cur, 0)) < 0) {
 				cout << "cli[" << index << "] write() is failed! errno=" << errno << endl;
 				return 1;
 			}
 
-			cout<<"sended"<<cur<<endl;
+			cout << "sended" << cur << endl;
 			if (cur >= data_size)
 				break;
 		}
@@ -196,15 +193,15 @@ void netBase::sendId(void) {
 
 int netBase::clientCommand(char command, int index) {
 	int data_size;
-	int int_data;
+	//int int_data;
 	int result = 1;
 
-	char received_data[MAX_BUFFER_LENGTH];
-	char sending_data[MAX_BUFFER_LENGTH];
-	char char_data[MAX_DATA];
+	//char received_data[MAX_BUFFER_LENGTH];
+	//char sending_data[MAX_BUFFER_LENGTH];
+	//char char_data[MAX_DATA];
 
-	memset(sending_data, '\0', MAX_BUFFER_LENGTH);
-	memset(char_data, '\0', MAX_DATA);
+	//memset(sending_data, '\0', MAX_BUFFER_LENGTH);
+	//memset(char_data, '\0', MAX_DATA);
 
 	//client :: sending process
 	if (index == TO_SERVER) {
@@ -240,24 +237,25 @@ int netBase::clientCommand(char command, int index) {
 
 		} else if (command == FACE_SYNC_COMMAND) {
 			int Id = 0;
-			int fsize = 0;
 			receive_data(TO_SERVER, &Id, sizeof(int));
-			receive_data(TO_SERVER, &fsize, sizeof(int));
-
-			tmpImage[Id] = (char*) malloc((int) fsize);
-			receiveData(TO_SERVER, tmpImage[Id], fsize);
-			cout << "get imagedata from " << Id  << "size "<<fsize<<endl;
+			receive_data(TO_SERVER, &tmpImageSize[Id], sizeof(int));
+			//if(tmpImage[Id]!=NULL)free(tmpImage[Id]);
+			tmpImage[Id] = (char*) malloc((int) tmpImageSize[Id]);
+			receiveData(TO_SERVER, tmpImage[Id], tmpImageSize[Id]);
+			cout << "get imagedata from " << Id << "size " << tmpImageSize[Id] << endl;
 
 			FILE *fp;
-			char tmpchar[15];
-			memset(tmpchar,'0',15);
-			sprintf(tmpchar, "data/%d.bmp", Id);
+			char tmpchar[20];
+			memset(tmpchar, '0', 20);
+			sprintf(tmpchar, "data/%d_%d.bmp", Id, sys->myID);
 			fp = fopen(tmpchar, "wb");
 			if (fp != NULL) {
-				fwrite((void*) tmpImage[Id], (int) fsize, 1, fp);
+				fwrite((void*) tmpImage[Id], tmpImageSize[Id], 1, fp);
 				fclose(fp);
-				string tmpstring = tmpchar;
-				sys->faceImage[Id] = sys->draw->initTexture(tmpstring);
+				if (tmpImageSize[Id] > 0) {
+					string tmpstring = tmpchar;
+					sys->faceImage[Id] = sys->draw->initTexture(tmpstring);
+				}
 			} else {
 				cout << tmpchar << " fp is null" << endl;
 			}
@@ -362,32 +360,27 @@ int netBase::serverCommand(char command, int index) {
 
 	if (command == FACE_COMMAND) {
 		int Id = 0;
-		int fsize = 0;
 		receive_data(index, &Id, sizeof(int));
-		receive_data(index, &fsize, sizeof(int));
+		receive_data(index, &tmpImageSize[Id], sizeof(int));
 
-		tmpImage[Id] = (char *) malloc(fsize);
+		//if(tmpImage[Id]!=NULL)free(tmpImage[Id]);
+		tmpImage[Id] = (char *) malloc(tmpImageSize[Id]);
 
-		receiveData(index, tmpImage[Id] , fsize);
-
-
-
+		receiveData(index, tmpImage[Id], tmpImageSize[Id]);
 
 		for (int c = 0; c < 4; c++) {
-			if (c == Id)
-				continue;
 			syncImageFlag[c] = 1;
 		}
-
-		char com = FACE_SYNC_COMMAND;
-		for (int c = 0; c < 4; c++) {
-			if (cli[c].socket > 0) {
-				send_data(c, &com, sizeof(char));
-				send_data(c, &Id, sizeof(int));
-				send_data(c, &fsize, sizeof(int));
-				sendData(c, tmpImage[Id], (int) fsize);
-			}
-		}
+		/*
+		 char com = FACE_SYNC_COMMAND;
+		 for (int c = 0; c < 4; c++) {
+		 if (cli[c].socket > 0) {
+		 send_data(c, &com, sizeof(char));
+		 send_data(c, &Id, sizeof(int));
+		 send_data(c, &fsize, sizeof(int));
+		 sendData(c, tmpImage[Id], (int) fsize);
+		 }
+		 }*/
 		return 0;
 	} else if (command == POS_COMMAND) {
 		int Id = 0;
@@ -473,6 +466,22 @@ netBase::netBase() {
 	}
 	for (int c = 0; c < 4; c++) {
 		syncImageFlag[c] = 0;
+
+		FILE *fp;
+		fp = fopen("data/image/dummy.bmp", "rb");
+
+		if (fp != NULL) {
+			fseek(fp, 0, SEEK_END);
+			tmpImageSize[c] = ftell(fp);
+			fclose(fp);
+		}
+		fp = fopen("data/image/dummy.bmp", "rb");
+		if (fp != NULL) {
+			tmpImage[c] = (char *) malloc((int) tmpImageSize[c]);
+			fread((void*) tmpImage[c], (int) tmpImageSize[c], tmpImageSize[c], fp);
+			fclose(fp);
+		}
+
 	}
 	// TODO Auto-generated constructor stub
 }

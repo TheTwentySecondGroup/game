@@ -1,7 +1,6 @@
 #include "global.h"
 #include "system.h"
 
-static double px, pz, pdir;
 GLuint *texHandle[10];
 
 void Draw::routine() {
@@ -65,8 +64,8 @@ void Draw::routine() {
 		glEnable(GL_FOG);
 
 		sys->map->drawMap();
-		for(int i = 0; i < 4; i++){
-			if(sys->player[i].hp > 0 && sys->player[i].chara != -1 && i != sys->myID){
+		for (int i = 0; i < 4; i++) {
+			if (sys->player[i].hp > 0 && sys->player[i].chara != -1 && i != sys->myID) {
 				drawHP3D(i);
 			}
 		}
@@ -74,9 +73,46 @@ void Draw::routine() {
 		//draw character
 		for (int i = 0; i < 4; i++) {
 			if (sys->player[i].hp > 0) {
-				if (sys->player[i].chara <= 4 && sys->player[i].chara > 0) {
+				if (sys->player[i].chara <= 3 && sys->player[i].chara > 0) {
 					sys->model[sys->player[i].chara - 1].Draw(sys->player[i].x, sys->player[i].y, sys->player[i].z,
-						sys->player[i].dir);
+							sys->player[i].dir);
+
+					if (sys->player[i].chara == 3) {
+						glPushMatrix();
+						glEnable(GL_TEXTURE_2D);
+						glDisable(GL_BLEND);
+
+						glDisable(GL_CULL_FACE);
+						glTranslatef(sys->player[i].x, 0, sys->player[i].z);
+						glRotatef(sys->player[i].dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
+						glTranslatef(-sys->player[i].x, 0, -sys->player[i].z);
+						glBindTexture(GL_TEXTURE_2D, *(sys->faceImage[i]));
+						glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
+						glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
+						glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
+						glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
+
+						GLfloat vertices[4][3] =
+								{{sys->player[i].x - 0.15 ,1.1, sys->player[i].z },
+								{ sys->player[i].x + 0.15 ,1.1  , sys->player[i].z },
+								{ sys->player[i].x + 0.15 ,0.8  , sys->player[i].z },
+								{ sys->player[i].x - 0.15 ,0.8, sys->player[i].z }, };
+						glBegin(GL_POLYGON);
+						//Normal3f(vertices[1], vertices[4], vertices[7]);
+						glTexCoord2i(0, 0);
+						glVertex3fv(vertices[0]);
+						glTexCoord2i(0, 1);
+						glVertex3fv(vertices[1]);
+						glTexCoord2i(1, 1);
+						glVertex3fv(vertices[2]);
+						glTexCoord2i(1, 0);
+						glVertex3fv(vertices[3]);
+						glEnd();
+
+						glEnable(GL_CULL_FACE);
+						glPopMatrix();
+
+					}
 				}
 			}
 		}
@@ -206,19 +242,19 @@ void Draw::drawHP(int x, int y, int w, int h) {
 	}
 
 	glBegin(GL_QUADS);
-	glTexCoord2i(0,0);
-	glVertex3f(10,10,0);
-	glTexCoord2i(0,1);
-	glVertex3f(10+sys->player[sys->myID].hp*3,10,0);
-	glTexCoord2i(1,1);
-	glVertex3f(10+sys->player[sys->myID].hp*3,30,0);
-	glTexCoord2i(1,0);
-	glVertex3f(10,30,0);
+	glTexCoord2i(0, 0);
+	glVertex3f(10, 10, 0);
+	glTexCoord2i(0, 1);
+	glVertex3f(10 + sys->player[sys->myID].hp * 3, 10, 0);
+	glTexCoord2i(1, 1);
+	glVertex3f(10 + sys->player[sys->myID].hp * 3, 30, 0);
+	glTexCoord2i(1, 0);
+	glVertex3f(10, 30, 0);
 	glEnd();
-	
+
 }
 
-void Draw::drawHP3D(int i){
+void Draw::drawHP3D(int i) {
 	//glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
@@ -226,47 +262,46 @@ void Draw::drawHP3D(int i){
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
-	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);;
+	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
+	;
 
 	glTranslated(sys->player[i].x, 0, sys->player[i].z);
-	glRotatef(sys->player[sys->myID].dir*56.5, 0, 1, 0);
-	glTranslated(-sys->player[i].x, 0,-sys->player[i].z);
+	glRotatef(sys->player[sys->myID].dir * 56.5, 0, 1, 0);
+	glTranslated(-sys->player[i].x, 0, -sys->player[i].z);
 
 	glTranslated(0.25, 0, 0);
-	if(sys->player[i].hp >= 60){
+	if (sys->player[i].hp >= 60) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
-	}
-	else if(sys->player[i].hp < 60 && sys->player[i].hp >= 30){
+	} else if (sys->player[i].hp < 60 && sys->player[i].hp >= 30) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[4]);
-	}
-	else if(sys->player[i].hp < 30){
+	} else if (sys->player[i].hp < 30) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[5]);
 	}
 
-	GLfloat vertices[4][3] = {
-		{sys->player[i].x-sys->player[i].hp*0.005, 0.8, sys->player[i].z},
-		{sys->player[i].x, 0.8, sys->player[i].z},
-		{sys->player[i].x, 0.75, sys->player[i].z},
-		{sys->player[i].x-sys->player[i].hp*0.005, 0.75, sys->player[i].z},
-	};
-	
+	GLfloat vertices[4][3] = { { sys->player[i].x - sys->player[i].hp * 0.005, 0.8, sys->player[i].z }, {
+			sys->player[i].x, 0.8, sys->player[i].z }, { sys->player[i].x, 0.75, sys->player[i].z }, { sys->player[i].x
+			- sys->player[i].hp * 0.005, 0.75, sys->player[i].z }, };
+
 	glBegin(GL_POLYGON);
-	glTexCoord2i(0,0);
+	glTexCoord2i(0, 0);
 	glVertex3fv(vertices[0]);
-	glTexCoord2i(0,1);
+	glTexCoord2i(0, 1);
 	glVertex3fv(vertices[1]);
-	glTexCoord2i(1,1);
+	glTexCoord2i(1, 1);
 	glVertex3fv(vertices[2]);
-	glTexCoord2i(1,0);
+	glTexCoord2i(1, 0);
 	glVertex3fv(vertices[3]);
 	glEnd();
 
 	glPopMatrix();
 }
 
-
-
 Draw::Draw() {
+
+	sys->faceImage[0] = initTexture("data/image/dummy.bmp");
+	sys->faceImage[1] = initTexture("data/image/dummy.bmp");
+	sys->faceImage[2] = initTexture("data/image/dummy.bmp");
+	sys->faceImage[3] = initTexture("data/image/dummy.bmp");
 
 //system
 
@@ -278,6 +313,7 @@ Draw::Draw() {
 	charaImage[5] = initTexture("data/image/chara3g.bmp");
 
 //initialize GLUT
+
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
 
 //format to white
@@ -461,7 +497,7 @@ void Draw::drawCharaSelect() {
 			glTexCoord2i(0, 0);
 			glVertex3f(200 * (i) + 120, 200, 0);
 			glTexCoord2i(1, 0);
-			glVertex3f(200 * (i + 1) + 100,200, 0);
+			glVertex3f(200 * (i + 1) + 100, 200, 0);
 			glTexCoord2i(1, 1);
 			glVertex3f(200 * (i + 1) + 100, 400, 0);
 			glTexCoord2i(0, 1);
@@ -479,7 +515,9 @@ void Draw::drawCube(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
-	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1 + x, 1.0, 1 + y }, { 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0 + x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1 + y } };
+	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1 + x, 1.0, 1 + y },
+			{ 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0 + x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1
+					+ y } };
 
 // 右
 	glBegin(GL_POLYGON);
@@ -774,7 +812,7 @@ void Draw::drawIndicator() {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, sys->draw->WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60);
 	for (int i = 0; i < 4; i++) {
-		if (i == sys->myID||sys->player[i].chara==-1)
+		if (i == sys->myID || sys->player[i].chara <= 0)
 			continue;
 
 		double dis = 4

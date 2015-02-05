@@ -26,6 +26,7 @@ System::System(int m) {
 	Stage = 0;
 	selChara = 1;
 	sendFaceFlag=0;
+	for(int i=0;i<4;i++)faceImage[i]=NULL;
 }
 
 System::~System() {
