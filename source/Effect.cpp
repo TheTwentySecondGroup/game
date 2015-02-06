@@ -95,7 +95,7 @@ void Effect::draw() {
 	else if (f == 8)
 		drawAttack8();
 	glEnable(GL_FOG);
-	cout << "x = " << x << " z = " << z << endl;
+	//cout << "x = " << x << " z = " << z << endl;
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, (const GLfloat *) &sys->draw->FogColor);
 	glDisable(GL_TEXTURE_2D);

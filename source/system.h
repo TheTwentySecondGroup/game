@@ -89,7 +89,7 @@ public:
 
 	//music
 	Mix_Music    *bgm;
-	Mix_Chunk    *damage,*wind,*thunder;
+	Mix_Chunk    *damage,*wind,*thunder,*ice,*fire,*blade;
 
 };
 

@@ -70,7 +70,7 @@ void Model::Draw(double x, double y, double z, double dir) {
 
 	glPushMatrix();
 
-	glTranslatef(x, 0.3, z);
+	glTranslatef(x, 0.2, z);
 	glScalef(0.3f, 0.3f, 0.3f);
 	glRotatef(dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
 	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
@@ -362,14 +362,14 @@ int Model::getMesh(FbxNode* node, FbxAMatrix& globalPosition) {
 					FbxTexture* ktex = lProperty.GetSrcObject<FbxFileTexture>(j);
 					if (ktex) {
 						string tmp = FbxCast<FbxFileTexture>(ktex)->GetFileName();
-						vector<string> temp = split(tmp, '\\');
+						vector<string> temp = split(tmp, '/');
 						cout << tmp << endl;
 						mattemp.textureName = "data/fbx/" + temp[temp.size() - 1];
 						cout << "texture name is " << mattemp.textureName << endl;
 						if (FILE * file = fopen(mattemp.textureName.c_str(), "r")) {
 							fclose(file);
 
-							mattemp.texture = sys->draw->pngTexture(mattemp.textureName);
+							mattemp.texture = sys->draw->initTexture(mattemp.textureName);
 						}
 					} else {
 						cout << "no texture\n";

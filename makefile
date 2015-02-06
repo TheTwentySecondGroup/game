@@ -15,7 +15,7 @@ ifeq "$(VARIANT)" "debug"
     GCC_DEBUG_FLAGS += -g -D_DEBUG
 endif
 
-M64 = -m64
+M64 = -m32
 ARCH = x86
 ifeq "$(M64)" "-m64"
     ARCH=x64

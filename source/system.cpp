@@ -188,6 +188,7 @@ void System::moveChara() {
 	rad = (player[myID].dir * 56.5) * (PI / 180.0);
 
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
+		Mix_PlayChannel(-1, sys->wind, 0);
 		player[myID].attflag = 1;
 		player[myID].attpatern = 1;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -204,6 +205,7 @@ void System::moveChara() {
 	}
 
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
+		Mix_PlayChannel(-1, sys->fire, 0);
 		player[myID].attflag = 1;
 		player[myID].attpatern = 2;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -220,6 +222,7 @@ void System::moveChara() {
 	}
 	/*ATTACK4*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 2) {
+		Mix_PlayChannel(-1, sys->thunder, 0);
 		player[myID].attflag = 1;
 		player[myID].attpatern = 4;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -237,6 +240,7 @@ void System::moveChara() {
 
 	/*ATTACK5*/
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 3) {
+		Mix_PlayChannel(-1, sys->ice, 0);
 		player[myID].attflag = 1;
 		player[myID].attpatern = 5;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -253,6 +257,7 @@ void System::moveChara() {
 	}
 	/*ATTACK7*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
+		Mix_PlayChannel(-1, sys->blade, 0);
 		player[myID].attflag = 1;
 		player[myID].attpatern = 7;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -271,6 +276,7 @@ void System::moveChara() {
 
 	/*ATTACK8*/
 	if (io->key[KEY_C] == 1 && player[myID].attflag == 0 && player[myID].chara == 3) {
+		Mix_PlayChannel(-1, sys->blade, 0);
 		player[myID].attflag = 1;
 		player[myID].attpatern = 8;
 		for (int serchEffect = 0; serchEffect < MAX_EFFECT; serchEffect++) {
@@ -336,8 +342,7 @@ void System::IPset() {
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE);
 
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT0);
 
         //light1
         sys->draw->lightpos[0] = sys->lighteffect[0].posX;
@@ -345,14 +350,14 @@ void System::IPset() {
         sys->draw->lightpos[2] = sys->lighteffect[0].posY;
         sys->draw->lightpos[3] = 1;
 
-        glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+        glLightfv(GL_LIGHT0, GL_POSITION, sys->draw->lightpos);
         GLfloat Light1Dir[] = { 0, -1, 0 };
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
-        glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
-        glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
-        glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
-        glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
+        glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 80.0f);
+        glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, sys->draw->WhiteLight);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, sys->draw->DifLight);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, sys->draw->SpecularLight);
 
         sys->map->drawMap();
 
@@ -422,8 +427,7 @@ void System::selConfig(){
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE);
 
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT0);
 
         //light1
         sys->draw->lightpos[0] = sys->lighteffect[0].posX;
@@ -431,14 +435,14 @@ void System::selConfig(){
         sys->draw->lightpos[2] = sys->lighteffect[0].posY;
         sys->draw->lightpos[3] = 1;
 
-        glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+        glLightfv(GL_LIGHT0, GL_POSITION, sys->draw->lightpos);
         GLfloat Light1Dir[] = { 0, -1, 0 };
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
-        glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
-        glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
-        glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
-        glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
+        glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 80.0f);
+        glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, sys->draw->WhiteLight);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, sys->draw->DifLight);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, sys->draw->SpecularLight);
 
         sys->map->drawMap();
 
@@ -497,9 +501,7 @@ int System::VOLset(int vol){
         //Light
         glEnable(GL_LIGHTING);
         glEnable(GL_NORMALIZE);
-
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT0);
 
         //light1
         sys->draw->lightpos[0] = sys->lighteffect[0].posX;
@@ -507,14 +509,14 @@ int System::VOLset(int vol){
         sys->draw->lightpos[2] = sys->lighteffect[0].posY;
         sys->draw->lightpos[3] = 1;
 
-        glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
+        glLightfv(GL_LIGHT0, GL_POSITION, sys->draw->lightpos);
         GLfloat Light1Dir[] = { 0, -1, 0 };
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, Light1Dir);
-        glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 80.0f);
-        glLightf( GL_LIGHT1, GL_SPOT_EXPONENT, 10.0f);
-        glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
-        glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
+        glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, Light1Dir);
+        glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 80.0f);
+        glLightf( GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, sys->draw->WhiteLight);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, sys->draw->DifLight);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, sys->draw->SpecularLight);
 
         sys->map->drawMap();
 

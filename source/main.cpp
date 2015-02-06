@@ -125,15 +125,26 @@ int main(int argc, char* argv[]) {
 
 	}
 
-	Mix_OpenAudio(22050, AUDIO_S16, 2, 4096);
+	Mix_OpenAudio(22050, AUDIO_S16, 16, 4096);
+	//Mix_VolumeMusic(30);
 	Mix_AllocateChannels(16);
 
-	//sys->bgm->Mix_LoadMUS("data/music/bgm.wav");
-	sys->damage = Mix_LoadWAV("data/music/damage_se.wav");
-	sys->wind = Mix_LoadWAV("data/music/se_wind.wav");
+	sys->bgm   = Mix_LoadMUS("data/music/Calamity_BGM.wav");
+	if(!sys->bgm)cout<<"Can't read bgm"<<SDL_GetError()<<endl;
+	sys->damage =  Mix_LoadWAV("data/music/damage_se.wav");
+	if(!sys->damage)cout<<"Can't read damage"<<SDL_GetError()<<endl;
+	sys->wind =    Mix_LoadWAV("data/music/se_wind.wav");
+	if(!sys->wind)cout<<"Can't read wind"<<SDL_GetError()<<endl;
+	sys->blade =   Mix_LoadWAV("data/music/ice_blade_se.wav");
+	if(!sys->blade)cout<<"Can't read blade"<<SDL_GetError()<<endl;
+	sys->fire =    Mix_LoadWAV("data/music/fire_se.wav");
+	if(!sys->fire)cout<<"Can't read fire"<<SDL_GetError()<<endl;
+	sys->ice =     Mix_LoadWAV("data/music/ice_se.wav");
+	if(!sys->ice)cout<<"Can't read ice"<<SDL_GetError()<<endl;
+	sys->thunder = Mix_LoadWAV("data/music/thunder_se.wav");
+	if(!sys->thunder)cout<<"Can't read thunder"<<endl;
 
-	sys->thunder = Mix_LoadWAV("thunder_se.wav");
-	//Mix_PlayMusic(sys->bgm,-1);
+	Mix_PlayMusic(sys->bgm,-1);
 
 	cout << "Stage =  " << sys->Stage << endl;
 
@@ -168,7 +179,7 @@ int main(int argc, char* argv[]) {
 			sys->IPset();
 			break;
 		case 7:
-			vol = sys->VOLset(vol);
+			Mix_VolumeMusic(vol = sys->VOLset(vol));
 			break;
 		case -1:
 			sys->selectChara();
