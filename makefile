@@ -21,7 +21,7 @@ ifeq "$(M64)" "-m64"
     ARCH=x64
 endif
   
-EXAMPLE     = testprogram
+EXAMPLE     = Calamity
 BINDIR      = ./
 SRCS 		= $(shell ls source/*.cpp)
 OBJDIR      = obj
