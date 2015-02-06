@@ -28,7 +28,6 @@ int BeforeTime;
 
 float angle = 0.0f;
 
-
 void Init() {
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glEnable(GL_BLEND);
@@ -47,7 +46,6 @@ void Init() {
 	cout << "Init() executed\n";
 	cout << "-----------------------\n\n\n";
 }
-
 
 void timeEnd() {
 	end = time(NULL);
@@ -83,6 +81,7 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 	SDL_WM_SetCaption("Calamity", NULL);
+
 
 	if (argc == 2 && strcmp(argv[1], "server") == 0) {
 		sys = new System(MODE_SERVER);
@@ -120,31 +119,43 @@ int main(int argc, char* argv[]) {
 		Init();
 
 		//Initialize System
-		if(argc>=2)wiimoteInit(argv[1]);
-		else cout <<"wii remote controler is not connected"<<endl;
+		if (argc >= 2)
+			wiimoteInit(argv[1]);
+		else
+			cout << "wii remote controler is not connected" << endl;
 
 	}
 
-	Mix_OpenAudio(22050, AUDIO_S16, 16, 4096);
+	if(Mix_OpenAudio(22050, AUDIO_S16, 2, 4096) != 0) {
+		fprintf(stderr, "Unable to initialize audio: %s\n", Mix_GetError());
+		exit(1);
+	}
 	//Mix_VolumeMusic(30);
 	Mix_AllocateChannels(16);
 
-	sys->bgm   = Mix_LoadMUS("data/music/Calamity_BGM.wav");
-	if(!sys->bgm)cout<<"Can't read bgm"<<SDL_GetError()<<endl;
-	sys->damage =  Mix_LoadWAV("data/music/damage_se.wav");
-	if(!sys->damage)cout<<"Can't read damage"<<SDL_GetError()<<endl;
-	sys->wind =    Mix_LoadWAV("data/music/se_wind.wav");
-	if(!sys->wind)cout<<"Can't read wind"<<SDL_GetError()<<endl;
-	sys->blade =   Mix_LoadWAV("data/music/ice_blade_se.wav");
-	if(!sys->blade)cout<<"Can't read blade"<<SDL_GetError()<<endl;
-	sys->fire =    Mix_LoadWAV("data/music/fire_se.wav");
-	if(!sys->fire)cout<<"Can't read fire"<<SDL_GetError()<<endl;
-	sys->ice =     Mix_LoadWAV("data/music/ice_se.wav");
-	if(!sys->ice)cout<<"Can't read ice"<<SDL_GetError()<<endl;
+	sys->bgm = Mix_LoadMUS("data/music/Calamity_BGM.wav");
+	if (!sys->bgm)
+		cout << "Can't read bgm" << SDL_GetError() << endl;
+	sys->damage = Mix_LoadWAV("data/music/damage_se.wav");
+	if (!sys->damage)
+		cout << "Can't read damage" << SDL_GetError() << endl;
+	sys->wind = Mix_LoadWAV("data/music/se_wind.wav");
+	if (!sys->wind)
+		cout << "Can't read wind" << SDL_GetError() << endl;
+	sys->blade = Mix_LoadWAV("data/music/ice_blade_se.wav");
+	if (!sys->blade)
+		cout << "Can't read blade" << SDL_GetError() << endl;
+	sys->fire = Mix_LoadWAV("data/music/fire_se.wav");
+	if (!sys->fire)
+		cout << "Can't read fire" << SDL_GetError() << endl;
+	sys->ice = Mix_LoadWAV("data/music/ice_se.wav");
+	if (!sys->ice)
+		cout << "Can't read ice" << SDL_GetError() << endl;
 	sys->thunder = Mix_LoadWAV("data/music/thunder_se.wav");
-	if(!sys->thunder)cout<<"Can't read thunder"<<endl;
+	if (!sys->thunder)
+		cout << "Can't read thunder" << endl;
 
-	Mix_PlayMusic(sys->bgm,-1);
+	Mix_PlayMusic(sys->bgm, -1);
 
 	cout << "Stage =  " << sys->Stage << endl;
 
@@ -224,6 +235,4 @@ int main(int argc, char* argv[]) {
 	}
 	return 0;
 }
-
-
 

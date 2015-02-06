@@ -93,10 +93,10 @@ void Draw::routine() {
 						glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 						GLfloat vertices[4][3] =
-								{{sys->player[i].x - 0.15 ,1.1, sys->player[i].z },
-								{ sys->player[i].x + 0.15 ,1.1  , sys->player[i].z },
-								{ sys->player[i].x + 0.15 ,0.8  , sys->player[i].z },
-								{ sys->player[i].x - 0.15 ,0.8, sys->player[i].z }, };
+								{{sys->player[i].x - 0.15 ,0.9, sys->player[i].z },
+								{ sys->player[i].x + 0.15 ,0.9  , sys->player[i].z },
+								{ sys->player[i].x + 0.15 ,0.7  , sys->player[i].z },
+								{ sys->player[i].x - 0.15 ,0.7, sys->player[i].z }, };
 						glBegin(GL_POLYGON);
 						//Normal3f(vertices[1], vertices[4], vertices[7]);
 						glTexCoord2i(0, 0);

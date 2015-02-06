@@ -51,6 +51,11 @@ void* clientMain(void*) {
 	signal(SIGPIPE, SIG_IGN);
 	usleep(1000000); //stop 1s for safe
 
+
+    while(1){
+        if(sys->Stage!=0)break;
+		usleep(1000000); //stop 1s
+    }
 	cout << "IP is " << sys->network->IP << endl;
 	FILE *fp;
 	fp = fopen("data/ip.txt", "r");

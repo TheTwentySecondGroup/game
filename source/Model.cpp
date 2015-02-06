@@ -70,7 +70,7 @@ void Model::Draw(double x, double y, double z, double dir) {
 
 	glPushMatrix();
 
-	glTranslatef(x, 0.2, z);
+	glTranslatef(x, 0, z);
 	glScalef(0.3f, 0.3f, 0.3f);
 	glRotatef(dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
 	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);

@@ -247,7 +247,7 @@ int netBase::clientCommand(char command, int index) {
 			FILE *fp;
 			char tmpchar[20];
 			memset(tmpchar, '0', 20);
-			sprintf(tmpchar, "data/%d_%d.bmp", Id, sys->myID);
+			sprintf(tmpchar, "data/%d.bmp", Id);
 			fp = fopen(tmpchar, "wb");
 			if (fp != NULL) {
 				fwrite((void*) tmpImage[Id], tmpImageSize[Id], 1, fp);
