@@ -205,6 +205,7 @@ void Draw::drawWin(int x, int y, int w, int h) {
 void Draw::drawHP(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
+	/*
 	for (int i = 0; i < 4; i++) {
 		string tmpstring;
 		if (sys->myID == i)
@@ -233,6 +234,7 @@ void Draw::drawHP(int x, int y, int w, int h) {
 		glEnd();
 		glDeleteTextures(1, tmpimage);
 	}
+*/
 	if (sys->player[sys->myID].hp >= 60) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
 	} else if (sys->player[sys->myID].hp < 60 && sys->player[sys->myID].hp >= 30) {
