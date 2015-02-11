@@ -2,7 +2,8 @@
  * netBase.cpp
  *
  *  Created on: 2014/11/28
- *      Author: chihiro
+ *  last update 2015/02/12
+ *      Author: Takeda
  */
 #include "global.h"
 #include "netBase.h"
@@ -180,16 +181,6 @@ int netBase::Accept(int ListenSocket) {
 
 }
 
-void netBase::sendId(void) {
-	int i, j;
-
-	for (i = 0; i < CLIENT_MAX; i++) {
-		send_data(i, &i, sizeof(int));
-		//for (j = 0; j < Num_clients; j++) {
-		//	send_data(i, Clients[j].name, MAX_NAME_SIZE);
-		//}
-	}
-}
 
 int netBase::clientCommand(char command, int index) {
 	int data_size;

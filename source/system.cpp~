@@ -119,7 +119,9 @@ int System::selectChara() {
     return 0;
 }
 
+void System::initChara() {
 
+}
 
 void System::moveChara() {
 

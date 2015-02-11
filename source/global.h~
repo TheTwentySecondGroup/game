@@ -46,6 +46,7 @@
 
 using namespace std;
 
+//main.c
 extern SDL_Joystick *joystick;
 //extern System *sys;
 //for time FPS調節用

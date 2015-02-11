@@ -2,7 +2,8 @@
  * net.cpp
  *
  *  Created on: 2014/11/26
- *      Author: chihiro
+ *  last update 2015/02/12
+ *      Author: Takeda
  */
 #include "global.h"
 #include "system.h"
@@ -15,6 +16,8 @@ using namespace std;
 /*-----------------------------------
  * server thread
  *---------------------------------*/
+
+
 void* waitingClient(void*) {
 	usleep(1000000);
 	while (1) {

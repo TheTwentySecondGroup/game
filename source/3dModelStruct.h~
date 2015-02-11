@@ -98,7 +98,7 @@ class material{
         vector <Flame> flame;
         FbxTime myTime,startTime,endTime;
 */
-        Model* model;//元モデルのポインタ
+        Model* model;
         material(){
         	texture=NULL;
 

@@ -2,7 +2,8 @@
  * netBase.h
  *
  *  Created on: 2014/11/28
- *      Author: chihiro
+ *  last update 2015/02/12
+ *      Author: Takeda
  */
 
 #ifndef SOURCE_NETBASE_H_
@@ -40,6 +41,8 @@ using namespace std;
 #define MAX_DATA 1024
 #define CLIENT_MAX 4
 
+
+//クライアント用クラス
 class client{
 public:
   int socket;
@@ -47,71 +50,54 @@ public:
   client();
 };
 
+
+//ネットワーク基礎クラス
 class netBase {
 public:
 	//vector<client> cli;
-	client cli[CLIENT_MAX];
-	client ser;
+	client cli[CLIENT_MAX];//クライアント
+	client ser;//サーバー
 
-	int listenSocket;
+	int listenSocket;//待ち受けソケット
 
 	//sync effect etc
 	//for client
-	int syncEffectFlag;
+	int syncEffectFlag;//エフェクト同期用フラグ
 	//for server
-	int syncEEffectFlag[MAX_EFFECT];
+	int syncEEffectFlag[MAX_EFFECT];//エフェクト同期用フラグ
 
-	char* tmpImage[4];
+	char* tmpImage[4];//顔画像送信用
 
-	int tmpImageSize[4];
+	int tmpImageSize[4];//顔画像サイズ
 
-	int syncImageFlag[4];
+	int syncImageFlag[4];//顔画像同期用フラグ
 
 
 	netBase();
 	virtual ~netBase();
 
 	void Close(void);
-	int receive_data(int index, void *data, int data_size);
-	int send_data(int index, void *data, int data_size);
+	int receive_data(int index, void *data, int data_size);//データ受信用関数
+	int send_data(int index, void *data, int data_size);//データ送信用関数
 
 
-	int sendData(int index, void *data, int data_size) ;
-	int receiveData(int index, void *data, int data_size);
+	int sendData(int index, void *data, int data_size) ;//データ送信用関数2
+	int receiveData(int index, void *data, int data_size);//データ受信用関数2
 
 
 
-	int Accept(int);
+	int Accept(int);//accept用関数
 
-	void sendId(void);
 
 
 	//for client
 	//int Connect(void);
-	int routineClient(void);
+	int routineClient(void);//クライアントルーチン
 
 
 
-
-//	int multi_accept(int request_socket, int num_clients);
-	void receive_user_name(int i, int fd) ;
-	void set_mask(int num_clients, int maxfd);
-	void send_all_names(void) ;
-	int execute_command(char command, int index);
-
-	int serverCommand(char command, int index);
-	int clientCommand(char command, int index);
-
-
-
-
-	void set_double_data2data_block(void *data, double double_data,int *data_size);
-	void set_int_data2data_block(void *data, int int_data, int *data_size);
-	void set_data_block2int_data(int *int_data, void *data, int *data_size);
-	void set_char_data2data_block(void *data, char char_data, int *data_size);
-	void set_string_data2data_block(void *data, char *string_data, int string_length, int *data_size);
-	void set_data_block2string_data(char *string_data, void *data, int string_length, int *data_size);
-
+	int serverCommand(char command, int index);//サーバー用コマンド実行関数
+	int clientCommand(char command, int index);//クライアント用コマンド実行関数
 
 };
 

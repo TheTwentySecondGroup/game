@@ -16,8 +16,8 @@ class Map {
 
 	Map();
 	~Map();
-	int initMap(int);//マップ初期化
-	void drawMap();//マップ描写
+	int initMap(int);
+	void drawMap();
 	//void drawCube();
 	//int initMap();
 	//void drawCube(int, int);
@@ -31,7 +31,7 @@ class Map {
 	 3  = no floor
 	 4  = goal
 	 */
-	int data[MAP_X_MAX][MAP_Y_MAX];//マップデータ
+	int data[MAP_X_MAX][MAP_Y_MAX];
 
 };
 #endif

@@ -1,3 +1,10 @@
+/*
+ * lightEffect.cpp
+ *
+ *  last update 2015/02/12
+ *      Author: Takeda
+ */
+
 #include "global.h"
 #include "lightEffect.h"
 #include "draw.h"

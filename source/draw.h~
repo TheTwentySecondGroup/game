@@ -41,9 +41,9 @@ public:
 	void init3D();
 //set 2D
 	void init2D();
-//処理ルーチン
+
 	void routine();
-//キャラクターセレクト画面描写
+
 	void drawCharaSelect();
 
 //draw floor x,y

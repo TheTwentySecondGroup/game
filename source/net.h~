@@ -2,8 +2,7 @@
  * net.h
  *
  *  Created on: 2014/11/26
- *  last update 2015/02/12
- *      Author: Takeda
+ *      Author: chihiro
  */
 
 #ifndef SOURCE_NET_H_
@@ -32,37 +31,15 @@ public:
 	NetClass(int mode);
 	~NetClass();
 
-	/*
-	 *サーバー用セットアップ関数
-	 * */
+
 	int setServer();//set up server 
-	
-	
-	
-	
-	/*
-	 *サーバールーチン
-	 * */
 	int routineServer(); //routine of server
 
-
-	/*
-	 *クライアント用セットアップ関数
-	 * */
 	int setClient(char*);//set up client
-
-
-
-	/*
-	 *クライアントルーチン
-	 * */
 	int routineClient();//routine of client
 
+	int waitingClient();//
 
-	/*
-	 *待ち受けソケット待機用
-	 * */
-	int waitingClient();
 };
 
 #endif /* SOURCE_NET_H_ */
