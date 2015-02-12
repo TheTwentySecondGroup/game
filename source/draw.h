@@ -1,3 +1,10 @@
+/*
+ * draw.h
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 #ifndef __DRAW_H__
 #define __DRAW_H__
 
@@ -34,9 +41,9 @@ public:
 	void init3D();
 //set 2D
 	void init2D();
-
+//処理ルーチン
 	void routine();
-
+//キャラクターセレクト画面描写
 	void drawCharaSelect();
 
 //draw floor x,y

@@ -1,3 +1,10 @@
+/*
+ * 3dModelStruct.h
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 #ifndef _3DSTRUCT_H_
 #define _3DSTRUCT_H_
 
@@ -55,23 +62,22 @@ class UV{
             u=0;v=0;
         }
 };
-
-
+/*
 class TEXTURE{
     public:
         TEXTURE(const char* FileName,char* dataType);
         char* image;//イメージポインタ
         int x,y;//size
 };
-
-
+*/
+/*
 class Flame{
 public:
 	vector <vec3f> ver;
 	vector <double> weight;
 	vector <FbxAMatrix> bone;
 };
-
+*/
 class material{
     public:
 		string textureName;
@@ -82,7 +88,7 @@ class material{
         vector <int> index;//インデックスバッファ
         double shininess;
         GLuint *texture;//テクスチャハンドル
-
+/*
         vector <string> weightName;
         vector <int>weightIndex;
         vector <float>weight;
@@ -91,8 +97,8 @@ class material{
 
         vector <Flame> flame;
         FbxTime myTime,startTime,endTime;
-
-        Model* model;
+*/
+        Model* model;//元モデルのポインタ
         material(){
         	texture=NULL;
 

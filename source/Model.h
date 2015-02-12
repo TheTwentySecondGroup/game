@@ -1,3 +1,10 @@
+/*
+ * Model.h
+ *
+ *  last update 2015/02/12
+ *      Author: Takeda
+ */
+
 #ifndef _MODEL_H
 #define _MODEL_H
 //#define FBXSDK_NEW_API
@@ -19,14 +26,19 @@ class Model {
 public:
 	Model(const char* filename);
 	~Model();
-
+	
+	//ルートノード
 	FbxNode* rootnode;
+
+
 	int getMesh(FbxNode* node,FbxAMatrix&); //情報所得
 
-	void GetAnimation(const char*);
+	//void GetAnimation(const char*);
 
-	vector<string> split(const string &str, char delim);
+	vector<string> split(const string &str, char delim);//テクスチャ名編集用
 
+
+	/*
 	void getWeight(FbxMesh* mesh, material *mattemp,FbxAMatrix&);
 	FbxAMatrix GetGeometry(FbxNode* node);
 	void ComputeClusterDeformation(FbxAMatrix& pGlobalPosition, FbxMesh* pMesh, FbxCluster* pCluster,
@@ -47,14 +59,14 @@ public:
 	int poseNum;
 	FbxPose *pPose;
 	int myTime;
-
+*/
 
 	void Draw(double x, double y, double z, double dir); //描写
 	char Name[256]; //モデル名
 	vector<material> mat; //モデルの情報
-	vector<TEXTURE> texture; //テクスチャデータ
+	//vector<TEXTURE> texture; //テクスチャデータ
 
-	FbxScene *animScene;
+	//FbxScene *animScene;
 
 };
 

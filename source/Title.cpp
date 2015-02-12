@@ -1,3 +1,9 @@
+/*
+ * Title.cpp
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
 #include "global.h"
 #include "draw.h"
 #include "Title.h"
@@ -64,7 +70,7 @@ void Title::drawMenu(int x, int y, int w, int h, string mes) {
 	glEnd();
 	glDeleteTextures(1, tmpimage);
 }
-
+/*
 void Title::drawMenuCube(int x, int y, GLuint *texture, double sw) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, sys->draw->WhiteMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, sys->draw->WhiteMaterial);
@@ -87,7 +93,7 @@ void Title::drawMenuCube(int x, int y, GLuint *texture, double sw) {
 	glVertex3fv(vertices[3]);
 	glEnd();
 }
-
+*/
 void Title::routine() {
 
 	if ((sys->io->key[KEY_UP] == 1)) {

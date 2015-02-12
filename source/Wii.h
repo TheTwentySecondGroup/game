@@ -1,3 +1,10 @@
+/*
+ * Wii.h
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9,9 +16,9 @@ extern "C" {
 #include <SDL/SDL.h>
 
 
-void* wiimoteUpdate(void* pParam);
-void wiimoteInit(char*);
-int checkpress();
+void* wiimoteUpdate(void* pParam);//情報アップデート
+void wiimoteInit(char*);//初期化
+int checkpress();//キー状態確認
 
 
 

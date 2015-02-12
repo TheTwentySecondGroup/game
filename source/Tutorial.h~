@@ -11,15 +11,15 @@
 class Tutorial {
 public:
 	//System *sys;
-	int Slide;//カレントスライド
+	int Slide;
 
-	void routine();//処理ルーチン
-	void draw(int n);//描写
+	void routine();
+	void draw(int n);
 
 	Tutorial();
 	~Tutorial();
 
 
-	//void drawText();//文字表示
+	void drawText();
 };
 #endif

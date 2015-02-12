@@ -1,3 +1,10 @@
+/*
+ * global.h
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 //for C
 #include <stdio.h>
 #include <unistd.h>
@@ -39,21 +46,16 @@
 
 using namespace std;
 
-//main.c
 extern SDL_Joystick *joystick;
 //extern System *sys;
-//for time 
+//for time FPS調節用
 extern time_t start, now;
 extern int MaxTime;
 extern int BeforeTime;
 //for my position 
 //extern struct Obj myPos;
 
-//store goal position
-extern int goalX, goalY;
 
-//main.c
-void restart();
 void timeReset();
 void timeProc();
 void timeEnd();

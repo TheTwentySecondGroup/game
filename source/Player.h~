@@ -30,7 +30,7 @@ public:
 	//1以上の時はダメージを受けない
 	int avoidDamageCount;
 
-	void routine();//プレイヤールーチン
+	void routine();
 	Player();
 	~Player();
 };

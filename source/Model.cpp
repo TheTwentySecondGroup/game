@@ -1,12 +1,19 @@
+/*
+ * Model.cpp
+ *
+ *  last update 2015/02/12
+ *      Author: Takeda
+ */
+
 #include "global.h"
 #include "system.h"
 #include "Model.h"
 
 Model::Model(const char* filename) {
-	myTime = 0;
+	//myTime = 0;
 	bzero(Name, '\0');
 	strcpy(Name, filename);
-	cout << "A model \"" << filename << "\" is loading\n";
+	//cout << "A model \"" << filename << "\" is loading\n";
 
 	FbxManager *manager = FbxManager::Create();
 
@@ -24,21 +31,21 @@ Model::Model(const char* filename) {
 	FbxGeometryConverter geometryConverter(manager);
 	geometryConverter.Triangulate(scene, true);
 	geometryConverter.SplitMeshesPerMaterial(scene, true);
-
+/*
 	//animation
 	FbxTakeInfo* takeInfo = importer->GetTakeInfo(0);
 	if (takeInfo != NULL) {
 		importOffset = takeInfo->mImportOffset;
 		startTime = takeInfo->mLocalTimeSpan.GetStart();
 		stopTime = takeInfo->mLocalTimeSpan.GetStop();
-	}
+	}*/
 
 	importer->Destroy();
-
+/*
 	poseNum = scene->GetPoseCount();
 	cout << "scene->GetPoseCount() ==" << scene->GetPoseCount() << endl;
 	pPose = NULL; //scene->GetPose(0);
-
+*/
 	rootnode = scene->GetRootNode();
 
 	if (rootnode) {
@@ -46,7 +53,7 @@ Model::Model(const char* filename) {
 		this->getMesh(rootnode, dummy);
 
 	} else {
-		cout << "rootnode is NULL" << endl;
+		//cout << "rootnode is NULL" << endl;
 	}
 
 	//GetAnimation("data/fbx/n.fbx");
@@ -58,10 +65,11 @@ Model::~Model() {
 }
 
 void Model::Draw(double x, double y, double z, double dir) {
-
+/*
 	if (myTime++ && myTime >= mat[0].flame.size()) {
 		myTime = 0;
 	}
+	*/
 	//cout << "myTime=" << myTime << endl;
 	//cout << "Model::Draw start" << endl;
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -97,36 +105,11 @@ void Model::Draw(double x, double y, double z, double dir) {
 		}
 
 		glNormalPointer(GL_FLOAT, sizeof(vec3f), &mat[i].nor[0].x);
-		/*
-		 cout << "lahgsf" << endl;
-		 vector<vec3f> transVec;
-		 cout << "size =" << mat[i].flame.size() << endl;
-		 for (int j = 0; j < mat[i].ver.size(); j++) {
-		 //cout<<j<<endl;;
-		 FbxVector4 vertex(mat[i].ver[j].x, mat[i].ver[j].y, mat[i].ver[j].z);
-		 FbxVector4 transVertex = vertex;
-		 double lWeight = mat[i].weight[j];
-		 if (lWeight != 0.0) {
-		 if (mat[i].flame[j].bone.size() >= j)
-		 transVertex = mat[i].flame[myTime].bone[0].MultT(vertex);
-		 transVertex += vertex * (1.0 - lWeight);
-		 }
-		 vec3f tmp;
-		 tmp.x = transVertex[0];
-		 tmp.y = transVertex[1];
-		 tmp.z = transVertex[2];
 
-		 transVec.push_back(tmp);
-		 }
-
-		 cout << "asgfsrfg" << endl;
-		 glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &transVec[0].x);
-		 */
-
-		if (mat[i].flame.size() == 0)
+		//if (mat[i].flame.size() == 0)
 			glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].ver[0].x);
-		else
-			glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].flame[myTime].ver[0].x);
+		//else
+			//glVertexPointer(3, GL_FLOAT, sizeof(vec3f), &mat[i].flame[myTime].ver[0].x);
 
 		glDrawArrays(GL_TRIANGLES, 0, mat[i].ver.size());
 
@@ -144,8 +127,8 @@ int Model::getMesh(FbxNode* node, FbxAMatrix& globalPosition) {
 	FbxNodeAttribute* attr = node->GetNodeAttribute();
 	//FbxAMatrix lGlobalOffPosition;
 	if (attr != NULL) {
-		FbxAMatrix lGeometryOffset = GetGeometry(node);
-		FbxAMatrix lGlobalOffPosition = globalPosition * lGeometryOffset;
+		//FbxAMatrix lGeometryOffset = GetGeometry(node);
+		//FbxAMatrix lGlobalOffPosition = globalPosition * lGeometryOffset;
 
 		if (attr->GetAttributeType() == FbxNodeAttribute::eMesh) {
 			//syori
@@ -377,7 +360,7 @@ int Model::getMesh(FbxNode* node, FbxAMatrix& globalPosition) {
 				}
 			}
 
-			getWeight(node->GetMesh(), &mattemp, lGlobalOffPosition);
+			//getWeight(node->GetMesh(), &mattemp, lGlobalOffPosition);
 			mat.push_back(mattemp);
 
 			cout << "mat.push_back complated\n";
@@ -396,7 +379,7 @@ int Model::getMesh(FbxNode* node, FbxAMatrix& globalPosition) {
 
 	return 1;
 }
-
+/*
 void Model::GetAnimation(const char* filename) {
 	FbxManager *manager = FbxManager::Create();
 
@@ -433,6 +416,7 @@ void Model::GetAnimation(const char* filename) {
 //FbxAnimEvaluator* mySceneEvaluator = scene->GetEvaluator();
 
 }
+*/
 
 vector<string> Model::split(const string &str, char delim) {
 	vector<string> res;
@@ -444,7 +428,7 @@ vector<string> Model::split(const string &str, char delim) {
 	res.push_back(string(str, current, str.size() - current));
 	return res;
 }
-
+/*
 void Model::getWeight(FbxMesh* mesh, material *mattemp, FbxAMatrix &globalPosition) {
 
 	int skinCount = mesh->GetDeformerCount(FbxDeformer::eSkin);
@@ -654,10 +638,14 @@ void Model::MatrixScale(FbxAMatrix& pMatrix, double pValue) {
 		}
 	}
 }
-FbxAMatrix Model::GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPose,
-		FbxAMatrix* pParentGlobalPosition) {
-	FbxAMatrix lGlobalPosition;
-	bool lPositionFound = false;
+
+*/
+
+
+//FbxAMatrix Model::GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPose* pPose,
+//		FbxAMatrix* pParentGlobalPosition) {
+//	FbxAMatrix lGlobalPosition;
+//	bool lPositionFound = false;
 	/*
 	 if (pPose) {
 	 int lNodeIndex = pPose->Find(pNode);
@@ -689,7 +677,7 @@ FbxAMatrix Model::GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPos
 	 }
 	 }
 	 */
-	if (!lPositionFound) {
+//	if (!lPositionFound) {
 		// There is no pose entry for that node, get the current global position instead.
 
 		// Ideally this would use parent global position and local position to compute the global position.
@@ -697,12 +685,12 @@ FbxAMatrix Model::GetGlobalPosition(FbxNode* pNode, const FbxTime& pTime, FbxPos
 		//    lGlobalPosition = pParentGlobalPosition * lLocalPosition
 		// does not hold when inheritance type is other than "Parent" (RSrs).
 		// To compute the parent rotation and scaling is tricky in the RrSs and Rrs cases.
-		lGlobalPosition = pNode->EvaluateGlobalTransform(pTime);
-	}
-
-	return lGlobalPosition;
-}
-
+//		lGlobalPosition = pNode->EvaluateGlobalTransform(pTime);
+//	}
+//
+//	return lGlobalPosition;
+//}
+/*
 FbxAMatrix Model::GetPoseMatrix(FbxPose* pPose, int pNodeIndex) {
 	FbxAMatrix lPoseMatrix;
 	FbxMatrix lMatrix = pPose->GetMatrix(pNodeIndex);
@@ -728,4 +716,4 @@ void Model::MatrixAdd(FbxAMatrix& pDstMatrix, FbxAMatrix& pSrcMatrix) {
 			pDstMatrix[i][j] += pSrcMatrix[i][j];
 		}
 	}
-}
+}*/

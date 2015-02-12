@@ -1,3 +1,10 @@
+/*
+ * main.cpp
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 #include "global.h"
 #include "Model.h"
 #include "draw.h"

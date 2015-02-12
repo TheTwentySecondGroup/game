@@ -1,8 +1,8 @@
 /*
  * io.h
  *
- *  Created on: 2014/11/25
- *      Author: chihiro
+ *  last update 2015/02/12
+ *      Author: Murokawa
  */
 
 #ifndef SOURCE_IO_H_
@@ -28,11 +28,11 @@ using namespace std;
 class GameIO {
 public:
 	//0==off    0<key[i]  on
-	int key[KEY_MAX];
+	int key[KEY_MAX];//キー情報
 
-	SDL_Joystick *joystick;
+	SDL_Joystick *joystick;//ジョイスティックハンドル
 
-	void routine();
+	void routine();//処理ルーチン
 	GameIO();
 	~GameIO();
 };

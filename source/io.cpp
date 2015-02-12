@@ -1,8 +1,8 @@
 /*
  * io.cpp
  *
- *  Created on: 2014/11/25
- *      Author: chihiro
+ *  last update 2015/02/12
+ *      Author: Murokawa
  */
 #include "global.h"
 #include "io.h"

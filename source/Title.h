@@ -1,3 +1,9 @@
+/*
+ * Title.h
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
 #ifndef __TITLE_H__
 #define __TITLE_H__
 
@@ -11,18 +17,18 @@ namespace std {
 class Title {
 public:
 
-	int sel;
-	int KeyFlag;
-	GLuint *titleImage[7];
-	string menuString[CHOICE_MAX];
+	int sel;//カーソル
+	int KeyFlag;//キーフラグ
+	GLuint *titleImage[7];//画像ハンドル
+	string menuString[CHOICE_MAX];//メニューの文字
 	Title();
 
 	~Title();
-	void routine();
-	void drawTitle();
+	void routine();//タイトルルーチン
+	void drawTitle();//タイトル画面描写
 	//void delTitle();
-	void drawMenuCube(int x, int y, GLuint *texture, double sw);
-	void drawMenu(int x, int y, int w, int h,string mes) ;
+	//void drawMenuCube(int x, int y, GLuint *texture, double sw);
+	void drawMenu(int x, int y, int w, int h,string mes) ;//メニュー表示関数
 };
 }
 #endif

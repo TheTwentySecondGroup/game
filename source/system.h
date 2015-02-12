@@ -1,3 +1,10 @@
+/*
+ * system.h
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 #ifndef __SYSTEM_H__
 #define __SYSTEM_H__
 
@@ -26,31 +33,23 @@ public:
 
 	//shortcut
 	Draw *draw;
-
 	Title *title;
-
 	Tutorial *tutorial;
-
 	GameIO *io;
-
 	Map *map;
-
 	Player *player;
-
 	NetClass *network;
-	
 	Effect *effect;
-
 	lightEffect *lighteffect;
 
-	int mode;
+	int mode;//モード
 
-	int myID;
+	int myID;//ID
 	//int myChara;
-	int selChara;
-	int selConf;
-	int Stage;
-	int charatype;
+	int selChara;//選択キャラ
+	int selConf;//選択conf
+	int Stage;//ステージ
+	int charatype;//キャラの種類
 
 
 	float dx, dy;
@@ -60,30 +59,32 @@ public:
 	//Obj player[4];
 
 
-	TTF_Font *font;
-	vector<Model> model;
+	TTF_Font *font;//フォント
+	vector<Model> model;//モデル
 
-	GLuint *faceImage[4];
-	GLuint *myFaceImage;
+	GLuint *faceImage[4];//顔画像ハンドル
+	GLuint *myFaceImage;//自分の顔
 
-	int sendFaceFlag;
+	int sendFaceFlag;//顔画像送信フラグ
 
 	System(int);
 	~System();
-	void initChara();
-	int selectChara();
+
+
+	int selectChara(); //キャラ選択画面
 	void moveChara();	//キャラの移動
 	int judgeHit(int mode,Player *pl,Effect *ef);	//当たり判定
 	void gameMain();	//ゲームのメイン
-	void IPset();
-	void selConfig();
-	int VOLset(int vol);
-	void detectCollision();
+	void IPset();//IPaddress設定画面
+	void selConfig();// コンフィグ画面
+	int VOLset(int vol);//音量調節画面
+	void detectCollision();//当たり判定実行関数
 
+//camera用
 	CvCapture *capture;
 	IplImage *sourceImage;
-	int initCamera();
-	int capImage();
+	int initCamera();//カメラ初期化
+	int capImage();//写真所得
 
 
 

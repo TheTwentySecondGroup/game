@@ -1,3 +1,10 @@
+/*
+ * system.cpp
+ *
+ *  last update 2015/02/12
+ *      Author: Murokawa,Takeda
+ */
+
 #include"global.h"
 #include "draw.h"
 #include "Title.h"
@@ -102,9 +109,7 @@ int System::selectChara() {
     return 0;
 }
 
-void System::initChara() {
 
-}
 
 /*キャラの移動と攻撃の受付*/
 void System::moveChara() {
