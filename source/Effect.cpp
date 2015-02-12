@@ -17,7 +17,7 @@ Effect::Effect() {
 	r = 0;
 	dir = 0;
 	fromPlayerID = 0;
-
+	/*攻撃エフェクト用のテクスチャの読み込み*/
 	effectImage[0] = sys->draw->initTexture("data/image/beam.bmp");
 	effectImage[1] = sys->draw->initTexture("data/image/star5.bmp");
 	effectImage[2] = sys->draw->initTexture("data/image/mist.bmp");
@@ -34,10 +34,8 @@ Effect::Effect() {
 }
 
 void Effect::routine() {
-	//if(fromPlayerID == sys->myID)
-
 	if (f > 0) {
-
+		/*エフェクトの座標を移動*/
 		if(f == 2 && count >= 50 || f == 7 && count >= 20 || f == 8 && count >= 20){
 			z+=cos(dir)/2;
 			x+=sin(dir)/2;
@@ -48,7 +46,7 @@ void Effect::routine() {
 				count = COUNT;
 			}
 		}
-
+		/*countが規定値になったらエフェクトを消去*/
 		count++;
 		if (count >= COUNT) {
 			sys->player[sys->myID].attflag = 0;
@@ -66,6 +64,7 @@ void Effect::routine() {
 	}
 }
 
+/*drawAttackの呼び出し*/
 void Effect::draw() {
 	glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -102,9 +101,9 @@ void Effect::draw() {
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
+/*draw Attack1*/
 void Effect::drawAttack() {
-	//glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);    //テクスチャを両面に貼り付ける
 	glEnable(GL_BLEND);
 	glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
@@ -112,13 +111,17 @@ void Effect::drawAttack() {
 	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
 
 	glTranslatef(x, 0, z);
-	glRotated(r, 0.0, 1.0, 0.0);
+	glRotated(r, 0.0, 1.0, 0.0);	//エフェクトをY軸中心に回転
 	glTranslatef(-x, 0, -z);
 
 	glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_BLEND);
-	GLfloat vertices[4][3] = { { x + 2, 0.1, z + 2 }, { x - 2, 0.1, z + 2 }, { x - 2, 0.1, z - 2 },
-			{ x + 2, 0.1, z - 2 }, };
+	GLfloat vertices[4][3] = { 
+		{ x + 2, 0.1, z + 2 }, 
+		{ x - 2, 0.1, z + 2 }, 
+		{ x - 2, 0.1, z - 2 },
+		{ x + 2, 0.1, z - 2 }, 
+	};
+	//ポリゴンを使ってテクスチャ貼りつけ用の面を生成
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	glTexCoord2i(0, 0);
@@ -135,8 +138,12 @@ void Effect::drawAttack() {
 	glEnable(GL_BLEND);
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	{
-		GLfloat vertices2[4][3] = { { x + 2, 1.5, z + 2 }, { x - 2, 1.5, z + 2 }, { x - 2, 0.3, z + 2 }, { x + 2, 0.3, z
-				+ 2 }, };
+		GLfloat vertices2[4][3] = { 
+			{ x + 2, 1.5, z + 2 }, 
+			{ x - 2, 1.5, z + 2 }, 
+			{ x - 2, 0.3, z + 2 }, 
+			{ x + 2, 0.3, z + 2 }, 
+		};
 		glBegin(GL_POLYGON);
 		glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 		glTexCoord2i(0, 0);
@@ -152,8 +159,12 @@ void Effect::drawAttack() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
 	{
-		GLfloat vertices3[4][3] = { { x + 2, 1.5, z - 2 }, { x - 2, 1.5, z - 2 }, { x - 2, 0.3, z - 2 }, { x + 2, 0.3, z
-				- 2 }, };
+		GLfloat vertices3[4][3] = { 
+			{ x + 2, 1.5, z - 2 }, 
+			{ x - 2, 1.5, z - 2 }, 
+			{ x - 2, 0.3, z - 2 }, 
+			{ x + 2, 0.3, z - 2 }, 
+		};
 		glBegin(GL_POLYGON);
 		glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 		glTexCoord2i(0, 0);
@@ -168,8 +179,12 @@ void Effect::drawAttack() {
 	}
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
-	GLfloat vertices4[4][3] = { { x - 2, 1.5, z + 2 }, { x - 2, 1.5, z - 2 }, { x - 2, 0.3, z - 2 },
-			{ x - 2, 0.3, z + 2 }, };
+	GLfloat vertices4[4][3] = { 
+		{ x - 2, 1.5, z + 2 }, 
+		{ x - 2, 1.5, z - 2 }, 
+		{ x - 2, 0.3, z - 2 },
+		{ x - 2, 0.3, z + 2 },
+	 };
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
 	glTexCoord2i(0, 0);
@@ -183,8 +198,12 @@ void Effect::drawAttack() {
 	glEnd();
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[2]);
-	GLfloat vertices5[4][3] = { { x + 2, 1.5, z + 2 }, { x + 2, 1.5, z - 2 }, { x + 2, 0.3, z - 2 },
-			{ x + 2, 0.3, z + 2 }, };
+	GLfloat vertices5[4][3] = { 
+		{ x + 2, 1.5, z + 2 }, 
+		{ x + 2, 1.5, z - 2 }, 
+		{ x + 2, 0.3, z - 2 },
+		{ x + 2, 0.3, z + 2 },
+	 };
 
 	glBegin(GL_POLYGON);
 	glNormal3f(sys->player[sys->myID].xd, sys->player[sys->myID].yd, 0);
@@ -205,14 +224,13 @@ void Effect::drawAttack() {
 		r = 0;
 }
 
+/*draw Attack2*/
 void Effect::drawAttack2() {
 	glEnable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glPushMatrix();
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
-
-	glDisable(GL_CULL_FACE);
 
 	if (count >= 20) {
 		glBindTexture(GL_TEXTURE_2D, *effectImage[3]);
@@ -261,20 +279,23 @@ void Effect::drawAttack2() {
 	glDisable(GL_BLEND);
 }
 
+/*draw Attack3*/
 void Effect::drawAttack3() {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
 	glPushMatrix();
 	glEnable(GL_BLEND);
-	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
-
-	glDisable(GL_CULL_FACE);
+	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);;
 
 	if (count >= 50) {
 		glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
 		{
-			GLfloat vertices2[4][3] = { { x + 0.6, 1.1, z + 0.6 }, { x + 0.6, 0.1, z + 0.6 }, { x + 0.6, 0.1, z - 0.6 },
-					{ x + 0.6, 1.1, z - 0.6 }, };
+			GLfloat vertices2[4][3] = { 
+				{ x + 0.6, 1.1, z + 0.6 }, 
+				{ x + 0.6, 0.1, z + 0.6 }, 
+				{ x + 0.6, 0.1, z - 0.6 },
+				{ x + 0.6, 1.1, z - 0.6 }, 
+			};
 
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
@@ -290,8 +311,12 @@ void Effect::drawAttack3() {
 
 		glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
 		{
-			GLfloat vertices3[4][3] = { { x - 0.6, 1.1, z + 0.6 }, { x - 0.6, 0.1, z + 0.6 }, { x - 0.6, 0.1, z - 0.6 },
-					{ x - 0.6, 1.1, z - 0.6 }, };
+			GLfloat vertices3[4][3] = { 
+				{ x - 0.6, 1.1, z + 0.6 }, 
+				{ x - 0.6, 0.1, z + 0.6 }, 
+				{ x - 0.6, 0.1, z - 0.6 },
+				{ x - 0.6, 1.1, z - 0.6 }, 
+			};
 
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
@@ -307,8 +332,12 @@ void Effect::drawAttack3() {
 
 		glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
 		{
-			GLfloat vertices4[4][3] = { { x - 0.6, 0.1, z + 0.6 }, { x + 0.6, 0.1, z + 0.6 }, { x + 0.6, 0.1, z - 0.6 },
-					{ x - 0.6, 0.1, z - 0.6 }, };
+			GLfloat vertices4[4][3] = { 
+				{ x - 0.6, 0.1, z + 0.6 }, 
+				{ x + 0.6, 0.1, z + 0.6 }, 
+				{ x + 0.6, 0.1, z - 0.6 },
+				{ x - 0.6, 0.1, z - 0.6 }, 
+			};
 
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
@@ -324,8 +353,12 @@ void Effect::drawAttack3() {
 
 		glBindTexture(GL_TEXTURE_2D, *effectImage[0]);
 		{
-			GLfloat vertices5[4][3] = { { x - 0.6, 1.1, z + 0.6 }, { x + 0.6, 1.1, z + 0.6 }, { x + 0.6, 1.1, z - 0.6 },
-					{ x - 0.6, 1.1, z - 0.6 }, };
+			GLfloat vertices5[4][3] = { 
+				{ x - 0.6, 1.1, z + 0.6 }, 
+				{ x + 0.6, 1.1, z + 0.6 }, 
+				{ x + 0.6, 1.1, z - 0.6 },
+				{ x - 0.6, 1.1, z - 0.6 }, 
+			};
 
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
@@ -348,12 +381,17 @@ void Effect::drawAttack3() {
 	glTranslatef(-x, 0, -z);
 
 	glTranslatef(x, 0.5, 0);
-	glRotated(r, 0.0, 0.0, 1.0);
+	glRotated(r, 0.0, 0.0, 1.0);	//エフェクトをz軸中心に回転
 	glTranslatef(-x, -0.5, 0);
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[1]);
 	{
-		GLfloat vertices1[4][3] = { { x + 0.5, 1, z }, { x - 0.5, 1, z }, { x - 0.5, 0, z }, { x + 0.5, 0, z }, };
+		GLfloat vertices1[4][3] = { 
+			{ x + 0.5, 1, z }, 
+			{ x - 0.5, 1, z }, 
+			{ x - 0.5, 0, z }, 
+			{ x + 0.5, 0, z }, 
+		};
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		glColor4f(1.0, 1.0, 1.0, 0.5);
 		glBegin(GL_POLYGON);
@@ -369,13 +407,14 @@ void Effect::drawAttack3() {
 	}
 
 	glDisable(GL_BLEND);
-//r=0;
+
 	if ((r += 15) >= 360)
 		r = 0;
 	glPopMatrix();
 	glEnable(GL_DEPTH_TEST);
 }
 
+/*draw Attack4*/
 void Effect::drawAttack4() {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -386,11 +425,14 @@ void Effect::drawAttack4() {
 	glEnable(GL_BLEND);
 
 	if (count % 2 == 0) {
-		//glEnable(GL_BLEND);
 		glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
 		{
-			GLfloat vertices1[4][3] = { { x + 2, 1.5, z + 2 }, { x - 2, 1.5, z + 2 }, { x - 2, 0.3, z + 2 }, { x + 2,
-					0.3, z + 2 }, };
+			GLfloat vertices1[4][3] = { 
+				{ x + 2, 1.5, z + 2 },
+				{ x - 2, 1.5, z + 2 },
+				{ x - 2, 0.3, z + 2 },
+				{ x + 2,0.3, z + 2 },
+			 };
 
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
@@ -406,8 +448,12 @@ void Effect::drawAttack4() {
 
 		glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
 		{
-			GLfloat vertices1[4][3] = { { x + 2, 1.5, z - 2 }, { x - 2, 1.5, z - 2 }, { x - 2, 0.3, z - 2 }, { x + 2,
-					0.3, z - 2 }, };
+			GLfloat vertices1[4][3] = { 
+				{ x + 2, 1.5, z - 2 }, 
+				{ x - 2, 1.5, z - 2 }, 
+				{ x - 2, 0.3, z - 2 }, 
+				{ x + 2,0.3, z - 2 }, 
+			};
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
 			glVertex3fv(vertices1[0]);
@@ -422,8 +468,12 @@ void Effect::drawAttack4() {
 
 		glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
 		{
-			GLfloat vertices1[4][3] = { { x - 2, 1.5, z + 2 }, { x - 2, 1.5, z - 2 }, { x - 2, 0.3, z - 2 }, { x - 2,
-					0.3, z + 2 }, };
+			GLfloat vertices1[4][3] = { 
+				{ x - 2, 1.5, z + 2 }, 
+				{ x - 2, 1.5, z - 2 }, 
+				{ x - 2, 0.3, z - 2 }, 
+				{ x - 2,0.3, z + 2 }, 
+			};
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
 			glVertex3fv(vertices1[0]);
@@ -438,8 +488,12 @@ void Effect::drawAttack4() {
 
 		glBindTexture(GL_TEXTURE_2D, *effectImage[4]);
 		{
-			GLfloat vertices1[4][3] = { { x + 2, 1.5, z + 2 }, { x + 2, 1.5, z - 2 }, { x + 2, 0.3, z - 2 }, { x + 2,
-					0.3, z + 2 }, };
+			GLfloat vertices1[4][3] = { 
+				{ x + 2, 1.5, z + 2 }, 
+				{ x + 2, 1.5, z - 2 }, 
+				{ x + 2, 0.3, z - 2 }, 
+				{ x + 2,0.3, z + 2 }, 
+			};
 			glBegin(GL_POLYGON);
 			glTexCoord2i(0, 0);
 			glVertex3fv(vertices1[0]);
@@ -458,8 +512,12 @@ void Effect::drawAttack4() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[5]);
 	{
-		GLfloat vertices1[4][3] = { { x + 2, 0.1, z + 2 }, { x - 2, 0.1, z + 2 }, { x - 2, 0.1, z - 2 }, { x + 2, 0.1, z
-				- 2 }, };
+		GLfloat vertices1[4][3] = { 
+			{ x + 2, 0.1, z + 2 }, 
+			{ x - 2, 0.1, z + 2 }, 
+			{ x - 2, 0.1, z - 2 }, 
+			{ x + 2, 0.1, z- 2 }, 
+		};
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 		glBegin(GL_POLYGON);
@@ -473,15 +531,15 @@ void Effect::drawAttack4() {
 		glVertex3fv(vertices1[3]);
 		glEnd();
 	}
-	//glDisable(GL_BLEND);
+
 	glEnable(GL_DEPTH_TEST);
 	glPopMatrix();
 
 	if ((r += 15) >= 360)
 		r = 0;
-	//glEnable(GL_DEPTH_TEST);
 }
 
+/*draw Attack5*/
 void Effect::drawAttack5() {
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
@@ -493,8 +551,12 @@ void Effect::drawAttack5() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
 	{
-		GLfloat vertices1[4][3] = { { x + 2, 0.1, z + 2 }, { x - 2, 0.1, z + 2 }, { x - 2, 0.1, z - 2 }, { x + 2, 0.1, z
-				- 2 }, };
+		GLfloat vertices1[4][3] = { 
+			{ x + 2, 0.1, z + 2 }, 
+			{ x - 2, 0.1, z + 2 }, 
+			{ x - 2, 0.1, z - 2 }, 
+			{ x + 2, 0.1, z- 2 }, 
+		};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices1[0]);
@@ -509,8 +571,12 @@ void Effect::drawAttack5() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-		GLfloat vertices2[4][3] = { { x + 2, 1.5, z + 3 }, { x - 2, 1.5, z + 3 }, { x - 2, 0.3, z + 1 }, { x + 2, 0.3, z
-				+ 1 }, };
+		GLfloat vertices2[4][3] = { 
+			{ x + 2, 1.5, z + 3 }, 
+			{ x - 2, 1.5, z + 3 }, 
+			{ x - 2, 0.3, z + 1 }, 
+			{ x + 2, 0.3, z + 1 }, 
+		};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices2[0]);
@@ -525,8 +591,12 @@ void Effect::drawAttack5() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-		GLfloat vertices3[4][3] = { { x + 2, 1.5, z - 3 }, { x - 2, 1.5, z - 3 }, { x - 2, 0.3, z - 1 }, { x + 2, 0.3, z
-				- 1 }, };
+		GLfloat vertices3[4][3] = { 
+			{ x + 2, 1.5, z - 3 }, 
+			{ x - 2, 1.5, z - 3 }, 
+			{ x - 2, 0.3, z - 1 }, 
+			{ x + 2, 0.3, z- 1 }, 
+		};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices3[0]);
@@ -541,8 +611,12 @@ void Effect::drawAttack5() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-		GLfloat vertices4[4][3] = { { x - 3, 1.5, z + 2 }, { x - 3, 1.5, z - 2 }, { x - 1, 0.3, z - 2 }, { x - 1, 0.3, z
-				+ 2 }, };
+		GLfloat vertices4[4][3] = { 
+			{ x - 3, 1.5, z + 2 }, 
+			{ x - 3, 1.5, z - 2 }, 
+			{ x - 1, 0.3, z - 2 }, 
+			{ x - 1, 0.3, z+ 2 }, 
+		};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices4[0]);
@@ -557,8 +631,12 @@ void Effect::drawAttack5() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[7]);
 	{
-		GLfloat vertices5[4][3] = { { x + 3, 1.5, z + 2 }, { x + 3, 1.5, z - 2 }, { x + 1, 0.3, z - 2 }, { x + 1, 0.3, z
-				+ 2 }, };
+		GLfloat vertices5[4][3] = { 
+			{ x + 3, 1.5, z + 2 }, 
+			{ x + 3, 1.5, z - 2 }, 
+			{ x + 1, 0.3, z - 2 }, 
+			{ x + 1, 0.3, z + 2 }, 
+		};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices5[0]);
@@ -578,6 +656,7 @@ void Effect::drawAttack5() {
 	glDisable(GL_BLEND);
 }
 
+/*draw Attack6*/
 void Effect::drawAttack6() {
 	glDisable(GL_CULL_FACE);
 	glPushMatrix();
@@ -595,8 +674,12 @@ void Effect::drawAttack6() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[6]);
 	{
-		GLfloat vertices2[4][3] = { { x + 0.5, 1.1, z + 1 }, { x - 0.5, 1.1, z + 1 }, { x - 0.5, 0.1, z + 1 }, { x
-				+ 0.5, 0.1, z + 1 }, };
+		GLfloat vertices2[4][3] = { 
+			{ x + 0.5, 1.1, z + 1 }, 
+			{ x - 0.5, 1.1, z + 1 }, 
+			{ x - 0.5, 0.1, z + 1 }, 
+			{ x+ 0.5, 0.1, z + 1 }, 
+		};
 		glColor4f(0.8, 0.5, 0.7, 0.5);
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
@@ -612,7 +695,12 @@ void Effect::drawAttack6() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
 	{
-		GLfloat vertices[4][3] = { { x + 0.5, 1.1, z }, { x - 0.5, 1.1, z }, { x - 0.5, 0.1, z }, { x + 0.5, 0.1, z }, };
+		GLfloat vertices[4][3] = { 
+			{ x + 0.5, 1.1, z }, 
+			{ x - 0.5, 1.1, z }, 
+			{ x - 0.5, 0.1, z }, 
+			{ x + 0.5, 0.1, z }, 
+		};
 		glColor4f(1.0, 0.8, 0.8, 0.7);
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
@@ -628,9 +716,13 @@ void Effect::drawAttack6() {
 
 	glBindTexture(GL_TEXTURE_2D, *effectImage[8]);
 	{
-		GLfloat vertices[4][3] = { { x + 0.5, 1.1, z + 2 }, { x - 0.5, 1.1, z + 2 }, { x - 0.5, 0.1, z + 2 }, { x + 0.5,
-				0.1, z + 2 }, };
-		glColor4f(1.0, 0.8, 0.8, 0.7);
+		GLfloat vertices[4][3] = { 
+			{ x + 0.5, 1.1, z + 2 }, 
+			{ x - 0.5, 1.1, z + 2 }, 
+			{ x - 0.5, 0.1, z + 2 }, 
+			{ x + 0.5, 0.1, z + 2 }, 
+		};
+		glColor4f(1.0, 0.8, 0.8, 0.7);	//透過色を指定
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0, 0);
 		glVertex3fv(vertices[0]);
@@ -647,21 +739,10 @@ void Effect::drawAttack6() {
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-	/*
-	 double ox = sys->player[sys->myID].x;
-	 double oz = sys->player[sys->myID].z;
-
-	 sys->player[sys->myID].x+=sin(sys->player[sys->myID].dir)/4;
-	 sys->player[sys->myID].z+=cos(sys->player[sys->myID].dir)/4;
-
-	 if (sys->map->data[(int) sys->player[sys->myID].x][(int) sys->player[sys->myID].z] == 1) {
-	 sys->player[sys->myID].x=ox;
-	 sys->player[sys->myID].z=oz;
-	 }
-	 */
 	glPopMatrix();
 }
 
+/*draw Attack7*/
 void Effect::drawAttack7() {
 	glDisable(GL_CULL_FACE);
 	glPushMatrix();
@@ -703,10 +784,10 @@ void Effect::drawAttack7() {
 	{
 		GLfloat vertices[4][3] = {
 			{ x+0.4, 0.8, z+0.8 },
-    		{ x+0.4, 0.8, z-0.8 },
-            { x+0.4, 0.4, z-0.8 },
-            { x+0.4, 0.4, z+0.8 },
-        };
+    			{ x+0.4, 0.8, z-0.8 },
+     		       { x+0.4, 0.4, z-0.8 },
+            		{ x+0.4, 0.4, z+0.8 },
+        	};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0,0);
 		glVertex3fv(vertices[0]);
@@ -723,10 +804,10 @@ void Effect::drawAttack7() {
 	{
 		GLfloat vertices[4][3] = {
 			{ x-0.4, 0.8, z + 0.8 },
-    		{ x-0.4, 0.8, z - 0.8 },
-            { x-0.4, 0.4, z - 0.8 },
-            { x-0.4, 0.4, z + 0.8 },
-        };
+    			{ x-0.4, 0.8, z - 0.8 },
+        		{ x-0.4, 0.4, z - 0.8 },
+        		{ x-0.4, 0.4, z + 0.8 },
+        	};
 		glBegin(GL_POLYGON);
 		glTexCoord2i(0,0);
 		glVertex3fv(vertices[0]);
@@ -745,6 +826,7 @@ void Effect::drawAttack7() {
     	glPopMatrix();
 }
 
+/*draw Attack8*/
 void Effect::drawAttack8(){
 	double i,j;
 	glEnable(GL_BLEND);

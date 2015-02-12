@@ -16,7 +16,6 @@ System::System(int m) {
 	mode = m;
 	TTF_Init();
 	font = TTF_OpenFont("data/Koruri-20140904/Koruri-Bold.ttf", 100);
-	//if(!font)cout<<TTF_GetError()<<endl;
 	dx = 0;
 	dy = 0;
 	count = 0;
@@ -32,7 +31,6 @@ System::System(int m) {
 
 System::~System() {
 	TTF_CloseFont(font);
-
 }
 
 int System::initCamera() {
@@ -61,22 +59,14 @@ int System::capImage() {
         }
     }
     if(!sourceImage)return 1;
-    
-    
  
- //int params[] = {CV_IMWRITE_PNG_COMPRESSION, 5};
- 
- cvSetImageROI(sourceImage, cvRect(20, 40, 64, 64));
+    cvSetImageROI(sourceImage, cvRect(20, 40, 64, 64));
     
     
     
     char tmp[10];
-    //sprintf(tmp,"data/%d.png",myID);
-    //cvSaveImage(tmp,sourceImage,params);
-    cvSaveImage("data/me.bmp",sourceImage);
-    //myFaceImage = draw->initTexture(SDL_CreateRGBSurfaceFrom((void*) sourceImage->imageData, sourceImage->width, sourceImage->height,
-    //            sourceImage->depth, sourceImage->nChannels * sourceImage->width, 0x0000ff, 0x00ff00, 0xff0000, 0));
-    myFaceImage = draw->initTexture("data/me.bmp");
+       cvSaveImage("data/me.bmp",sourceImage);
+       myFaceImage = draw->initTexture("data/me.bmp");
     sendFaceFlag=1;
     return 0;
 }
@@ -116,23 +106,25 @@ void System::initChara() {
 
 }
 
+/*キャラの移動と攻撃の受付*/
 void System::moveChara() {
 
 	double rad;
 	Player old = player[myID];
 
+	//視点を右方向に回す
 	if (io->key[KEY_RIGHT] > 0) {
 		if ((player[myID].dir -= 0.03) <= -6.03) {
 			player[myID].dir = 0;
 		}
 	}
-
+	//視点を左方向に回す
 	if (io->key[KEY_LEFT] > 0) {
 		if ((player[myID].dir += 0.03) > 6.03) {
 			player[myID].dir = 0;
 		}
 	}
-
+	//前進
 	if (io->key[KEY_UP] > 0) {
 		//x axis
 		player[myID].x += sin(player[myID].dir) / 6;
@@ -156,7 +148,7 @@ void System::moveChara() {
 			player[myID].z = old.z;
 		}
 	}
-
+	//後進
 	if (io->key[KEY_DOWN] > 0) {
 		//x axis
 		player[myID].x -= sin(player[myID].dir) / 3;
@@ -186,7 +178,7 @@ void System::moveChara() {
 		}
 	}
 	rad = (player[myID].dir * 56.5) * (PI / 180.0);
-
+	//攻撃ボタンが押された時の処理
 	if (io->key[KEY_B] == 1 && player[myID].attflag == 0 && player[myID].chara == 1) {
 		Mix_PlayChannel(-1, sys->wind, 0);
 		player[myID].attflag = 1;
@@ -295,7 +287,6 @@ void System::moveChara() {
 
 int System::judgeHit(int mode, Player *pl, Effect *ef) {
 	if (mode == 1 || mode == 4 || mode == 5) {
-		//cout<<"-----------judge  distance "<<abs(pl->x - ef->x)* abs(pl->z - ef->z)<<endl;
 		if ((abs(pl->x - ef->x) <= 1) && (abs(pl->z - ef->z) <= 1)) {
 			return 1;
 		}
@@ -309,8 +300,7 @@ int System::judgeHit(int mode, Player *pl, Effect *ef) {
 }
 
 void System::gameMain() {
-    //cout << "execute sys gameMain()" << endl;
-    if (player[myID].hp > 0)
+      if (player[myID].hp > 0)
         moveChara();
     draw->routine();
 
@@ -322,9 +312,10 @@ string s2("0");
 string s3("1");
 string s4(".");
 
+/*接続先サーバーのIPアドレスを指定*/
 void System::IPset() {
      std::ostringstream ss;
-
+	//背景を表示
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     sys->draw->init3D();
     {
@@ -367,6 +358,7 @@ void System::IPset() {
             }
         }
     }
+
     draw->init2D();
     {
         title->drawMenu(100, 100, 800, 150, "Input server IP");
@@ -409,6 +401,7 @@ void System::IPset() {
     }
 }
 
+/*設定項目を選択*/
 void System::selConfig(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     sys->draw->init3D();
@@ -484,6 +477,7 @@ void System::selConfig(){
     SDL_GL_SwapBuffers();
 }
 
+/*BGMとSEの音量を設定*/
 int System::VOLset(int vol){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	    sys->draw->init3D();
@@ -555,7 +549,6 @@ int System::VOLset(int vol){
 }
 void System::detectCollision() {
 
-    //cout<<"execute detectCollision()"<<endl;
     for (int i = 0; i < MAX_EFFECT; i++) {
 
         if (effect[i].f > 0) {
@@ -563,8 +556,6 @@ void System::detectCollision() {
                 if (player[c].hp <= 0) {
                     continue;
                 }
-                //effect[i].x = player[c].x;
-                //effect[i].z = player[c].z;
                 if (player[c].chara != -1 && player[c].avoidDamageCount == 0 && effect[i].fromPlayerID != c
                         && judgeHit(effect[i].f, &player[c], &effect[i]) > 0) {
                     player[c].avoidDamageCount = 30;
@@ -574,4 +565,5 @@ void System::detectCollision() {
 
         }
 
-    }}
+    }
+}

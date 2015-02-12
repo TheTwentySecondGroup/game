@@ -86,17 +86,17 @@ void Draw::routine() {
 						glTranslatef(sys->player[i].x, 0, sys->player[i].z);
 						glRotatef(sys->player[i].dir * 360 / 6.28, 0.0f, 1.0f, 0.0f);
 						glTranslatef(-sys->player[i].x, 0, -sys->player[i].z);
-						glBindTexture(GL_TEXTURE_2D, *(sys->faceImage[i]));
 						glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, WhiteMaterial);
 						glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
 						glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 						glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
 						GLfloat vertices[4][3] =
-								{{sys->player[i].x - 0.15 ,0.9, sys->player[i].z },
-								{ sys->player[i].x + 0.15 ,0.9  , sys->player[i].z },
-								{ sys->player[i].x + 0.15 ,0.7  , sys->player[i].z },
-								{ sys->player[i].x - 0.15 ,0.7, sys->player[i].z }, };
+								{{sys->player[i].x - 0.15 ,0.85, sys->player[i].z },
+								{ sys->player[i].x + 0.15 ,0.85  , sys->player[i].z },
+								{ sys->player[i].x + 0.15 ,0.55  , sys->player[i].z },
+								{ sys->player[i].x - 0.15 ,0.55, sys->player[i].z }, };
+						glBindTexture(GL_TEXTURE_2D, *sys->faceImage[i]);
 						glBegin(GL_POLYGON);
 						//Normal3f(vertices[1], vertices[4], vertices[7]);
 						glTexCoord2i(0, 0);
@@ -158,6 +158,8 @@ void Draw::routine() {
 	glFlush();
 	SDL_GL_SwapBuffers();        //reflect swap
 }
+
+/*ゲームオーバーになった時の描画*/
 void Draw::drawGameOver(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
@@ -180,6 +182,7 @@ void Draw::drawGameOver(int x, int y, int w, int h) {
 	glDeleteTextures(1, tmpimage);
 }
 
+/*勝利画面の描画*/
 void Draw::drawWin(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
@@ -202,39 +205,10 @@ void Draw::drawWin(int x, int y, int w, int h) {
 	glDeleteTextures(1, tmpimage);
 }
 
+/*HPバーの描画*/
 void Draw::drawHP(int x, int y, int w, int h) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
-	/*
-	for (int i = 0; i < 4; i++) {
-		string tmpstring;
-		if (sys->myID == i)
-			tmpstring += "†P";
-		else
-			tmpstring += "　P";
-		char tmpi[10];
-		sprintf(tmpi, "%d", i + 1);
-		tmpstring += tmpi;
-		tmpstring += " ";
-		sprintf(tmpi, "%d", sys->player[i].hp);
-		tmpstring += tmpi;
-		tmp = TTF_RenderUTF8_Blended(sys->font, tmpstring.c_str(), color);
-		GLuint *tmpimage = sys->draw->timeTexture(tmp);
-		glBindTexture( GL_TEXTURE_2D, *tmpimage);
-		glBegin( GL_QUADS);
-		glColor4f(1.0, 1.0, 1.0, 1.0);
-		glTexCoord2i(0, 0);
-		glVertex3f(x, y + (h * i), 0);
-		glTexCoord2i(1, 0);
-		glVertex3f(x + w, y + (h * i), 0);
-		glTexCoord2i(1, 1);
-		glVertex3f(x + w, y + h * (i + 1), 0);
-		glTexCoord2i(0, 1);
-		glVertex3f(x, y + h * (i + 1), 0);
-		glEnd();
-		glDeleteTextures(1, tmpimage);
-	}
-*/
 	if (sys->player[sys->myID].hp >= 60) {
 		glBindTexture(GL_TEXTURE_2D, *texHandle[3]);
 	} else if (sys->player[sys->myID].hp < 60 && sys->player[sys->myID].hp >= 30) {
@@ -257,8 +231,8 @@ void Draw::drawHP(int x, int y, int w, int h) {
 
 }
 
+/*敵HPの描画*/
 void Draw::drawHP3D(int i) {
-	//glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
 	glPushMatrix();
@@ -266,7 +240,6 @@ void Draw::drawHP3D(int i) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
-	;
 
 	glTranslated(sys->player[i].x, 0, sys->player[i].z);
 	glRotatef(sys->player[sys->myID].dir * 56.5, 0, 1, 0);
@@ -377,6 +350,7 @@ Draw::~Draw() {
 	TTF_Quit();
 }
 
+/*pngファイルの読み込み*/
 GLuint *Draw::pngTexture(string name) {
 	SDL_Surface *surface;
 	SDL_RWops *rw;
@@ -401,6 +375,7 @@ GLuint *Draw::pngTexture(string name) {
 	return Handle;
 }
 
+/*文字列の読み込み*/
 GLuint * Draw::timeTexture(SDL_Surface * surface) {
 	if (surface == NULL) {
 		printf("timeTexture receice null surface\n");
@@ -441,6 +416,7 @@ GLuint * Draw::timeTexture(SDL_Surface * surface) {
 	return Handle;
 }
 
+/*bmpファイルの読み込み*/
 GLuint *Draw::initTexture(string name) {
 	glEnable( GL_TEXTURE_2D);
 	SDL_Surface *surface;
@@ -482,6 +458,7 @@ GLuint *Draw::initTexture(string name) {
 	return Handle;
 }
 
+/*キャラクター選択画面の描画*/
 void Draw::drawCharaSelect() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	init3D();
@@ -490,12 +467,12 @@ void Draw::drawCharaSelect() {
 	init2D();
 	{
 		//character1
-		//cout << "selChara" << sys->selChara << endl;
 		for (int i = 0; i < 3; i++) {
 			if (sys->selChara == i + 1)
 				glBindTexture( GL_TEXTURE_2D, *charaImage[i]);
 			else
 				glBindTexture( GL_TEXTURE_2D, *charaImage[i + 3]);
+			
 			glBegin( GL_QUADS);
 			glTexCoord2i(0, 0);
 			glVertex3f(200 * (i) + 120, 200, 0);
@@ -518,13 +495,19 @@ void Draw::drawCube(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, WhiteMaterial);
 	glMaterialf(GL_FRONT, GL_SHININESS, 60.0);
 
-	GLfloat vertices[8][3] = { { 0 + x, 1.0, 0 + y }, { 1 + x, 1.0, 0 + y }, { 1 + x, 1.0, 1 + y },
-			{ 0 + x, 1.0, 1 + y }, { 1 + x, 0.0, 0 + y }, { 0 + x, 0.0, 0 + y }, { 0 + x, 0.0, 1 + y }, { 1 + x, 0.0, 1
-					+ y } };
+	GLfloat vertices[8][3] = { 
+		{ 0 + x, 1.0, 0 + y }, 
+		{ 1 + x, 1.0, 0 + y }, 
+		{ 1 + x, 1.0, 1 + y },
+		{ 0 + x, 1.0, 1 + y }, 
+		{ 1 + x, 0.0, 0 + y }, 
+		{ 0 + x, 0.0, 0 + y }, 
+		{ 0 + x, 0.0, 1 + y }, 
+		{ 1 + x, 0.0, 1 + y } 
+	};
 
 // 右
 	glBegin(GL_POLYGON);
-
 	Normal3f(vertices[1], vertices[4], vertices[7]);
 	glTexCoord2i(0, 0);
 	glVertex3fv(vertices[1]);
@@ -585,6 +568,7 @@ void Draw::Normal3f(GLfloat fVert1[], GLfloat fVert2[], GLfloat fVert3[]) {
 	glNormal3f(Py * Qz - Pz * Qy, Pz * Qx - Px * Qz, Px * Qy - Py * Qx);
 }
 
+/*2Dテクスチャの初期化*/
 void Draw::init2D() {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
@@ -600,6 +584,8 @@ void Draw::init2D() {
 	glLoadIdentity();
 
 }
+
+/*3D表示の初期化*/
 void Draw::init3D() {
 	glViewport(0, 0, WINDOW_X, WINDOW_Y);
 //perspective
@@ -627,6 +613,7 @@ void Draw::init3D() {
 	glShadeModel(GL_SMOOTH);
 }
 
+/*地面の描画*/
 void Draw::drawFloor(int x, int y) {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, GrayMaterial);
@@ -660,6 +647,7 @@ void Draw::drawFloor(int x, int y) {
 	glEnable(GL_FOG);
 }
 
+/*壁の描画*/
 void Draw::drawWall(int x, int y) {
 	int i;
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, GrayMaterial);

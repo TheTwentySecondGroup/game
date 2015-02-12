@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-127.0.00.1
-=======
-127.0.0.1
->>>>>>> branch 'master' of https://github.com/TheTwentySecondGroup/game.git
+192.168.1.110

@@ -17,7 +17,7 @@ Map::Map(){
 	initMap(1);
 }
 
-
+/*マップの初期化*/
 int  Map::initMap(int stage) {
 	int i, c;
 	FILE* fp = fopen(MAP_FILE_NAME[stage - 1], "r");
@@ -47,8 +47,9 @@ int  Map::initMap(int stage) {
 
 	return 0;
 }
+
+/*マップの描画*/
 void Map::drawMap() {
-	//cout<<"execute map drawMap() "<<endl;
 	int i, c;
 	int min_x = (int) sys->player[sys->myID].x - 22;
 	if (min_x < 0)

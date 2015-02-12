@@ -180,7 +180,7 @@ int NetClass::routineServer() {
 		}
 
 		//第二引数意味なし
-		if (syncEffectFlag > 0)
+		//if (syncEffectFlag > 0)
 			serverCommand(E_SYNC_COMMAND, 0);
 
 		for (int c = 0; c < 4; c++) {

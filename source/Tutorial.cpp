@@ -35,6 +35,7 @@ void Tutorial::routine() {
 	draw(Slide);
 }
 
+/*チュートリアル画面の描画*/
 void Tutorial::draw(int n) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	sys->draw->init3D();

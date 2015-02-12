@@ -42,6 +42,8 @@ Title::~Title() {
 	glDeleteTextures(6, *titleImage);
 
 }
+
+/*メニューの表示*/
 void Title::drawMenu(int x, int y, int w, int h, string mes) {
 	SDL_Color color = { 0, 0, 0 };
 	SDL_Surface *tmp;
@@ -88,7 +90,6 @@ void Title::drawMenuCube(int x, int y, GLuint *texture, double sw) {
 
 void Title::routine() {
 
-	//cout<<"execute title routine()"<<endl;
 	if ((sys->io->key[KEY_UP] == 1)) {
 		if (sel > CHOICE_MIN)
 			sel -= 1;
@@ -97,7 +98,6 @@ void Title::routine() {
 		if (sel < CHOICE_MAX)
 			sel += 1;
 	}
-	//cout<<sys->io->key[KEY_A]<<"----------------------------------------------------------------------"<<endl;
 	if (sys->io->key[KEY_A] > 1) {
 		if (sel == 3) {
 			exit(EXIT_FAILURE);
@@ -107,18 +107,13 @@ void Title::routine() {
 			sys->Stage = 5;
 		}
 	}
-	//cout<<"execute title routine() 1"<<endl;
 
 	drawTitle();
 	SDL_Delay(1000 / 60);
-
-	//cout<<"execute title routine()  2"<<endl;
-
 }
 
+/*タイトル画面の描画*/
 void Title::drawTitle() {
-//	cout<<"execute title drawTitle()"<<endl;
-
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	sys->draw->init3D();
@@ -140,14 +135,11 @@ void Title::drawTitle() {
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT1);
 
-
-
 		//light1
 		sys->draw->lightpos[0] = sys->lighteffect[0].posX;
 		sys->draw->lightpos[1] = 5;
 		sys->draw->lightpos[2] = sys->lighteffect[0].posY;
 		sys->draw->lightpos[3] = 1;
-
 
 		glLightfv(GL_LIGHT1, GL_POSITION, sys->draw->lightpos);
 		GLfloat Light1Dir[] = { 0, -1, 0 };
@@ -157,8 +149,6 @@ void Title::drawTitle() {
 		glLightfv(GL_LIGHT1, GL_AMBIENT, sys->draw->WhiteLight);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, sys->draw->DifLight);
 		glLightfv(GL_LIGHT1, GL_SPECULAR, sys->draw->SpecularLight);
-
-
 
 		sys->map->drawMap();
 
